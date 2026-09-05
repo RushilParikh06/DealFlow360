@@ -493,27 +493,45 @@ Google Stitch may be used to establish layouts and a shared visual language. Sti
 
 ## Local development
 
-Once the repository is scaffolded, the expected setup is:
-
-1. Install Node.js and `pnpm`.
-2. Copy `.env.example` to a local environment file and enter the required values.
-3. Start PostgreSQL and Redis using Docker Compose.
-4. Install workspace dependencies.
-5. Apply Prisma migrations.
-6. Seed the database so the entire demo flow works without manual setup.
-7. Start the NestJS API and Next.js web application.
-
-Typical commands may look like:
+The repository is a pnpm workspace: a Next.js web app in `apps/web`, a NestJS API
+in `apps/api`, and shared types in `packages/contracts`. The designed HTML screens
+in `pages/` are loaded into the Next.js App Router and bound to the API in the
+browser, so the current UI stays available while individual screens are migrated to
+native React components.
 
 ```bash
+cp .env.example .env
 pnpm install
-docker compose up -d
-pnpm prisma migrate dev
-pnpm prisma db seed
-pnpm dev
+docker compose up -d          # PostgreSQL + Redis
+pnpm generate                 # Prisma client
+pnpm db:migrate               # apply migrations
+pnpm db:seed                  # demo catalog, policies and quotes
+pnpm dev                      # API on :3001, web on :3000
 ```
 
-Confirm the exact script names in the root `package.json` before running them.
+The web app runs at `http://localhost:3000` and the API under
+`http://localhost:3001/api/v1`. Point the browser at a different API with
+`NEXT_PUBLIC_API_URL`.
+
+Run the checks with `pnpm test` (contracts build, 114 API unit tests, and a smoke
+check that every endpoint the frontend calls is actually served by a controller)
+and `pnpm typecheck`.
+
+### How the frontend reaches the backend
+
+`apps/web/lib/api.ts` is the only place the browser talks to the API. It unwraps
+the `{ success, data }` envelope, attaches the bearer token, and spends the refresh
+token once on a 401. `apps/web/lib/live.ts` binds each page to the endpoints that
+exist, filling the designed tables in place rather than re-authoring them.
+
+Pages bound to live data: **login** (`/auth/login`, `/auth/signup`), **quotations**
+(`/quotes`), **approvals** (`/approvals`), **fulfillment** orders table (`/orders`),
+and **deal health** (`/deal-health`). Invoices, subscriptions and the inventory grid
+keep their sample rows because B3's billing and inventory engines have no controller
+yet. Set `NEXT_PUBLIC_USE_MOCKS=1` to pin every page to its sample rows.
+
+A page whose call fails keeps its sample rows and shows a banner, so a stopped API
+never produces a blank screen.
 
 ## Team workflow
 
@@ -568,3 +586,4 @@ Possible next steps include mid-cycle proration, real gateway settlement, credit
 ## Guiding principle
 
 The most important quality of DealFlow360 is that the whole chain is real and traceable. A plain screen backed by correct rules, permissions, transactions, audit history, and state transitions is more valuable than a polished screen that only imitates the workflow.
+

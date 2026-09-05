@@ -20,6 +20,13 @@ export class OrdersService {
     const [items, total] = await Promise.all([
       this.prisma.order.findMany({
         where,
+        // Order stores customerId only, but every list view shows the customer
+        // by name, so read it through the quotation rather than making the
+        // client fetch /customers per row.
+        include: {
+          quotation: { select: { customer: { select: { name: true } } } },
+          _count: { select: { lines: true } },
+        },
         skip: (page - 1) * pageSize,
         take: pageSize,
         orderBy: { createdAt: 'desc' },

@@ -7,7 +7,10 @@
     "seed": "tsx prisma/seed/index.ts"
   },
   "scripts": {
+    "dev": "concurrently -n api,web -c blue,magenta \"pnpm dev:api\" \"pnpm dev:web\"",
     "dev:api": "pnpm --filter @dealflow/api start:dev",
+    "dev:web": "pnpm --filter @dealflow360/web dev",
+    "build": "pnpm --filter @dealflow/contracts build && pnpm --filter @dealflow360/web build",
     "db:up": "docker compose up -d",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
@@ -15,10 +18,12 @@
     "db:studio": "prisma studio",
     "generate": "prisma generate",
     "typecheck": "pnpm -r typecheck",
-    "test": "pnpm --filter @dealflow/contracts build && pnpm --filter @dealflow/api test",
+    "test": "pnpm --filter @dealflow/contracts build && pnpm --filter @dealflow/api test && pnpm test:smoke",
+    "test:smoke": "node tests/smoke.mjs",
     "lint": "pnpm -r lint"
   },
   "devDependencies": {
+    "concurrently": "^9.1.0",
     "prisma": "^6.1.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"

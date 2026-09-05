@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Courier+Prime:wght@400;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-container": "#ffd5c5", "secondary-container": "#dce2f3", "on-primary-fixed": "#00164d", "error": "#DC2626", "surface-container-low": "#F7F4EC", "on-secondary-fixed": "#151c27", "inverse-primary": "#b5c4ff", "primary-fixed": "#dce1ff", "inverse-surface": "#2e3038", "inverse-on-surface": "#f0f0fb", "on-secondary": "#ffffff", "on-error-container": "#93000a", "surface-container-highest": "#DCD5C6", "tertiary-fixed": "#ffdbcd", "surface-bright": "#faf8ff", "surface-dim": "#E9E3D8", "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#ffb597", "on-background": "#191b23", "surface-container-lowest": "#FFFFFF", "on-secondary-fixed-variant": "#404754", "tertiary": "#832f00", "outline-variant": "#D1C9BC", "surface-container": "#EFEAE0", "on-tertiary-fixed-variant": "#7e2c00", "on-error": "#ffffff", "surface": "#F4F0E7", "outline": "#1D2430", "secondary-fixed": "#dce2f3", "on-surface-variant": "#434654", "surface-container-high": "#E5DFD3", "error-container": "#ffdad6", "primary-container": "#E0E7FA", "on-primary-container": "#173E9D", "on-primary": "#ffffff", "secondary-fixed-dim": "#c0c7d7", "tertiary-container": "#aa3f00", "on-surface": "#191b23", "primary": "#003fb3", "secondary": "#585f6c", "primary-fixed-dim": "#b5c4ff", "on-secondary-container": "#5e6573", "surface-tint": "#1f54d3", "background": "#faf8ff", "on-primary-fixed-variant": "#003cad", "surface-variant": "#e2e1ec", "on-tertiary-fixed": "#360f00" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1rem", "space-sm": "0.75rem", "margin-desktop": "2rem", "margin-mobile": "1rem", "space-xl": "2rem", "border-width": "1.5px", "space-xxs": "0.25rem", "space-xs": "0.5rem", "space-2xl": "3rem" }, "fontFamily": { "label-sm": ["IBM Plex Sans"], "headline-md": ["IBM Plex Sans"], "body-md": ["IBM Plex Sans"], "headline-lg-mobile": ["IBM Plex Sans"], "headline-lg": ["IBM Plex Sans"], "body-sm": ["IBM Plex Sans"], "label-md": ["IBM Plex Sans"], "headline-sm": ["IBM Plex Sans"], "mono-metric": ["Courier Prime"], "mono-metric-sm": ["Courier Prime"], "body-lg": ["IBM Plex Sans"] }, "fontSize": { "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "mono-metric": ["14px", { "lineHeight": "20px", "fontWeight": "700" }], "mono-metric-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }] } } } };</script><link href="../assets/css/app.css" rel="stylesheet"/><script defer src="../assets/js/app.js"></script></head><body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col"><header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline"><div class="h-16 w-full px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-xs"><img alt="DealFlow360 geometric logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VHTIU3t9-5rRk-CEKSXno3byMT0JASngdLJRV904p8U_SpkyPTzh2Xuu2dCnJCDxbo4K___rwJ946wLetzcW5xB3TqrwF2alarH-2m2wnuy8Laa0Cf32rKxeg8N1dCEw7hU7ii2cpAOTCZ6ID0zI-0qLvWGutArulL4Jcr7wWjc4vuyAhgri9_D5Erubic9uiR5RE006yohwQcycMiadCCVMNNT7E2dd26FsSdcrpyoXXQ4pNfsg4WRKQ"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight uppercase leading-none">DealFlow360</span><span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Operations Engine</span></div></div><nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-primary text-on-primary border-2 border-outline shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] font-label-md"><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="dashboard" href="#">Dashboard</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="quotations" href="#">Quotations</a><a aria-current="page" class="px-space-xs py-1 transition-all bg-primary text-on-primary border-2 border-outline shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] font-label-md" data-path="approvals" href="#">Approvals</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="fulfillment" href="#">Fulfillment</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="subscriptions" href="#">Subscriptions</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="invoices" href="#">Invoices</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="deal-health" href="#">Deal Health</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="admin-reports" href="#">Reports</a></nav></div><div class="flex items-center gap-space-sm"><div class="hidden md:flex items-center bg-surface-container-lowest border-2 border-outline px-space-xs py-1 shadow-[2px_2px_0px_#1D2430]"><span class="material-symbols-outlined text-body-lg text-on-surface-variant mr-space-xxs">search</span><span class="font-body-sm text-body-sm text-on-surface-variant mr-space-md">Search operations...</span><kbd class="bg-surface-dim px-space-xxs py-0.5 border border-outline font-mono-metric-sm text-mono-metric-sm text-on-surface">⌘K</kbd></div><div class="hidden lg:flex items-center gap-space-xxs bg-surface-dim border-2 border-outline px-space-xs py-1"><span class="w-2 h-2 rounded-full bg-primary inline-block"></span><span class="font-mono-metric-sm text-mono-metric-sm text-on-surface uppercase">US-EAST</span></div><button class="relative p-1 text-on-surface hover:bg-surface-container border-2 border-outline shadow-[2px_2px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none bg-surface-container-lowest"><span class="material-symbols-outlined block text-body-lg">notifications</span><span class="absolute -top-1.5 -right-1.5 bg-error text-on-error font-mono-metric-sm text-[10px] px-1 border border-outline font-bold leading-tight">4</span></button><div class="flex items-center gap-space-xs pl-space-xs border-l-2 border-outline"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border-2 border-outline" src="https://lh3.googleusercontent.com/aida/AEtjO1V_1Shot5C3nLuW2ogAZ0eSQ2c1JdLSSJ6eTaaIofRglUnaH85C7mgH-ZIwsgv7gwHfJwZa2NvM1U2ESIzMlXZw_E2D19Fa7wAaxZ5DP872BDrHRCg56GrFcEa9qecR6PAOF8obskwHq0YVdn8aZbQmXXTYU9-NzD1K14AzRxqO_Eis0cFTMWDaH-Wg1xSNzyCw_MQBMbzmHA_BPynq7zFPtWX_CIy_P3gltnsF9dtBlVYuqKbYKDMxSQ"/><div class="hidden 2xl:flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface leading-tight">M. Vance</span><span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Sales Ops Lead</span></div></div></div></div></header><main class="w-full pt-16 bg-surface flex-1"><div class="flex flex-col w-full">
+<div class="w-full px-margin-desktop py-space-lg flex flex-col gap-space-lg">
+<!-- Header Section -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider mb-space-xxs">
+<span>RevOps Governance</span>
+<span>/</span>
+<span class="text-primary font-bold">Policy Enforcement</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none">
+          Approval Requests
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xxs max-w-3xl">
+          Operational governance queue for discount concessions, credit breaches, and margin exceptions.
+        </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm self-start md:self-auto shrink-0">
+<!-- Pending Toggle -->
+<label class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1.5 cursor-pointer select-none">
+<input checked="" class="w-4 h-4 accent-primary cursor-pointer" id="togglePending" type="checkbox"/>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Pending Only</span>
+<span class="bg-primary-container text-on-primary-container font-mono-metric-sm text-mono-metric-sm px-1.5 py-0.2 font-bold">3</span>
+</label>
+<!-- Secondary Export Button -->
+<button class="flex items-center gap-space-xs bg-surface-container-lowest text-on-surface px-space-sm py-1.5 font-label-md text-label-md shadow-[3px_3px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all" type="button">
+<span class="material-symbols-outlined text-body-lg">file_download</span>
+<span>Export Audit Log</span>
+</button>
+</div>
+</section>
+<!-- Top Metric Row: Brutalist Structured Horizontal Band -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Metric 1 (Critical SLA Attention) -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col justify-between shadow-[3px_3px_0px_#1D2430] relative overflow-hidden">
+<div class="flex items-start justify-between">
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Queue Severity</span>
+<span class="w-2.5 h-2.5 rounded-full bg-error animate-pulse"></span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-mono-metric text-2xl font-bold text-on-surface leading-none">3</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Pending Review</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xxs pt-space-xs bg-surface-container-low px-space-xs py-1">
+<span class="material-symbols-outlined text-error text-body-md">cloud_download</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-error font-bold leading-tight">Requires immediate action &lt; 4h SLA</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col justify-between shadow-[2px_2px_0px_#1D2430]">
+<div class="flex items-start justify-between">
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Returned Status</span>
+<span class="material-symbols-outlined text-on-surface-variant text-body-lg">assignment_return</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-mono-metric text-2xl font-bold text-on-surface leading-none">1</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Returned</span>
+</div>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+          Awaiting rep quota adjustment (Tier-2 limit)
+        </div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col justify-between shadow-[2px_2px_0px_#1D2430]">
+<div class="flex items-start justify-between">
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Cycle Approvals</span>
+<span class="material-symbols-outlined text-primary text-body-lg">verified</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-mono-metric text-2xl font-bold text-primary leading-none">12</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Approved</span>
+</div>
+</div>
+<div class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant pt-space-xs">
+<span class="font-bold text-on-surface">₹1.84M</span> approved deal volume
+        </div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col justify-between shadow-[2px_2px_0px_#1D2430]">
+<div class="flex items-start justify-between">
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Ops Efficiency</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-primary font-bold">94% SLA</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-mono-metric text-2xl font-bold text-on-surface leading-none">4.2h</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Avg Turnaround</span>
+</div>
+</div>
+<div class="w-full pt-space-xs">
+<div class="w-full bg-surface-container h-2.5 overflow-hidden p-0.5">
+<div class="bg-primary h-full w-[94%] transition-all duration-300"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Work Queue Container -->
+<div class="bg-surface-container-lowest shadow-[3px_3px_0px_#1D2430] flex flex-col">
+<!-- Search & Filters Strip -->
+<div class="bg-surface-container-low p-space-sm flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex flex-wrap items-center gap-space-xs flex-1 min-w-[280px]">
+<!-- Search input -->
+<div class="flex items-center bg-surface-container-lowest px-space-xs py-1.5 flex-1 max-w-md shadow-[1px_1px_0px_#1D2430]">
+<span class="material-symbols-outlined text-body-md text-on-surface-variant mr-space-xxs">search</span>
+<input class="bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant outline-none w-full" placeholder="Search quote ID, account, reviewer..." type="text"/>
+</div>
+<!-- Quick Filters -->
+<div class="flex items-center gap-space-xxs">
+<select class="bg-surface-container-lowest px-space-xs py-1.5 font-label-sm text-label-sm text-on-surface outline-none cursor-pointer">
+<option>Status: Pending Review</option>
+<option>Status: All Queue</option>
+<option>Status: Escalated</option>
+<option>Status: Returned</option>
+</select>
+<select class="bg-surface-container-lowest px-space-xs py-1.5 font-label-sm text-label-sm text-on-surface outline-none cursor-pointer">
+<option>Role: All Assigned</option>
+<option>Role: Sales Ops</option>
+<option>Role: Finance Dir</option>
+<option>Role: Legal Counsel</option>
+</select>
+<select class="hidden sm:block bg-surface-container-lowest px-space-xs py-1.5 font-label-sm text-label-sm text-on-surface outline-none cursor-pointer">
+<option>Tier: All Tiers</option>
+<option>Tier: Enterprise Gold</option>
+<option>Tier: Silver Tier</option>
+<option>Tier: Bronze Tier</option>
+</select>
+<select class="hidden md:block bg-surface-container-lowest px-space-xs py-1.5 font-label-sm text-label-sm text-on-surface outline-none cursor-pointer">
+<option>Cycle: Q1-2025 Active</option>
+<option>Cycle: Current Fiscal</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-space-xs shrink-0">
+<button class="p-1.5 bg-surface-container-lowest hover:bg-surface-container text-on-surface transition-all" title="Reload Queue" type="button">
+<span class="material-symbols-outlined text-body-lg block">refresh</span>
+</button>
+<button class="p-1.5 bg-surface-container-lowest hover:bg-surface-container text-on-surface transition-all" title="Density View" type="button">
+<span class="material-symbols-outlined text-body-lg block">density_medium</span>
+</button>
+</div>
+</div>
+<!-- Queue Data Table -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[1080px]">
+<thead>
+<tr class="bg-surface-dim font-label-sm text-label-sm text-on-surface uppercase tracking-wider">
+<th class="py-2.5 px-space-sm w-10 text-center">
+<input class="w-3.5 h-3.5 accent-primary cursor-pointer" type="checkbox"/>
+</th>
+<th class="py-2.5 px-space-sm">Quotation ID</th>
+<th class="py-2.5 px-space-sm">Customer &amp; Tier</th>
+<th class="py-2.5 px-space-sm">Risk Matrix</th>
+<th class="py-2.5 px-space-sm">Primary Breach Trigger</th>
+<th class="py-2.5 px-space-sm">Approval Stage &amp; Reviewer</th>
+<th class="py-2.5 px-space-sm">SLA Status</th>
+<th class="py-2.5 px-space-sm text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-sm text-body-sm">
+<!-- Row 1: Urgent Breached Item (Cobalt Accent & Hard Shadow Indicator) -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors group">
+<td class="py-space-sm px-space-sm text-center">
+<input checked="" class="w-3.5 h-3.5 accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xxs">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<a class="font-mono-metric text-mono-metric font-bold text-primary hover:underline" href="#">Q-1042</a>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-[170px]">SaaS Platform Expansion</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col items-start gap-0.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Acme Corp</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-1.5 py-0.5 font-mono-metric-sm text-mono-metric-sm font-bold uppercase tracking-wider">Enterprise Gold</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="bg-error text-on-error font-mono-metric text-mono-metric font-bold px-2 py-1 leading-none shadow-[2px_2px_0px_#1D2430]">
+                    82
+                  </div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-error font-bold leading-tight uppercase">High Risk</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">3 trigger flags</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col max-w-[220px]">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Services setup concession</span>
+<div class="flex items-center gap-space-xxs mt-0.5">
+<span class="bg-error-container text-on-error-container font-mono-metric-sm text-mono-metric-sm px-1 py-0.2 font-bold">18.0%</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">(+8 pt breach &gt; 10.0%)</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<img class="w-7 h-7 rounded-full object-cover" data-alt="Corporate headshot of sales operations director in crisp studio lighting, neutral brutalist business tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXqqHa5w4jtwCKbHNc3eSbUXPxmPn8IacMJuNDAemFTT-ma6VSBj11xBaoox2h8xNUMYRhfezcFVaQ5pX_NmcqdWZbO2IlRpJpnaoszJ4rinmyQV0Q8CkXHCQUzrrsalEDwyc-WpW6PDXWU5gPSaLSmpx16Xl2ZqaqV0uw64WoNQw87txskc0UMue_gUrDhUg5qrPRx7UpAriu8-mgqOjRYlZbd4WT0AdZc6CImLYP8IhofiXmwh1H"/>
+<div class="flex flex-col leading-tight">
+<div class="flex items-center gap-space-xxs">
+<span class="font-mono-metric-sm text-mono-metric-sm text-primary font-bold">Step 2:</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">M. Vance</span>
+</div>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Sales Ops Manager</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="inline-flex items-center gap-space-xxs bg-tertiary-fixed-dim text-on-tertiary-fixed-variant px-space-xs py-1 font-mono-metric-sm text-mono-metric-sm font-bold leading-tight">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+<span>3.5h remaining - Urgent</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-space-sm py-1.5 shadow-[3px_3px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all whitespace-nowrap" type="button">
+                  Review &amp; Sign-off
+                </button>
+</td>
+</tr>
+<!-- Row 2: Silver Tier Hardware Discount Breach -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="py-space-sm px-space-sm text-center">
+<input class="w-3.5 h-3.5 accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<a class="font-mono-metric text-mono-metric font-bold text-on-surface hover:text-primary hover:underline" href="#">Q-1039</a>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-[170px]">Edge Compute Rack Bundling</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col items-start gap-0.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Beta Industries</span>
+<span class="bg-secondary-container text-on-secondary-container px-1.5 py-0.5 font-mono-metric-sm text-mono-metric-sm font-bold uppercase tracking-wider">Silver Tier</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="bg-surface-container-highest text-on-surface font-mono-metric text-mono-metric font-bold px-2 py-1 leading-none shadow-[2px_2px_0px_#1D2430]">
+                    58
+                  </div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface font-bold leading-tight uppercase">Medium Risk</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">1 trigger flag</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col max-w-[220px]">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Hardware discount cap</span>
+<div class="flex items-center gap-space-xxs mt-0.5">
+<span class="bg-surface-container-highest text-on-surface font-mono-metric-sm text-mono-metric-sm px-1 py-0.2 font-bold">16.0%</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">(+1 pt breach &gt; 15.0%)</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<img class="w-7 h-7 rounded-full object-cover" data-alt="Studio portrait of an Indian senior finance executive with glasses, serious analytical pose on flat neutral gray backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6-UFndye7d0xMA_4o3W8nkbnbMKm5ShQC1WySDb4y7zkPr_g6DZTSQhcNk7ImmOixuPy6Y6WLdU7cDF3Op5n6gn6kp2BZ-C7utnHCEqsppz3mSYOGYzz73VIZMI_UB5NUcXw5TV6rYPN2zahW3B_loJ_gMwCkVh8rOBn_uB16RghBPzwsUmoBhngkN4lAHQBvp62L22fotubxsUMlO4AnWjFYBw_ue8SMlosoVIgBFuD3VxH-lBbH"/>
+<div class="flex flex-col leading-tight">
+<div class="flex items-center gap-space-xxs">
+<span class="font-mono-metric-sm text-mono-metric-sm text-primary font-bold">Step 3:</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">R. Iyer</span>
+</div>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Finance Director</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="inline-flex items-center gap-space-xxs font-mono-metric-sm text-mono-metric-sm text-on-surface font-bold leading-tight bg-surface-container px-space-xs py-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span>8.0h remaining</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right">
+<button class="bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md px-space-sm py-1.5 shadow-[2px_2px_0px_#1D2430] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all whitespace-nowrap" type="button">
+                  Review &amp; Sign-off
+                </button>
+</td>
+</tr>
+<!-- Row 3: Legal Exception -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
+<td class="py-space-sm px-space-sm text-center">
+<input class="w-3.5 h-3.5 accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<a class="font-mono-metric text-mono-metric font-bold text-on-surface hover:text-primary hover:underline" href="#">Q-1048</a>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-[170px]">Global Distribution API</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col items-start gap-0.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Zenith Co</span>
+<span class="bg-secondary-container text-on-secondary-container px-1.5 py-0.5 font-mono-metric-sm text-mono-metric-sm font-bold uppercase tracking-wider">Silver Tier</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="bg-error text-on-error font-mono-metric text-mono-metric font-bold px-2 py-1 leading-none shadow-[2px_2px_0px_#1D2430]">
+                    71
+                  </div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-error font-bold leading-tight uppercase">High Risk</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Legal indemnity</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col max-w-[220px]">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Custom delivery indemnity</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-tertiary font-bold mt-0.5">Liability clause uncapped</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<img class="w-7 h-7 rounded-full object-cover" data-alt="Modern professional portrait of an East Asian corporate counsel woman in tailored blazer against solid stone background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcDem01QYwIclzyWyXQnUDATjjvB3vgalPzV6O-On5ARE8OLp1mAhEsFb5sH5VzJGOygm5KviqxqmyX7AI_GZsbUjQQ4DRafKTOowPFUrRylqNfHiAKClcmpbteQHaiOWzGuYM8kW1JAfyr8-dZHrYKRHkzrV_FVnlyeEX1ladY5AOxoR_SNGcQRR4bzXImbESsWMrok_o4tiykycNLUDJhb7nQv4mNoE7j2nTCCqIvj5G68596Wic"/>
+<div class="flex flex-col leading-tight">
+<div class="flex items-center gap-space-xxs">
+<span class="font-mono-metric-sm text-mono-metric-sm text-primary font-bold">Step 1:</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">S. Chen</span>
+</div>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Legal Counsel</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="inline-flex items-center gap-space-xxs font-mono-metric-sm text-mono-metric-sm text-on-surface font-bold leading-tight bg-surface-container px-space-xs py-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">date_range</span>
+<span>1.2d remaining</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right">
+<button class="bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md px-space-sm py-1.5 shadow-[2px_2px_0px_#1D2430] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all whitespace-nowrap" type="button">
+                  Review &amp; Sign-off
+                </button>
+</td>
+</tr>
+<!-- Row 4: Auto-Approved Fast-pass Item -->
+<tr class="bg-surface-container-low/50 hover:bg-surface-container transition-colors">
+<td class="py-space-sm px-space-sm text-center">
+<input class="w-3.5 h-3.5 accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<a class="font-mono-metric text-mono-metric font-bold text-on-surface hover:text-primary hover:underline" href="#">Q-1035</a>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-[170px]">Point-of-Sale Terminal Seats</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col items-start gap-0.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Nova Retail</span>
+<span class="bg-surface-container-highest text-on-surface px-1.5 py-0.5 font-mono-metric-sm text-mono-metric-sm font-bold uppercase tracking-wider">Bronze Tier</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="bg-surface-container text-on-surface font-mono-metric text-mono-metric font-bold px-2 py-1 leading-none">
+                    12
+                  </div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold leading-tight uppercase">Low Risk</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">0 anomalies</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col max-w-[220px]">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Standard catalog pricing</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Within safe guardrails</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 bg-primary-container text-on-primary-container flex items-center justify-center font-mono-metric-sm text-mono-metric-sm font-bold">
+                    AI
+                  </div>
+<div class="flex flex-col leading-tight">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Auto-Approved</span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Algorithmic fast-pass</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="inline-flex items-center gap-space-xxs font-mono-metric-sm text-mono-metric-sm font-bold text-on-primary-container bg-primary-container px-space-xs py-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span>Completed</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right">
+<a class="inline-block font-label-md text-label-md text-primary font-bold hover:underline px-space-xs py-1" href="#">
+                  View Details
+                </a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="bg-surface-dim p-space-sm flex flex-col sm:flex-row items-center justify-between gap-space-sm font-mono-metric-sm text-mono-metric-sm text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span>Showing <strong class="text-on-surface">1 to 4</strong> of <strong class="text-on-surface">16</strong> approval requests</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+<span class="text-on-surface-variant">Batch execution ready</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-space-xs py-1 bg-surface-container-lowest text-on-surface disabled:opacity-40 shadow-[1px_1px_0px_#1D2430] active:translate-x-[1px] active:translate-y-[1px]" disabled="" type="button">
+            Prev
+          </button>
+<button class="w-7 h-7 bg-primary text-on-primary font-bold shadow-[2px_2px_0px_#1D2430]" type="button">
+            1
+          </button>
+<button class="w-7 h-7 bg-surface-container-lowest hover:bg-surface-container text-on-surface shadow-[1px_1px_0px_#1D2430]" type="button">
+            2
+          </button>
+<button class="w-7 h-7 bg-surface-container-lowest hover:bg-surface-container text-on-surface shadow-[1px_1px_0px_#1D2430]" type="button">
+            3
+          </button>
+<button class="w-7 h-7 bg-surface-container-lowest hover:bg-surface-container text-on-surface shadow-[1px_1px_0px_#1D2430]" type="button">
+            4
+          </button>
+<button class="px-space-xs py-1 bg-surface-container-lowest hover:bg-surface-container text-on-surface shadow-[1px_1px_0px_#1D2430] active:translate-x-[1px] active:translate-y-[1px]" type="button">
+            Next
+          </button>
+</div>
+</div>
+</div>
+<!-- Governance Context Ribbon -->
+<div class="bg-surface-container-low p-space-md flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-2xl">policy</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Q1-2025 Commercial Guardrail Rule 4B is Active</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Concessions exceeding 15% discount or 60-day Net payment terms require mandatory dual-tier sign-off.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs shrink-0 font-mono-metric-sm text-mono-metric-sm">
+<a class="text-primary font-bold hover:underline" href="#">View Matrix Policies →</a>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-dim border-t-2 border-outline mt-auto"><div class="w-full px-margin-desktop py-space-xs flex flex-col md:flex-row items-center justify-between gap-space-sm font-mono-metric-sm text-mono-metric-sm text-on-surface-variant"><div>© 2025 DealFlow360 Enterprise Engine. All rights reserved.</div><div class="flex items-center gap-space-md"><span>SOC2 Type II Certified</span><span class="w-1.5 h-1.5 bg-outline rounded-full"></span><span>ISO 27001 Verified</span><span class="w-1.5 h-1.5 bg-outline rounded-full"></span><a class="text-on-surface hover:underline" href="#">API Documentation</a></div></div></footer></body></html>
+
