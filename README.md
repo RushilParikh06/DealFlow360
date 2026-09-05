@@ -565,6 +565,7 @@ The first version intentionally keeps some areas simple:
 
 Possible next steps include mid-cycle proration, real gateway settlement, credit notes, learned upsell ranking, approval delegation, out-of-office routing, full multi-currency price lists, and a dedicated product/pricing administration module.
 
+
 ## Guiding principle
 
 The most important quality of DealFlow360 is that the whole chain is real and traceable. A plain screen backed by correct rules, permissions, transactions, audit history, and state transitions is more valuable than a polished screen that only imitates the workflow.
