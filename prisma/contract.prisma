@@ -7,3 +7,64 @@ model Customer {
   createdAt DateTime @default(now())
   updatedAt DateTime
 }
+
+model Lead {
+  id              Int       @id @default(autoincrement())
+  title           String
+  source          String?
+  status          String    @default("NEW")
+  contactName     String?
+  contactEmail    String?
+  contactPhone    String?
+  company         String?
+  notes           String?
+  customerId      Int?
+  customer        Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  convertedDealId Int?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime
+}
+
+model Deal {
+  id                Int       @id @default(autoincrement())
+  title             String
+  value             Float     @default(0)
+  stage             String    @default("PROSPECTING")
+  status            String    @default("OPEN")
+  pipeline          String    @default("Standard Sales Pipeline")
+  expectedCloseDate DateTime?
+  closedAt          DateTime?
+  customerId        Int
+  customer          Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  leadId            Int?
+  lead              Lead?     @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime
+}
+
+model Activity {
+  id          Int       @id @default(autoincrement())
+  type        String
+  subject     String
+  description String?
+  status      String    @default("PENDING")
+  dueDate     DateTime?
+  completedAt DateTime?
+  customerId  Int?
+  customer    Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  leadId      Int?
+  lead        Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  dealId      Int?
+  deal        Deal?     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime
+}
+
+model PipelineStage {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  order       Int      @default(0)
+  probability Float    @default(0.0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+}

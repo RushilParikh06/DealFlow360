@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import postgres from '@prisma/orm-postgres/runtime';
 

@@ -1,114 +1,144 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# DealFlow360 — B1 Sales Core Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+DealFlow360 is a sales pipeline and deal management platform. This repository implements the **B1 – Sales Core** backend module built with NestJS 12, TypeScript, and Prisma 8 ORM for PostgreSQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🚀 B1 – Sales Core Overview
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ npm install
+The **B1 – Sales Core** module handles the complete end-to-end sales lifecycle:
+```
+CUSTOMER
+   ↓
+LEAD / PROSPECT
+   ↓
+OPPORTUNITY / DEAL
+   ↓
+SALES PIPELINE
+   ↓
+DEAL STAGE / STATUS
+   ↓
+ACTIVITY / FOLLOW-UP
+   ↓
+CONVERSION / CLOSURE
 ```
 
-## Compile and run the project
+### Core Features
+- **Customers**: Manage customer profiles, contact info, companies, and relationship history.
+- **Leads**: Capture prospects, track acquisition sources, manage qualification statuses (`NEW`, `CONTACTED`, `QUALIFIED`, `UNQUALIFIED`, `CONVERTED`).
+- **Lead Conversion**: Automatically convert qualified leads into active Opportunities/Deals, creating or associating customers seamlessly.
+- **Deals / Opportunities**: Track deal value, sales pipeline, stage transitions (`PROSPECTING`, `QUALIFICATION`, `PROPOSAL`, `NEGOTIATION`, `CLOSED_WON`, `CLOSED_LOST`), and automatic win/loss closure handling.
+- **Pipeline Stages**: Customizable sales pipeline stages with probability weights and ordering.
+- **Activities & Follow-ups**: Schedule and track sales activities (`CALL`, `EMAIL`, `MEETING`, `NOTE`, `TASK`) linked directly to Customers, Leads, and Deals.
 
+---
+
+## 🏗 Architecture
+
+- **Framework**: [NestJS 12](https://nestjs.com/) (Node.js ESM module architecture)
+- **Data Layer**: [Prisma 8](https://prisma.io/) (`@prisma/orm-postgres`) with contract-first data modeling (`contract.prisma`, `contract.json`, `contract.d.ts`)
+- **Database**: PostgreSQL with strict foreign keys and cascading relations
+- **Validation**: Global `ValidationPipe` with `class-validator` and `class-transformer` DTOs
+- **Temporal Handling**: `temporal-polyfill` for ISO-compliant PostgreSQL `timestamptz` timestamp management
+
+---
+
+## 🗄 Database Entities
+
+| Entity | Primary Key | Key Relations | Notes |
+|---|---|---|---|
+| **Customer** | `id` (Int, Auto) | Linked to Leads, Deals, Activities | Uniqueness on `email` |
+| **Lead** | `id` (Int, Auto) | Optional link to `Customer` (SetNull), `convertedDealId` | Status: `NEW`, `CONTACTED`, `QUALIFIED`, `UNQUALIFIED`, `CONVERTED` |
+| **Deal** | `id` (Int, Auto) | Belongs to `Customer` (Cascade), optional link to `Lead` (SetNull) | Stages: `PROSPECTING` to `CLOSED_WON`/`CLOSED_LOST` |
+| **Activity** | `id` (Int, Auto) | Polymorphic links to `Customer`, `Lead`, or `Deal` (Cascade) | Types: `CALL`, `EMAIL`, `MEETING`, `NOTE`, `TASK` |
+| **PipelineStage** | `id` (Int, Auto) | Standalone pipeline stages | Unique stage `name`, `order`, `probability` |
+
+---
+
+## 📡 REST API Endpoints
+
+### Customers (`/customers`)
+- `GET /customers` — List all customers
+- `GET /customers/:id` — Retrieve a single customer by ID
+- `POST /customers` — Create a customer
+- `PATCH /customers/:id` — Update customer details
+- `DELETE /customers/:id` — Remove a customer
+
+### Leads (`/leads`)
+- `GET /leads?status=...&customerId=...` — Filter and list leads
+- `GET /leads/:id` — Retrieve a single lead by ID
+- `POST /leads` — Create a new lead
+- `PATCH /leads/:id` — Update lead details or status
+- `POST /leads/:id/convert` — Convert qualified lead into a Deal + Customer
+- `DELETE /leads/:id` — Remove a lead
+
+### Deals / Opportunities (`/deals` & `/opportunities`)
+- `GET /deals?stage=...&status=...&customerId=...` — Filter and list deals
+- `GET /deals/:id` — Retrieve deal details
+- `POST /deals` — Create a deal
+- `PATCH /deals/:id` — Update deal details
+- `PATCH /deals/:id/stage` — Advance deal stage (auto-updates `status` and `closedAt`)
+- `DELETE /deals/:id` — Remove a deal
+- *Note*: `/opportunities` is an active alias routing to the same handlers.
+
+### Activities / Follow-ups (`/activities`)
+- `GET /activities?customerId=...&leadId=...&dealId=...&status=...` — Filter and list activities
+- `GET /activities/:id` — Retrieve an activity by ID
+- `POST /activities` — Create an activity linked to a customer/lead/deal
+- `PATCH /activities/:id` — Update activity status or details
+- `DELETE /activities/:id` — Remove an activity
+
+### Pipeline Stages (`/stages`)
+- `GET /stages` — List pipeline stages sorted by `order`
+- `GET /stages/:id` — Retrieve stage by ID
+- `POST /stages` — Create a new stage
+- `PATCH /stages/:id` — Update stage order, name, or probability
+- `DELETE /stages/:id` — Remove a stage
+
+---
+
+## ⚙️ Setup and Configuration
+
+### 1. Configure DATABASE_URL
+Create a `.env` file in the project root:
+```env
+DATABASE_URL="postgresql://postgres:password@localhost:5432/dealflow360"
+PORT=3000
+```
+> *.env is git-ignored to prevent credential exposure.*
+
+### 2. Install Dependencies
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
-
+### 3. Sync Database Contract
 ```bash
-# unit tests
-$ npm run test
+# Emit updated contract types
+npx prisma contract emit
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Apply schema changes to your database
+npx prisma db update
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 4. Run the Backend
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Development mode
+npm run start:dev
+
+# Production build and run
+npm run build
+npm run start:prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Observability
+## 🧪 Testing
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+```bash
+# Run unit tests (73 tests across all modules)
+npm run test
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
-
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Run end-to-end sales workflow tests
+npm run test:e2e
+```
