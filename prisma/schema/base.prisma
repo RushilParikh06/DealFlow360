@@ -1,0 +1,96 @@
+// GROUP OWNED. Datasource, generator and every shared enum.
+// Adding / renaming / removing an enum value needs all four to agree (plan.md section 10).
+// Enum values here are mirrored in packages/contracts/src/enums.ts. Keep them identical.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SALES_REP
+  SALES_MANAGER
+  FINANCE
+  ADMIN
+  CUSTOMER
+}
+
+enum QuotationStatus {
+  DRAFT
+  SUBMITTED
+  AUTO_APPROVED
+  PENDING_MANAGER
+  PENDING_FINANCE
+  APPROVED
+  REJECTED
+  RETURNED
+  CONFIRMED
+  FULFILLING
+  NEGOTIATING
+  COMPLETED
+}
+
+enum LineType {
+  ONE_TIME
+  RECURRING
+}
+
+// ---- B2 owned enums ----
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ApproverRole {
+  SALES_MANAGER
+  FINANCE
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  RETURNED
+  SUPERSEDED
+}
+
+enum ApprovalStepStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  RETURNED
+  SKIPPED
+}
+
+enum ApprovalActionType {
+  APPROVE
+  REJECT
+  RETURN
+}
+
+enum ReservationStatus {
+  RESERVED
+  ALLOCATED
+  SHIPPED
+  RELEASED
+}
+
+enum DealHealthType {
+  STALLED
+  DISCOUNT_ANOMALY
+  DELIVERY_SLIPPAGE
+  LOW_MARGIN
+}
+
+enum DealHealthSeverity {
+  INFO
+  WARN
+  CRITICAL
+}

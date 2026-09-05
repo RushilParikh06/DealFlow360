@@ -1,0 +1,139 @@
+// ############################################################################
+// TEMPORARY STUB - B1 OWNS THIS FILE.
+//
+// B2 cannot evaluate a quotation that does not exist, so this holds the minimum
+// columns the field list in plan.md section 6 already fixes. B1 replaces this
+// file wholesale. B2 must NOT add columns here - ask B1.
+//
+// Announce in chat before running the first migration:
+//   "pushing a stub sales.prisma so intelligence can run, B1 overwrite it"
+//
+// Only ONE file in the whole api reads these tables:
+//   apps/api/src/modules/intelligence/services/quote-reader.service.ts
+// When B1's real schema lands, that adapter is the only thing that changes.
+// ############################################################################
+
+model CustomerTier {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customers Customer[]
+
+  @@map("customer_tiers")
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  tierId    String
+  email     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tier       CustomerTier @relation(fields: [tierId], references: [id])
+  quotations Quotation[]
+
+  @@index([tierId])
+  @@map("customers")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         UserRole
+  customerId   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([role])
+  @@map("users")
+}
+
+model Quotation {
+  id             String          @id @default(cuid())
+  code           String          @unique
+  customerId     String
+  ownerUserId    String
+  status         QuotationStatus @default(DRAFT)
+  currency       String          @db.Char(3)
+  subtotalMinor  Int             @default(0)
+  discountMinor  Int             @default(0)
+  taxMinor       Int             @default(0)
+  totalMinor     Int             @default(0)
+  marginBps      Int             @default(0)
+  validUntil     DateTime?
+  lastActivityAt DateTime        @default(now())
+  portalToken    String?         @unique
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  customer Customer        @relation(fields: [customerId], references: [id])
+  lines    QuotationLine[]
+
+  @@index([status, lastActivityAt])
+  @@index([customerId])
+  @@map("quotations")
+}
+
+model QuotationLine {
+  id             String   @id @default(cuid())
+  quotationId    String
+  productId      String
+  description    String
+  qty            Int
+  unitPriceMinor Int
+  discountBps    Int      @default(0)
+  lineTotalMinor Int
+  /// UNIT cost, not line cost. B2 computes lineCost as costMinor * qty.
+  /// If B1 seeds this as a line total instead, tell B2 - it changes marginBps.
+  costMinor      Int      @default(0)
+  lineType       LineType @default(ONE_TIME)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  quotation Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+
+  @@index([quotationId])
+  @@map("quotation_lines")
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  quotationId String   @unique
+  customerId  String
+  status      String   @default("CONFIRMED")
+  currency    String   @db.Char(3)
+  totalMinor  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lines OrderLine[]
+
+  @@map("orders")
+}
+
+model OrderLine {
+  id             String   @id @default(cuid())
+  orderId        String
+  productId      String
+  description    String
+  qty            Int
+  unitPriceMinor Int
+  discountBps    Int      @default(0)
+  lineTotalMinor Int
+  costMinor      Int      @default(0)
+  lineType       LineType @default(ONE_TIME)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("order_lines")
+}

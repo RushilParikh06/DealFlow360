@@ -1,0 +1,34 @@
+# GROUP OWNED. Changing this needs all four to agree (plan.md section 10).
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dealflow_pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dealflow
+      POSTGRES_PASSWORD: dealflow
+      POSTGRES_DB: dealflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - dealflow_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dealflow -d dealflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: dealflow_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  dealflow_pg_data:
