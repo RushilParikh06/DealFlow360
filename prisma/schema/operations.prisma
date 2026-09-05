@@ -1,0 +1,136 @@
+// B3-owned models (plan.md section 4). Cross-domain relations are stored as
+// plain id fields here, not Prisma relations, until the owning schema
+// (sales.prisma / intelligence.prisma) exists to declare the other side.
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id         String   @id @default(cuid())
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  name       String
+  sku        String   @unique
+  costMinor  Int
+  currency   String   @db.Char(3)
+
+  variants        ProductVariant[]
+  priceListItems  PriceListItem[]
+  inventory       Inventory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductVariant {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  sku       String  @unique
+  attributes Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Ranked upsell/cross-sell pairs, seeded deterministically (README limitations
+/// - no learned ranking yet). Ranking values are read, never computed here;
+/// B2 owns the ranking logic that populates rankScore.
+model ProductRelationship {
+  id              String @id @default(cuid())
+  productId       String
+  relatedProductId String
+  rankScore       Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, relatedProductId])
+}
+
+/// customerTierId is null for the default/general list (plan.md section 4).
+/// The tier id itself is a B1-owned foreign id, stored here as a plain string.
+model PriceList {
+  id             String @id @default(cuid())
+  customerTierId String?
+  name           String
+
+  items PriceListItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PriceListItem {
+  id             String    @id @default(cuid())
+  priceListId    String
+  priceList      PriceList @relation(fields: [priceListId], references: [id])
+  productId      String
+  product        Product   @relation(fields: [productId], references: [id])
+  unitPriceMinor Int
+  currency       String    @db.Char(3)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([priceListId, productId])
+}
+
+/// categoryId null is the default rate applied when no category-specific rule
+/// matches (mirrors discount_policies' null-categoryId convention, B2-owned).
+model TaxRule {
+  id         String   @id @default(cuid())
+  categoryId String?
+  rateBps    Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Warehouse {
+  id                String @id @default(cuid())
+  name              String
+  shippingCostMinor Int
+  currency          String @db.Char(3)
+
+  inventory Inventory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// available is derived (onHand - reserved) and never stored (plan.md section 6).
+model Inventory {
+  id          String    @id @default(cuid())
+  warehouseId String
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id])
+  onHand      Int
+  reserved    Int       @default(0)
+
+  movements InventoryMovement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([warehouseId, productId])
+}
+
+/// Append-only. Stock is never silently decremented (README) - every change to
+/// onHand/reserved is explained by a row here.
+model InventoryMovement {
+  id          String    @id @default(cuid())
+  inventoryId String
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  delta       Int
+  reason      String
+
+  createdAt DateTime @default(now())
+}

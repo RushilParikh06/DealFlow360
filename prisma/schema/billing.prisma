@@ -1,0 +1,103 @@
+// B3-owned models (plan.md section 4). orderId/quotationId are plain ids into
+// B1's sales.prisma models, not Prisma relations, per the cross-domain rule
+// in plan.md section 10 (owning side declares the relation, other side stores the id).
+
+model Fulfillment {
+  id      String @id @default(cuid())
+  orderId String
+  status  String // ORDER_CONFIRMED | INVENTORY_RESERVED | PICKING | PACKED | SHIPPED | DELIVERED | BACKORDERED
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscription {
+  id           String @id @default(cuid())
+  orderId      String
+  status       String // ACTIVE | PAUSED | CANCELLED
+  amountMinor  Int
+  currency     String @db.Char(3)
+  cadenceMonths Int
+
+  schedules BillingSchedule[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BillingSchedule {
+  id             String       @id @default(cuid())
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+  dueAt          DateTime
+  amountMinor    Int
+  currency       String       @db.Char(3)
+  invoiceId      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id           String @id @default(cuid())
+  orderId      String
+  status       String // DRAFT | ISSUED | PARTIALLY_PAID | PAID | VOID | OVERDUE
+  totalMinor   Int
+  paidMinor    Int    @default(0)
+  currency     String @db.Char(3)
+
+  lines    InvoiceLine[]
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InvoiceLine {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  orderLineId String
+  amountMinor Int
+  currency    String  @db.Char(3)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Simulated, not settled through a real gateway (README limitations).
+model Payment {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  amountMinor Int
+  currency    String  @db.Char(3)
+  method      String
+  reference   String
+
+  createdAt DateTime @default(now())
+}
+
+/// quotationId points at B1's quotations table.
+model Negotiation {
+  id           String @id @default(cuid())
+  quotationId  String
+  status       String
+
+  messages NegotiationMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model NegotiationMessage {
+  id                    String      @id @default(cuid())
+  negotiationId         String
+  negotiation           Negotiation @relation(fields: [negotiationId], references: [id])
+  quotationLineId       String?
+  body                  String
+  requestedDiscountBps  Int?
+  requestedDeliveryDate DateTime?
+
+  createdAt DateTime @default(now())
+}
