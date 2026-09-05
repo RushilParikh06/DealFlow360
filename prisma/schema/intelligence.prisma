@@ -1,0 +1,174 @@
+// ============================================================================
+// B2 OWNED - intelligence and governance. Nobody else edits this file.
+// Migrations from this file are named b2_<what>.
+//
+// Deliberate design note: not one relation field points at a table owned by B1
+// or B3. Cross-domain references are plain id columns (plan.md section 10.6:
+// "cross-domain relation fields are declared on the owning side only, the other
+// side stores the id"). That means this file compiles and migrates on its own,
+// so B2 is never blocked waiting for sales.prisma or operations.prisma.
+// ============================================================================
+
+/// The only place a number that gates an approval is allowed to live
+/// (plan.md invariant 9). categoryId null means "the tier default".
+model DiscountPolicy {
+  id                      String   @id @default(cuid())
+  tierId                  String
+  categoryId              String?
+  maxDiscountBps          Int
+  requiresManagerAboveBps Int
+  requiresFinanceAboveBps Int
+  isActive                Boolean  @default(true)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@unique([tierId, categoryId])
+  @@index([tierId, isActive])
+  @@map("discount_policies")
+}
+
+/// Append only. Never updated - the negotiation flow needs the history
+/// (plan.md section 6). inputHash makes POST /quotes/:id/evaluate idempotent:
+/// same inputs re-use the last row instead of writing a duplicate.
+model RiskEvaluation {
+  id                String       @id @default(cuid())
+  quotationId       String
+  inputHash         String
+  riskScore         Int
+  riskLevel         RiskLevel
+  approvalRequired  Boolean
+  requiredApprovals ApproverRole[]
+  weightedExcessBps Int
+  worstLineExcessBps Int
+  marginBps         Int
+  netMinor          Int
+  currency          String       @db.Char(3)
+  violations        Json
+  factors           Json
+  evaluatedByUserId String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  approvalRequests ApprovalRequest[]
+
+  @@index([quotationId, createdAt])
+  @@index([inputHash])
+  @@map("risk_evaluations")
+}
+
+model ApprovalRequest {
+  id               String         @id @default(cuid())
+  quotationId      String
+  riskEvaluationId String
+  status           ApprovalStatus @default(PENDING)
+  currentSequence  Int            @default(1)
+  supersededById   String?
+  closedAt         DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  riskEvaluation RiskEvaluation @relation(fields: [riskEvaluationId], references: [id])
+  steps          ApprovalStep[]
+
+  @@index([quotationId, status])
+  @@index([status, createdAt])
+  @@map("approval_requests")
+}
+
+model ApprovalStep {
+  id                String             @id @default(cuid())
+  approvalRequestId String
+  sequence          Int
+  approverRole      ApproverRole
+  status            ApprovalStepStatus @default(PENDING)
+  decidedByUserId   String?
+  decidedAt         DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  request ApprovalRequest  @relation(fields: [approvalRequestId], references: [id], onDelete: Cascade)
+  actions ApprovalAction[]
+
+  @@unique([approvalRequestId, sequence])
+  @@index([status, approverRole])
+  @@map("approval_steps")
+}
+
+model ApprovalAction {
+  id             String             @id @default(cuid())
+  approvalStepId String
+  actionType     ApprovalActionType
+  actorUserId    String
+  actorRole      UserRole
+  reason         String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  step ApprovalStep @relation(fields: [approvalStepId], references: [id], onDelete: Cascade)
+
+  @@index([approvalStepId, createdAt])
+  @@map("approval_actions")
+}
+
+/// Append only. Written in the SAME transaction as the change it describes
+/// (plan.md invariant 6). AuditService.record() only accepts a transaction
+/// client, so calling it outside a transaction will not compile.
+model AuditLog {
+  id          String   @id @default(cuid())
+  entityType  String
+  entityId    String
+  action      String
+  actorUserId String?
+  actorRole   UserRole?
+  fromValue   String?
+  toValue     String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([entityType, entityId, createdAt])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+/// Stock is never decremented directly (plan.md section 7). A reservation row
+/// is the only way inventory leaves the available pool.
+model InventoryReservation {
+  id            String            @id @default(cuid())
+  orderId       String
+  orderLineId   String?
+  productId     String
+  warehouseId   String
+  qty           Int
+  status        ReservationStatus @default(RESERVED)
+  fulfillmentId String?
+  releasedAt    DateTime?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@index([orderId, status])
+  @@index([productId, warehouseId, status])
+  @@map("inventory_reservations")
+}
+
+/// dedupeKey keeps detection idempotent: re-running the sweep does not pile up
+/// duplicate rows for a condition that is still true.
+model DealHealthEvent {
+  id          String             @id @default(cuid())
+  quotationId String
+  type        DealHealthType
+  severity    DealHealthSeverity
+  dedupeKey   String
+  message     String
+  metadata    Json?
+  detectedAt  DateTime           @default(now())
+  resolvedAt  DateTime?
+  nudgedAt    DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@unique([quotationId, type, dedupeKey])
+  @@index([severity, detectedAt])
+  @@index([quotationId])
+  @@map("deal_health_events")
+}

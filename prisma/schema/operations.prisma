@@ -1,0 +1,90 @@
+// ############################################################################
+// TEMPORARY STUB - B3 OWNS THIS FILE.
+//
+// B2 needs four things from B3 and nothing else:
+//   1. a line's product -> category, to resolve the category discount ceiling
+//   2. product_relationships, to rank upsell candidates
+//   3. warehouses + inventory, to choose an allocation split
+//   4. nothing at all from billing
+// B3 replaces this file wholesale. B2 must NOT add columns here.
+// ############################################################################
+
+model Category {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  sku            String   @unique
+  name           String
+  categoryId     String
+  listPriceMinor Int
+  unitCostMinor  Int
+  currency       String   @db.Char(3)
+  lineType       LineType @default(ONE_TIME)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  category  Category    @relation(fields: [categoryId], references: [id])
+  inventory Inventory[]
+
+  @@index([categoryId])
+  @@map("products")
+}
+
+model ProductRelationship {
+  id              String   @id @default(cuid())
+  sourceProductId String
+  targetProductId String
+  kind            String   @default("UPSELL")
+  /// Seeded co-purchase rate in basis points. B2 ranks on this, B3 supplies it.
+  attachRateBps   Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([sourceProductId, targetProductId, kind])
+  @@index([sourceProductId])
+  @@map("product_relationships")
+}
+
+model Warehouse {
+  id       String @id @default(cuid())
+  code     String @unique
+  name     String
+  /// Flat cost of dispatching one shipment from this warehouse, minor units.
+  /// B2's allocation tie-breaks on it so a two-shipment split is never chosen
+  /// when one shipment covers the demand.
+  shipmentCostMinor Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  inventory Inventory[]
+
+  @@map("warehouses")
+}
+
+model Inventory {
+  id          String   @id @default(cuid())
+  warehouseId String
+  productId   String
+  onHand      Int      @default(0)
+  reserved    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // available = onHand - reserved, derived, never stored (plan.md section 6)
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id])
+  product   Product   @relation(fields: [productId], references: [id])
+
+  @@unique([warehouseId, productId])
+  @@map("inventory")
+}

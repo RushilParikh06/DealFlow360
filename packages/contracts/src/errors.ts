@@ -1,0 +1,54 @@
+// GROUP OWNED BY PROTOCOL. plan.md section 8.
+// Adding a code is routine. Renaming one is a group decision.
+
+export const ErrorCode = {
+  VALIDATION_FAILED: 'VALIDATION_FAILED',
+  UNAUTHENTICATED: 'UNAUTHENTICATED',
+  FORBIDDEN: 'FORBIDDEN',
+  PORTAL_SCOPE_VIOLATION: 'PORTAL_SCOPE_VIOLATION',
+  NOT_FOUND: 'NOT_FOUND',
+  QUOTE_INVALID_STATE: 'QUOTE_INVALID_STATE',
+  DISCOUNT_LIMIT_EXCEEDED: 'DISCOUNT_LIMIT_EXCEEDED',
+  APPROVAL_STEP_NOT_YOURS: 'APPROVAL_STEP_NOT_YOURS',
+  INSUFFICIENT_STOCK: 'INSUFFICIENT_STOCK',
+  INVOICE_BEFORE_SHIPMENT: 'INVOICE_BEFORE_SHIPMENT',
+  SUBSCRIPTION_INVALID_STATE: 'SUBSCRIPTION_INVALID_STATE',
+
+  // added by B2, routine additions
+  POLICY_NOT_CONFIGURED: 'POLICY_NOT_CONFIGURED',
+  APPROVAL_ALREADY_CLOSED: 'APPROVAL_ALREADY_CLOSED',
+} as const;
+export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
+
+export const ERROR_HTTP_STATUS: Record<ErrorCode, number> = {
+  VALIDATION_FAILED: 400,
+  UNAUTHENTICATED: 401,
+  FORBIDDEN: 403,
+  PORTAL_SCOPE_VIOLATION: 403,
+  NOT_FOUND: 404,
+  QUOTE_INVALID_STATE: 409,
+  DISCOUNT_LIMIT_EXCEEDED: 409,
+  APPROVAL_STEP_NOT_YOURS: 409,
+  INSUFFICIENT_STOCK: 409,
+  INVOICE_BEFORE_SHIPMENT: 409,
+  SUBSCRIPTION_INVALID_STATE: 409,
+  POLICY_NOT_CONFIGURED: 409,
+  APPROVAL_ALREADY_CLOSED: 409,
+};
+
+export interface ApiErrorBody {
+  success: false;
+  error: { code: ErrorCode; message: string; details?: Record<string, unknown> };
+}
+
+export interface ApiSuccessBody<T> {
+  success: true;
+  data: T;
+}
+
+export interface Paginated<T> {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+}
