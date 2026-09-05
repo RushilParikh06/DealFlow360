@@ -19,7 +19,7 @@
     "generate": "prisma generate",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm --filter @dealflow/contracts build && pnpm --filter @dealflow/api test && pnpm test:smoke",
-    "test:smoke": "node tests/smoke.mjs && node tests/dom.test.mjs",
+    "test:smoke": "node tests/smoke.mjs && node tests/dom.test.mjs && node tests/ui.test.mjs",
     "lint": "pnpm -r lint"
   },
   "devDependencies": {

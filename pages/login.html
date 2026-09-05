@@ -65,7 +65,7 @@
               <!-- Internal Staff Workspace Option -->
               <button
                 class="text-left w-full p-space-sm bg-surface-bright border border-outline shadow-sm"
-                id="role-internal" onclick="selectRole('internal')" type="button">
+                id="role-internal" aria-pressed="true" onclick="selectRole('internal')" type="button">
                 <div class="flex items-center justify-between">
                   <span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-[16px] text-primary">corporate_fare</span>
@@ -79,7 +79,7 @@
               <!-- Customer Portal Access Option -->
               <button
                 class="text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-colors"
-                id="role-customer" onclick="selectRole('customer')" type="button">
+                id="role-customer" aria-pressed="false" onclick="selectRole('customer')" type="button">
                 <div class="flex items-center justify-between">
                   <span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
@@ -100,13 +100,13 @@
             <div class="flex border-b border-outline mb-space-md">
               <button
                 class="font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface-bright border-t-[2px] border-l-[2px] border-r-[2px] border-outline -mb-[1px] font-bold text-primary flex items-center gap-1.5"
-                id="tab-signin" onclick="switchAuthTab('signin')" type="button">
+                id="tab-signin" aria-pressed="true" onclick="switchAuthTab('signin')" type="button">
                 <span class="material-symbols-outlined text-[16px]">login</span>
                 Sign In
               </button>
               <button
                 class="font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface text-secondary hover:text-on-surface transition-colors border-b border-outline"
-                id="tab-signup" onclick="switchAuthTab('signup')" type="button">
+                id="tab-signup" aria-pressed="false" onclick="switchAuthTab('signup')" type="button">
                 Sign Up
               </button>
             </div>
@@ -149,14 +149,14 @@
                 <div class="flex items-center justify-between">
                   <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface"
                     for="password-input">Password</label>
-                  <a class="font-label-sm text-label-sm text-primary hover:underline" href="#">Forgot Password?</a>
+                  <a data-unavailable="Password recovery is not available yet. Contact your workspace administrator." aria-disabled="true" class="font-label-sm text-label-sm text-primary hover:underline" href="#">Forgot Password?</a>
                 </div>
                 <div class="relative flex items-center">
                   <input
                     class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-mono-metric text-mono-metric text-on-surface focus:outline-none focus:border-primary focus:shadow-sm pr-10"
                     id="password-input" required="" type="password" autocomplete="current-password"
                     placeholder="dealflow123" value="" />
-                  <button aria-label="Toggle password visibility"
+                  <button aria-label="Show password" aria-pressed="false"
                     class="absolute right-2.5 text-on-surface-variant hover:text-on-surface focus:outline-none"
                     onclick="togglePasswordVisibility()" type="button">
                     <span class="material-symbols-outlined text-[18px]" id="eye-icon">visibility</span>
@@ -170,16 +170,6 @@
                 <span class="text-on-surface">dealflow123</span><br />
                 manager@dealflow.test &middot; rep@dealflow.test &middot; ops@dealflow.test &middot;
                 finance@dealflow.test
-              </div>
-              <!-- Remember Me Checkbox -->
-              <div class="flex items-center justify-between pt-space-xxs">
-                <label class="flex items-center gap-space-xs cursor-pointer select-none">
-                  <input checked=""
-                    class="w-4 h-4 rounded-none border border-outline text-primary accent-primary cursor-pointer focus:ring-0"
-                    type="checkbox" />
-                  <span class="font-body-sm text-body-sm text-on-surface">Remember workspace on this trusted
-                    device</span>
-                </label>
               </div>
               <!-- Primary CTA Action -->
               <button
@@ -196,6 +186,9 @@
         function togglePasswordVisibility() {
           const input = document.getElementById('password-input');
           const icon = document.getElementById('eye-icon');
+          const button = icon.closest('button');
+          button.setAttribute('aria-label', input.type === 'password' ? 'Hide password' : 'Show password');
+          button.setAttribute('aria-pressed', String(input.type === 'password'));
           if (input.type === 'password') {
             input.type = 'text';
             icon.innerText = 'visibility_off';
@@ -210,6 +203,9 @@
           const customerCard = document.getElementById('role-customer');
           const badgeInternal = document.getElementById('badge-internal');
           const badgeCustomer = document.getElementById('badge-customer');
+          internalCard.setAttribute('aria-pressed', String(role === 'internal'));
+          customerCard.setAttribute('aria-pressed', String(role === 'customer'));
+          badgeCustomer.textContent = 'ACTIVE';
 
           if (role === 'internal') {
             internalCard.className = "text-left w-full p-space-sm bg-surface-bright border border-outline shadow-sm";
@@ -228,6 +224,9 @@
           const signinBtn = document.getElementById('tab-signin');
           const signupBtn = document.getElementById('tab-signup');
           const submitBtn = document.getElementById('submit-btn');
+          signinBtn.setAttribute('aria-pressed', String(tab === 'signin'));
+          signupBtn.setAttribute('aria-pressed', String(tab === 'signup'));
+          document.getElementById('password-input').autocomplete = tab === 'signup' ? 'new-password' : 'current-password';
 
           if (tab === 'signin') {
             signinBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface-bright border-t-[2px] border-l-[2px] border-r-[2px] border-outline -mb-[1px] font-bold text-primary flex items-center gap-1.5";

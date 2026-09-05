@@ -1,0 +1,897 @@
+
+PAGE approval-detail.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+MAIN w-full pt-16 bg-surface flex-1
+BUTTON px-space-md py-2 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all flex items-center gap-space-xxs
+DIV w-full px-margin-desktop pb-space-2xl grid grid-cols-1 xl:grid-cols-12 gap-space-lg
+DIV grid grid-cols-1 md:grid-cols-3 gap-space-xs relative
+TEXTAREA w-full bg-surface-container-lowest border-2 border-outline p-space-xs font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3]
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications4 
+BUTTON#btn-return Return for Revision 
+BUTTON#btn-reject Reject Concession 
+BUTTON#btn-approve verified_user Approve & Route to Finance 
+TEXTAREA#review-notes Enter specific business rationale for approving or returning this exception... 
+BUTTON# + Strategic Account Expansion 
+BUTTON# + High-Margin Hardware Offset 
+BUTTON# + Competitive Defense 
+SCRIPTS 
+  (function() {
+    const chips = document.querySelectorAll('.reason-chip');
+    const textarea = document.getElementById('review-notes');
+    const approveBtn = document.getElementById('btn-approve');
+    const rejectBtn = document.getElementById('btn-reject');
+    const returnBtn = document.getElementById('btn-return');
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', function() {
+        const tag = this.getAttribute('data-tag');
+        if (!textarea.value.includes(tag)) {
+          textarea.value = textarea.value ? (textarea.value.trim() + ' | ' + tag) : tag;
+        }
+        this.classList.toggle('bg-primary');
+        this.classList.toggle('text-on-primary');
+      });
+    });
+
+    if (approveBtn) {
+      approveBtn.addEventListener('click', function() {
+        if (!textarea.value.trim()) {
+          textarea.focus();
+          textarea.classList.add('border-error');
+          alert('Governance Policy: Review notes are required before routing to Finance.');
+          return;
+        }
+        this.disabled = true;
+        this.innerHTML = '<span class="material-symbols-outlined text-[18px]">sync</span> Routing...';
+        setTimeout(() => {
+          this.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> Routed to Stage 3';
+          this.classList.remove('bg-primary');
+          this.classList.add('bg-surface-container-high', 'text-on-surface');
+        }, 600);
+      });
+    }
+
+    if (rejectBtn) {
+      rejectBtn.addEventListener('click', function() {
+        if (!textarea.value.trim()) {
+          textarea.focus();
+          textarea.classList.add('border-error');
+          alert('Governance Policy: State specific reason for rejection.');
+          return;
+        }
+        confirm('Confirm rejection of Concession Q-1042? This will freeze the quote.');
+      });
+    }
+
+    if (returnBtn) {
+      returnBtn.addEventListener('click', function() {
+        if (!textarea.value.trim()) {
+          textarea.focus();
+          textarea.classList.add('border-error');
+          alert('Please supply revision comments for sales rep M. Shah.');
+          return;
+        }
+        alert('Returned to Rep (M. Shah) with revision instructions.');
+      });
+    }
+  })();
+
+
+PAGE approvals.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+MAIN w-full pt-16 bg-surface flex-1
+SECTION flex flex-col md:flex-row md:items-end justify-between gap-space-md
+DIV flex flex-wrap items-center gap-space-xs flex-1 min-w-[280px]
+TABLE w-full text-left border-collapse min-w-[1080px]
+SPAN font-body-sm text-body-sm text-on-surface-variant truncate max-w-[170px]
+SPAN bg-tertiary-fixed text-on-tertiary-fixed px-1.5 py-0.5 font-mono-metric-sm text-mono-metric-sm font-bold uppercase tracking-wider
+DIV flex flex-col max-w-[220px]
+DIV inline-flex items-center gap-space-xxs bg-tertiary-fixed-dim text-on-tertiary-fixed-variant px-space-xs py-1 font-mono-metric-sm text-mono-metric-sm font-bold leading-tight
+BUTTON bg-primary text-on-primary font-label-md text-label-md px-space-sm py-1.5 shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all whitespace-nowrap
+SPAN font-body-sm text-body-sm text-on-surface-variant truncate max-w-[170px]
+DIV flex flex-col max-w-[220px]
+BUTTON bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md px-space-sm py-1.5 shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all whitespace-nowrap
+SPAN font-body-sm text-body-sm text-on-surface-variant truncate max-w-[170px]
+DIV flex flex-col max-w-[220px]
+BUTTON bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md px-space-sm py-1.5 shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all whitespace-nowrap
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications4 
+INPUT#togglePending  
+BUTTON# file_download Export Audit Log 
+INPUT# Search quote ID, account, reviewer... 
+SELECT# Status: Pending Review Status: All Queue Status: Escalated Status: Returned 
+SELECT# Role: All Assigned Role: Sales Ops Role: Finance Dir Role: Legal Counsel 
+SELECT# Tier: All Tiers Tier: Enterprise Gold Tier: Silver Tier Tier: Bronze Tier 
+SELECT# Cycle: Q1-2025 Active Cycle: Current Fiscal 
+BUTTON# refresh 
+BUTTON# density_medium 
+INPUT#  
+INPUT#  
+BUTTON# Review & Sign-off 
+INPUT#  
+BUTTON# Review & Sign-off 
+INPUT#  
+BUTTON# Review & Sign-off 
+BUTTON# Prev 
+BUTTON# 1 
+BUTTON# Next 
+SCRIPTS 
+
+PAGE customer-quotation.html
+LAYOUT MAIN w-full bg-surface flex-1
+BUTTON bg-[#2457D6] hover:opacity-90 text-white border-[1.5px] border-[#1D2430] shadow-[2px_2px_0px_#1D2430] px-space-md py-2 font-label-md text-label-md flex items-center gap-space-xxs transition-all
+DIV grid grid-cols-2 md:grid-cols-4 gap-space-xs
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+DIV hidden fixed inset-0 z-50 bg-[#1D2430]/60 flex items-center justify-center p-space-md
+BUTTON bg-[#2457D6] hover:opacity-90 text-white border-[1.5px] border-[#1D2430] shadow-[2px_2px_0px_#1D2430] px-space-lg py-2 font-label-md text-label-md flex items-center gap-space-xxs transition-all
+DIV fixed bottom-6 right-6 hidden z-50 bg-[#FFFCF5] border-2 border-[#1D2430] shadow-sm p-space-md flex items-center gap-space-sm max-w-md
+CONTROLS BUTTON#downloadPdfBtn picture_as_pdf Download PDF 
+BUTTON#counterOfferTrigger edit_note Submit Counter-Offer 
+BUTTON#signQuotationBtn verified Accept & Sign Quotation 
+INPUT#rescheduleCheck  
+TEXTAREA#concessionInput Enter proposed revision (e.g. Confirm 15% warranty discount and we will sign within 24 hours)... 
+BUTTON#sendNoteBtn send Send Note to Deal Desk 
+BUTTON#closeModalBtn close 
+INPUT#signerNameInput  
+BUTTON#cancelSignBtn Cancel 
+BUTTON#confirmSignBtn done_all Affix Signature & Finalize 
+SCRIPTS 
+    (function () {
+      const sendBtn = document.getElementById('sendNoteBtn');
+      const concessionInput = document.getElementById('concessionInput');
+      const dynamicMessages = document.getElementById('dynamicMessages');
+      const counterOfferTrigger = document.getElementById('counterOfferTrigger');
+      const signQuotationBtn = document.getElementById('signQuotationBtn');
+      const signModal = document.getElementById('signModal');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const cancelSignBtn = document.getElementById('cancelSignBtn');
+      const confirmSignBtn = document.getElementById('confirmSignBtn');
+      const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+      const toast = document.getElementById('toastNotification');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastMsg = document.getElementById('toastMessage');
+
+      function showToast(title, message) {
+        if (!toast) return;
+        toastTitle.textContent = title;
+        toastMsg.textContent = message;
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 4000);
+      }
+
+      // Send Note to Deal Desk
+      if (sendBtn && concessionInput && dynamicMessages) {
+        sendBtn.addEventListener('click', function () {
+          const text = concessionInput.value.trim();
+          if (!text) {
+            concessionInput.focus();
+            return;
+          }
+
+          const msgNode = document.createElement('div');
+          msgNode.className = 'flex flex-col items-end animate-fadeIn';
+          msgNode.innerHTML = `
+            <div class="flex items-center gap-space-xs mb-1 font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">
+              <span class="font-bold text-[#1D2430]">Alex Vance (Acme Procurement)</span>
+              <span>•</span>
+              <span>Just now</span>
+            </div>
+            <div class="bg-[#E0E7FA] border-[1.5px] border-[#1D2430] p-space-sm max-w-xl text-[#1D2430] font-body-md text-body-md shadow-sm">
+              ${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+            </div>
+          `;
+          dynamicMessages.appendChild(msgNode);
+          concessionInput.value = '';
+          showToast('Counter-Offer Transmitted', 'Your proposal was logged and assigned to Deal Desk officer M. Shah.');
+        });
+      }
+
+      // Quick-jump to composer when clicking 'Submit Counter-Offer'
+      if (counterOfferTrigger) {
+        counterOfferTrigger.addEventListener('click', function () {
+          const noteInput = document.getElementById('concessionInput');
+          if (noteInput) {
+            noteInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            noteInput.focus();
+            noteInput.placeholder = 'State your target discount or terms modification here...';
+          }
+        });
+      }
+
+      // Signature Modal Controls
+      if (signQuotationBtn && signModal) {
+        signQuotationBtn.addEventListener('click', function () {
+          signModal.classList.remove('hidden');
+        });
+      }
+
+      function closeModal() {
+        if (signModal) signModal.classList.add('hidden');
+      }
+
+      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+      if (cancelSignBtn) cancelSignBtn.addEventListener('click', closeModal);
+
+      if (confirmSignBtn) {
+        confirmSignBtn.addEventListener('click', function () {
+          closeModal();
+          showToast('Agreement Executed', 'Quotation Q-1042 has been legally countersigned. PDF confirmation sent to a.vance@acmecorp.com.');
+          if (signQuotationBtn) {
+            signQuotationBtn.textContent = 'Quotation Accepted & Signed';
+            signQuotationBtn.classList.remove('bg-[#2457D6]', 'hover:opacity-90');
+            signQuotationBtn.classList.add('bg-[#1D2430]', 'cursor-default');
+            signQuotationBtn.disabled = true;
+          }
+        });
+      }
+
+      // Download PDF stub
+      if (downloadPdfBtn) {
+        downloadPdfBtn.addEventListener('click', function () {
+          showToast('Generating Document', 'Preparing formal PDF quotation package for Q-1042...');
+        });
+      }
+    })();
+  
+
+PAGE dashboard.html
+LAYOUT HEADER fixed top-0 left-0 right-0 z-50 bg-surface-bright border-b-[1.5px] border-outline
+MAIN pt-14 min-h-screen bg-surface w-full px-4 sm:px-6 lg:px-8 py-space-md
+DIV flex flex-col w-full max-w-[1680px] mx-auto
+BUTTON flex items-center gap-space-xs px-space-md py-1.5 bg-cobalt-active text-white border-[2px] border-outline rounded-lg text-label-md font-label-md shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all cursor-pointer
+SECTION grid grid-cols-1 md:grid-cols-3 gap-space-md mb-space-lg
+DIV grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start
+SPAN font-label-sm text-label-sm bg-secondary-container text-on-secondary-fixed-variant border border-outline px-1.5 py-0.2 rounded font-semibold
+CONTROLS BUTTON# Notifications 
+BUTTON#dateFilterBtn calendar_today Last 30 Days expand_more 
+BUTTON# add New Quotation 
+BUTTON# Verify Line Items 
+BUTTON# Review Counter 
+BUTTON# Approve Route 
+SCRIPTS 
+    document.addEventListener('DOMContentLoaded', () => {
+      const dateBtn = document.getElementById('dateFilterBtn');
+      if (dateBtn) {
+        const ranges = ['Last 7 Days', 'Last 30 Days', 'Quarter to Date', 'FY 2024-25'];
+        let idx = 1;
+        dateBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          idx = (idx + 1) % ranges.length;
+          dateBtn.querySelector('span:nth-child(2)').textContent = ranges[idx];
+        });
+      }
+    });
+  
+
+PAGE deal-health.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+MAIN w-full pt-16 bg-surface flex-1
+BUTTON px-space-md py-2 bg-primary text-on-primary font-label-md text-label-md border-2 border-outline shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all flex items-center gap-space-xs
+DIV w-full bg-surface-container-lowest border-2 border-outline grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 divide-y-2 md:divide-y-0 md:divide-x-2 divide-outline
+SPAN px-1.5 py-0.5 bg-tertiary-fixed text-tertiary border border-outline font-mono-metric-sm text-[11px] font-bold
+DIV flex items-center bg-surface-container-lowest border-2 border-outline px-space-xs py-1 min-w-[240px]
+BUTTON px-space-xs py-1 bg-primary text-on-primary font-label-sm text-label-sm border border-outline shadow-[2px_2px_0px_#1D2430] hover:opacity-90
+DIV w-5 h-5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-mono-metric-sm text-[10px] flex items-center justify-center font-bold border border-outline
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications4 
+BUTTON# download Export Exception Log 
+BUTTON# policy Global Governance Rules 
+INPUT# Filter quote ID, client, or rep... 
+SELECT# All Exceptions Idleness / Stalled Discount Anomaly Fulfillment Block Margin Compression 
+SELECT# All Levels Urgent Only Action Required Warnings Notice 
+SELECT# All Commercial Reps M. Vance M. Shah R. Iyer S. Chen 
+BUTTON# Nudge Rep 
+BUTTON# Escalate to VP 
+BUTTON# Review Concession 
+BUTTON# Audit Trail 
+BUTTON# Reallocate Depot 
+BUTTON# Nudge Operations 
+BUTTON# Suggest Cross-Sell 
+BUTTON# Prev 
+BUTTON# Next 
+SCRIPTS 
+    (function() {
+      const navLinks = document.querySelectorAll('header nav a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('data-path') === 'deal-health') {
+          link.className = 'px-space-xs py-1 bg-primary text-on-primary border-2 border-outline shadow-sm font-label-md';
+        } else {
+          link.className = 'px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all';
+        }
+      });
+    })();
+  
+
+PAGE fulfillment.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+MAIN w-full pt-16 bg-surface flex-1
+BUTTON px-space-md py-space-xs bg-primary text-on-primary border-2 border-outline font-label-md text-label-md tracking-wider uppercase shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+DIV grid grid-cols-1 md:grid-cols-2 gap-space-md my-space-lg
+SECTION flex flex-col gap-space-sm mb-space-2xl mt-space-xl
+SECTION flex flex-col gap-space-sm pb-space-2xl
+SPAN inline-flex items-center gap-1 px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed border border-outline font-mono-metric-sm text-mono-metric-sm uppercase font-bold
+BUTTON review-split-btn px-space-md py-1.5 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md uppercase tracking-wider shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+SPAN inline-flex items-center gap-1 px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed border border-outline font-mono-metric-sm text-mono-metric-sm uppercase font-bold
+DIV fixed inset-0 bg-outline/60 z-50 hidden flex justify-end transition-opacity
+BUTTON px-space-md py-space-xs bg-primary text-on-primary border-2 border-outline font-label-md text-label-md uppercase tracking-wider shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+DIV fixed inset-0 bg-outline/60 z-50 hidden flex items-center justify-center p-4
+DIV grid grid-cols-2 gap-space-sm
+BUTTON px-space-md py-1 border-2 border-outline bg-primary text-on-primary uppercase font-label-md shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications 4 
+BUTTON#openThresholdModal tune Reorder Thresholds 
+BUTTON#openTransferModal move_up Stock Transfer 
+INPUT#skuSearchInput Search SKU or Product... 
+SELECT#depotFilterSelect All Depots Main Warehouse East Depot Central Staging 
+SELECT#categoryFilterSelect All Categories Hardware (HW) Services / Kits (SV) 
+BUTTON#exportLedgerBtn file_download Export Ledger 
+BUTTON# All (4) 
+BUTTON# Split Required (2) 
+BUTTON# Backordered (1) 
+BUTTON# Ready to Ship (1) 
+BUTTON# Review Split 
+BUTTON# View Allocation 
+BUTTON# Dispatch 
+BUTTON# Review Split 
+BUTTON#closeDrawerBtn close 
+BUTTON#cancelDrawerBtn Cancel 
+BUTTON#approveSplitBtn Approve & Generate Slips 
+BUTTON#closeTransferModal close 
+SELECT# HW-LP14 - Laptop Pro 14 (Main: 40, East: 10) HW-DCK-02 - Thunderbolt Docking Station (Main: 65, East 
+SELECT# Main Warehouse East Depot 
+SELECT# East Depot Main Warehouse 
+INPUT#  
+BUTTON#cancelTransferModal Cancel 
+BUTTON#submitTransferModal Initiate Transit 
+SCRIPTS 
+        document.addEventListener('DOMContentLoaded', () => {
+          // 1. Table Filter: SKU & Depot Logic
+          const skuInput = document.getElementById('skuSearchInput');
+          const depotSelect = document.getElementById('depotFilterSelect');
+          const categorySelect = document.getElementById('categoryFilterSelect');
+          const rows = document.querySelectorAll('.item-row');
+
+          function filterLedger() {
+            const query = skuInput.value.toLowerCase();
+            const selectedDepot = depotSelect.value;
+            const selectedCat = categorySelect.value;
+
+            rows.forEach(row => {
+              const rowDepot = row.getAttribute('data-depot');
+              const rowSku = row.getAttribute('data-sku');
+              const text = row.innerText.toLowerCase();
+
+              const matchesSearch = !query || text.includes(query);
+              const matchesDepot = selectedDepot === 'ALL' || rowDepot === selectedDepot;
+              const matchesCat = selectedCat === 'ALL' || rowSku.startsWith(selectedCat);
+
+              if (matchesSearch && matchesDepot && matchesCat) {
+                row.style.display = '';
+              } else {
+                row.style.display = 'none';
+              }
+            });
+          }
+
+          skuInput.addEventListener('input', filterLedger);
+          depotSelect.addEventListener('change', filterLedger);
+          categorySelect.addEventListener('change', filterLedger);
+
+          // 2. Orders Queue Tab Filtering
+          const orderTabs = document.querySelectorAll('.order-tab');
+          const orderItems = document.querySelectorAll('.order-item');
+
+          orderTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+              orderTabs.forEach(t => {
+                t.className = 'order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all';
+              });
+              tab.className = 'order-tab px-space-md py-1.5 border-2 border-outline bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider shadow-sm font-bold text-primary';
+
+              const tabType = tab.getAttribute('data-tab');
+              orderItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                if (tabType === 'all' || tabType === category) {
+                  item.style.display = '';
+                } else {
+                  item.style.display = 'none';
+                }
+              });
+            });
+          });
+
+          // 3. Slide-over Split Review Drawer
+          const drawer = document.getElementById('splitDrawerBackdrop');
+          const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+          const cancelDrawerBtn = document.getElementById('cancelDrawerBtn');
+          const approveSplitBtn = document.getElementById('approveSplitBtn');
+          const reviewButtons = document.querySelectorAll('.review-split-btn');
+
+          function openDrawer() {
+            drawer.classList.remove('hidden');
+          }
+
+          function closeDrawer() {
+            drawer.classList.add('hidden');
+          }
+
+          reviewButtons.forEach(btn => btn.addEventListener('click', openDrawer));
+          closeDrawerBtn.addEventListener('click', closeDrawer);
+          cancelDrawerBtn.addEventListener('click', closeDrawer);
+          drawer.addEventListener('click', (e) => {
+            if (e.target === drawer) closeDrawer();
+          });
+
+          approveSplitBtn.addEventListener('click', () => {
+            console.log('Split Consignments Approved. Dispatch slips and warehouse picklists dispatched to Main Hub and East Depot.');
+            closeDrawer();
+          });
+
+          // 4. Stock Transfer Modal
+          const transferModal = document.getElementById('transferModal');
+          const openTransferModal = document.getElementById('openTransferModal');
+          const closeTransferModal = document.getElementById('closeTransferModal');
+          const cancelTransferModal = document.getElementById('cancelTransferModal');
+          const submitTransferModal = document.getElementById('submitTransferModal');
+
+          openTransferModal.addEventListener('click', () => transferModal.classList.remove('hidden'));
+          closeTransferModal.addEventListener('click', () => transferModal.classList.add('hidden'));
+          cancelTransferModal.addEventListener('click', () => transferModal.classList.add('hidden'));
+          submitTransferModal.addEventListener('click', () => {
+            console.log('Inter-depot transfer manifest registered. 10 Units staged for transit.');
+            transferModal.classList.add('hidden');
+          });
+
+          // 5. Reorder Threshold Placeholder
+          document.getElementById('openThresholdModal').addEventListener('click', () => {
+            console.log('Reorder thresholds configuration opened: Low stock triggers set to 15% depot safety buffer.');
+          });
+
+          // 6. Export Ledger Trigger
+          document.getElementById('exportLedgerBtn').addEventListener('click', () => {
+            console.log('CSV Export Generated: "DealFlow360_Inventory_Ledger_Live.csv"');
+          });
+        });
+      
+
+PAGE invoice-detail.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+A px-space-xs py-1 transition-all bg-primary text-on-primary border-2 border-outline shadow-[2px_2px_0px_#1D2430] font-label-md
+MAIN w-full pt-16 bg-surface flex-1
+SECTION w-full bg-surface-container-lowest border-b-2 border-outline px-margin-desktop py-space-sm
+DIV max-w-[1440px] mx-auto flex flex-col gap-space-xs
+BUTTON px-space-md py-1.5 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all flex items-center gap-1.5
+DIV grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 border-t border-outline-variant font-mono-metric-sm text-mono-metric-sm
+DIV w-full px-margin-desktop py-space-md max-w-[1440px] mx-auto flex flex-col gap-space-md
+DIV w-full bg-[#FFFCF5] border-2 border-outline shadow-sm grid grid-cols-1 md:grid-cols-4 divide-y-2 md:divide-y-0 md:divide-x-2 divide-outline
+DIV grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start
+DIV grid grid-cols-1 sm:grid-cols-2 gap-2
+BUTTON w-full py-2.5 mt-1 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md font-bold shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all flex items-center justify-center gap-2
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications 4 
+BUTTON#btn-reminder forward_to_inbox Send Reminder 
+BUTTON#btn-download file_download Download PDF 
+BUTTON#btn-jump-record payments Record Payment 
+INPUT#payment-amount  
+SELECT#settlement-method NEFT / RTGS UPI Wire Transfer ACH Cheque 
+INPUT#ref-utr  
+INPUT#settle-date  
+TEXTAREA#allocation-memo  
+BUTTON#btn-submit-payment lock_clock Confirm Payment 
+SCRIPTS 
+    (function initInvoicePage() {
+      const amountInput = document.getElementById('payment-amount');
+      const auditBox = document.getElementById('payment-audit-box');
+      const submitBtn = document.getElementById('btn-submit-payment');
+      const jumpBtn = document.getElementById('btn-jump-record');
+
+      if (jumpBtn) {
+        jumpBtn.addEventListener('click', () => {
+          const panel = document.getElementById('payment-panel');
+          if (panel) {
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            amountInput.focus();
+          }
+        });
+      }
+
+      window.handlePostPayment = function() {
+        const val = amountInput.value.trim();
+        const utr = document.getElementById('ref-utr').value;
+        const channel = document.getElementById('settlement-method').value;
+
+        if (!val || parseFloat(val.replace(/,/g, '')) <= 0) {
+          alert("Please specify a valid payment amount.");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <span>Recording...</span>
+        `;
+
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `
+            <span class="material-symbols-outlined text-body-md text-white">check_circle</span>
+            <span>Recorded</span>
+          `;
+          submitBtn.classList.remove('bg-primary');
+          submitBtn.classList.add('bg-[#16A34A]');
+
+          if (auditBox) {
+            auditBox.className = "p-2.5 bg-[#F0FDF4] border border-[#86EFAC] font-mono-metric-sm text-mono-metric-sm text-[#14532D] flex flex-col gap-1";
+            auditBox.innerHTML = `
+              <div class="flex items-center justify-between font-bold">
+                <span class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-body-sm text-[#16A34A]">verified</span>
+                  ₹${val} Cleared
+                </span>
+              </div>
+              <div class="text-[11px] text-[#166534]">
+                Ref: ${utr}
+              </div>
+            `;
+          }
+        }, 850);
+      };
+
+      const reminderBtn = document.getElementById('btn-reminder');
+      if (reminderBtn) {
+        reminderBtn.addEventListener('click', () => {
+          const orig = reminderBtn.innerHTML;
+          reminderBtn.innerHTML = `<span class="material-symbols-outlined text-body-md text-[#16A34A]">check</span><span>Sent</span>`;
+          setTimeout(() => { reminderBtn.innerHTML = orig; }, 2500);
+        });
+      }
+
+      const downloadBtn = document.getElementById('btn-download');
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+          const orig = downloadBtn.innerHTML;
+          downloadBtn.innerHTML = `<span>Exporting...</span>`;
+          setTimeout(() => { downloadBtn.innerHTML = orig; }, 2000);
+        });
+      }
+    })();
+  
+
+PAGE invoices.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+A px-space-xs py-1 transition-all bg-primary text-on-primary border-2 border-outline shadow-[2px_2px_0px_#1D2430] font-label-md
+MAIN w-full pt-16 bg-surface flex-1
+SECTION w-full px-margin-desktop py-space-md border-b-2 border-outline bg-surface-container-low
+BUTTON flex items-center gap-space-xxs bg-primary text-on-primary px-space-md py-2 border-2 border-outline font-label-md text-label-md shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+SECTION w-full px-margin-desktop py-space-md bg-surface
+DIV grid grid-cols-1 md:grid-cols-3 gap-space-md
+SECTION w-full px-margin-desktop pb-space-2xl
+DIV flex items-center bg-surface-container-lowest border-2 border-outline px-space-xs py-1.5 min-w-[280px] flex-1 md:flex-initial
+BUTTON bg-primary text-on-primary border-2 border-outline px-space-sm py-1 font-label-md text-label-md font-medium shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+SPAN inline-flex items-center gap-1 bg-secondary-container text-on-secondary-fixed border border-outline px-2 py-0.5 font-label-sm text-label-sm font-semibold
+BUTTON bg-primary text-on-primary border-2 border-outline px-space-sm py-1 font-label-md text-label-md font-medium shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+SPAN inline-flex items-center gap-1 bg-secondary-container text-on-secondary-fixed border border-outline px-2 py-0.5 font-label-sm text-label-sm font-semibold
+BUTTON bg-primary text-on-primary border-2 border-outline px-space-sm py-1 font-label-md text-label-md font-medium shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications 4 
+BUTTON# download Export CSV 
+BUTTON# add_circle + Generate Custom Invoice 
+INPUT# Search invoice #, customer name, order ref... 
+SELECT# All Records Unpaid (4) Paid (21) Partially Paid (1) 
+SELECT# All Billing One-Time Delivery Recurring Plan 
+SELECT# All Entities Acme Corp Nova Retail Beta Industries Zenith Co 
+BUTTON# filter_list_off 
+BUTTON# View Detail 
+BUTTON# View Detail 
+BUTTON# View Detail 
+BUTTON# View Detail 
+BUTTON# View Detail 
+BUTTON# chevron_left Prev 
+BUTTON# 1 
+BUTTON# Next chevron_right 
+SCRIPTS 
+
+PAGE login.html
+LAYOUT MAIN w-full max-w-6xl px-space-md py-space-xl md:px-space-xl
+BUTTON mt-space-xs w-full py-2.5 px-space-md bg-primary text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider border-[2px] border-outline shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-opacity flex items-center justify-center gap-space-xs
+CONTROLS BUTTON#role-internal corporate_fare Internal Staff Workspace ACTIVE onclick=selectRole('internal')
+BUTTON#role-customer verified_user Customer Portal Access STANDBY onclick=selectRole('customer')
+BUTTON#tab-signin login Sign In onclick=switchAuthTab('signin')
+BUTTON#tab-signup Sign Up onclick=switchAuthTab('signup')
+SELECT#workspace-select Acme Enterprise (Production) 
+INPUT#work-email manager@dealflow.test 
+INPUT#password-input dealflow123 
+BUTTON# Toggle password visibility onclick=togglePasswordVisibility()
+INPUT#  
+BUTTON#submit-btn Sign In arrow_forward 
+SCRIPTS 
+        function togglePasswordVisibility() {
+          const input = document.getElementById('password-input');
+          const icon = document.getElementById('eye-icon');
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.innerText = 'visibility_off';
+          } else {
+            input.type = 'password';
+            icon.innerText = 'visibility';
+          }
+        }
+
+        function selectRole(role) {
+          const internalCard = document.getElementById('role-internal');
+          const customerCard = document.getElementById('role-customer');
+          const badgeInternal = document.getElementById('badge-internal');
+          const badgeCustomer = document.getElementById('badge-customer');
+
+          if (role === 'internal') {
+            internalCard.className = "text-left w-full p-space-sm bg-surface-bright border border-outline shadow-sm";
+            customerCard.className = "text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-colors";
+            badgeInternal.classList.remove('hidden');
+            badgeCustomer.classList.add('hidden');
+          } else {
+            customerCard.className = "text-left w-full p-space-sm bg-surface-bright border border-outline shadow-sm";
+            internalCard.className = "text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-colors";
+            badgeCustomer.classList.remove('hidden');
+            badgeInternal.classList.add('hidden');
+          }
+        }
+
+        function switchAuthTab(tab) {
+          const signinBtn = document.getElementById('tab-signin');
+          const signupBtn = document.getElementById('tab-signup');
+          const submitBtn = document.getElementById('submit-btn');
+
+          if (tab === 'signin') {
+            signinBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface-bright border-t-[2px] border-l-[2px] border-r-[2px] border-outline -mb-[1px] font-bold text-primary flex items-center gap-1.5";
+            signupBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface text-secondary hover:text-on-surface transition-colors border-b border-outline";
+            submitBtn.querySelector('span').innerText = 'Sign In';
+          } else {
+            signupBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface-bright border-t-[2px] border-l-[2px] border-r-[2px] border-outline -mb-[1px] font-bold text-primary flex items-center gap-1.5";
+            signinBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface text-secondary hover:text-on-surface transition-colors border-b border-outline";
+            submitBtn.querySelector('span').innerText = 'Sign Up';
+          }
+        }
+      
+
+PAGE quotation-detail.html
+LAYOUT HEADER fixed top-0 left-0 right-0 z-50 bg-surface-bright border-b-[1.5px] border-outline
+MAIN pt-16 min-h-screen bg-surface w-full px-4 lg:px-6 py-space-md
+DIV flex flex-col w-full max-w-[1600px] mx-auto gap-space-md
+BUTTON inline-flex items-center justify-center gap-space-xs bg-[#2457D6] text-on-primary hover:opacity-90 font-label-md text-label-md font-semibold px-space-md py-[8px] border-[2px] border-outline rounded shadow-[2px_2px_0px_#1D2430] transition-all
+DIV mt-space-xs pt-space-xs border-t-[1.5px] border-outline grid grid-cols-2 md:grid-cols-5 gap-space-sm
+DIV grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start
+DIV lg:col-span-4 flex flex-col gap-space-md lg:sticky lg:top-20
+TEXTAREA w-full bg-surface-container-lowest border-[1.5px] border-outline rounded p-space-xs font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3] transition-all resize-none
+CONTROLS BUTTON# Notifications 
+BUTTON# save Save Draft 
+BUTTON# visibility Preview Customer View 
+BUTTON# approval Submit for Approval 
+BUTTON# add Add Product 
+BUTTON# add_circle Add Service Bundle 
+TEXTAREA#deal-notes Provide strategic rationale for discounting service line item... (e.g. Acme multi-year commit) 
+SCRIPTS 
+
+PAGE quotations.html
+LAYOUT HEADER sticky top-0 left-0 right-0 z-50 bg-surface border-b-[2px] border-outline shadow-sm
+MAIN w-full min-h-[calc(100vh-4rem)] bg-surface px-4 lg:px-8 py-space-md
+DIV max-w-[1600px] mx-auto flex flex-col w-full gap-space-md
+BUTTON inline-flex items-center gap-space-xs bg-[#2457D6] hover:bg-blue-700 hover:opacity-90 text-white border-[1.5px] border-outline rounded-[4px] px-space-md py-space-xs font-label-md text-label-md shadow-[2px_2px_0px_#1D2430] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all
+DIV flex-1 min-w-[240px] flex items-center gap-space-xs bg-surface-container-lowest border-[1.5px] border-outline rounded-[4px] px-space-sm py-1.5 focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm
+CONTROLS BUTTON# Notifications 
+BUTTON# file_download Export CSV 
+BUTTON# add New Quotation 
+BUTTON# All 
+BUTTON# Draft 
+BUTTON# Pending Approval 
+BUTTON# Approved 
+BUTTON# In Negotiation 
+BUTTON# Confirmed 
+INPUT# Search quote ID, customer, rep... 
+SELECT# Status: All Pending Approval In Negotiation Approved Draft Confirmed 
+SELECT# Customer: Any Acme Corp Beta Industries Nova Retail Zenith Co Nexus Logistics 
+SELECT# Owner: All Reps M. Shah R. Iyer K. Patel M. Vance S. Chen 
+BUTTON# filter_alt_off 
+BUTTON# more_vert 
+BUTTON# more_vert 
+BUTTON# more_vert 
+BUTTON# more_vert 
+BUTTON# more_vert 
+BUTTON# more_vert 
+SELECT# 10 25 50 
+BUTTON# Prev 
+BUTTON# 1 
+BUTTON# Next 
+SCRIPTS 
+
+PAGE reports.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+A px-space-xs py-1 transition-all bg-primary text-on-primary border-2 border-outline shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] font-label-md
+DIV hidden md:flex items-center bg-surface-container-lowest border-2 border-outline px-space-xs py-1 shadow-[2px_2px_0px_#1D2430]
+BUTTON relative p-1 text-on-surface hover:bg-surface-container border-2 border-outline shadow-[2px_2px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none bg-surface-container-lowest
+MAIN w-full pt-16 bg-surface flex-1
+DIV flex items-center bg-surface-container-lowest border-2 border-outline shadow-[2px_2px_0px_#1D2430]
+DIV flex items-center bg-surface-container-lowest border-2 border-outline shadow-[2px_2px_0px_#1D2430]
+BUTTON flex items-center gap-space-xxs bg-surface-container-lowest hover:bg-surface-container border-2 border-outline px-space-xs py-1.5 font-label-md text-label-md text-on-surface shadow-[2px_2px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all
+BUTTON flex items-center gap-space-xxs bg-surface-container-lowest hover:bg-surface-container border-2 border-outline px-space-xs py-1.5 font-label-md text-label-md text-on-surface shadow-[2px_2px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all
+SECTION 
+DIV grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 bg-surface-container-high border-2 border-outline gap-[1.5px] shadow-[3px_3px_0px_#1D2430]
+SECTION pt-space-xs
+BUTTON px-space-md py-2 border-2 border-outline bg-primary text-on-primary font-label-md text-label-md shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] flex items-center gap-space-xs
+SECTION bg-surface-container-lowest border-2 border-outline shadow-[3px_3px_0px_#1D2430]
+INPUT bg-surface-container-lowest border-2 border-outline pl-8 pr-space-xs py-1 font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary shadow-[2px_2px_0px_#1D2430] w-56
+SELECT bg-surface-container-lowest border-2 border-outline px-space-xs py-1 font-label-md text-body-sm text-on-surface focus:outline-none shadow-[2px_2px_0px_#1D2430] cursor-pointer
+BUTTON flex items-center gap-space-xxs bg-primary text-on-primary border-2 border-outline px-space-sm py-1 font-label-md text-label-md shadow-[3px_3px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all
+BUTTON px-space-xs py-0.5 bg-surface-container hover:bg-surface-container-high border border-outline font-label-md text-label-sm text-on-surface shadow-[1px_1px_0px_#1D2430] active:translate-x-[1px] active:translate-y-[1px]
+BUTTON px-space-xs py-0.5 bg-surface-container hover:bg-surface-container-high border border-outline font-label-md text-label-sm text-on-surface shadow-[1px_1px_0px_#1D2430] active:translate-x-[1px] active:translate-y-[1px]
+BUTTON px-space-xs py-0.5 bg-surface-container hover:bg-surface-container-high border border-outline font-label-md text-label-sm text-on-surface shadow-[1px_1px_0px_#1D2430] active:translate-x-[1px] active:translate-y-[1px]
+BUTTON px-space-xs py-0.5 bg-surface-container hover:bg-surface-container-high border border-outline font-label-md text-label-sm text-on-surface shadow-[1px_1px_0px_#1D2430] active:translate-x-[1px] active:translate-y-[1px]
+SECTION 
+DIV grid grid-cols-1 lg:grid-cols-2 gap-space-md
+DIV bg-surface-container-lowest border-2 border-outline shadow-[3px_3px_0px_#1D2430] flex flex-col
+BUTTON px-space-xs py-1 bg-surface-container-lowest hover:bg-surface-container border border-outline font-label-md text-label-sm text-on-surface shadow-[1px_1px_0px_#1D2430]
+DIV bg-surface-container-lowest border-2 border-outline shadow-[3px_3px_0px_#1D2430] flex flex-col
+BUTTON px-space-xs py-1 bg-surface-container-lowest hover:bg-surface-container border border-outline font-label-md text-label-sm text-on-surface shadow-[1px_1px_0px_#1D2430]
+SECTION bg-surface-container-lowest border-2 border-outline shadow-[3px_3px_0px_#1D2430]
+BUTTON flex items-center gap-space-xxs bg-surface-container-lowest hover:bg-surface-container border-2 border-outline px-space-sm py-1.5 font-label-md text-label-md text-on-surface shadow-[2px_2px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all shrink-0
+DIV grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-outline
+DIV bg-surface-container-lowest border-2 border-outline p-space-xl shadow-[3px_3px_0px_#1D2430]
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications4 
+SELECT# Current Fiscal Quarter FY25-Q3 FY25-Q2 (Audited Close) FY25-Q1 (Historical) Trailing 12 Months (TTM) 
+SELECT# All Enterprise Desks North America Strategic Sales APAC & India Domestic Desk EMEA Tier-1 Enterprise 
+BUTTON# picture_as_pdf Export PDF 
+BUTTON# table_view Export XLS 
+BUTTON#tab-analytics analytics Executive Analytics & Trends onclick=switchTab('analytics')
+BUTTON#tab-pricing tune Product & Pricing Configuration (Admin Subview) ACTIVE REGIME onclick=switchTab('pricing')
+INPUT# Filter by SKU or description... 
+SELECT# All Categories (Hardware, Services, SaaS) Hardware (LP, HW, DCK) Onsite Services (SAC 9983) Support  
+BUTTON# add_circle + Add Master SKU 
+INPUT#  
+INPUT#  
+BUTTON# Edit 
+INPUT#  
+BUTTON# Edit 
+INPUT#  
+BUTTON# Edit 
+INPUT#  
+BUTTON# Edit 
+BUTTON# Prev 
+BUTTON# 2 
+BUTTON# 3 
+BUTTON# 12 
+BUTTON# Next 
+BUTTON# Edit Tier Matrix 
+BUTTON# Configure Rules 
+BUTTON# sync Sync Daily ECB FX Rates 
+BUTTON# Configure Surcharges → 
+BUTTON# Adjust FX Margin → 
+BUTTON# Adjust FX Margin → 
+BUTTON# Download Raw CSV 
+SCRIPTS 
+    (function syncActiveNav() {
+      const navLinks = document.querySelectorAll('header nav a[data-path]');
+      navLinks.forEach(link => {
+        if (link.getAttribute('data-path') === 'admin-reports') {
+          link.className = 'px-space-xs py-1 bg-primary text-on-primary border-2 border-outline shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] font-label-md';
+        } else {
+          link.className = 'px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all';
+        }
+      });
+    })();
+  
+
+    function switchTab(tab) {
+      const analyticsContent = document.getElementById('analytics-subview-content');
+      const pricingContent = document.getElementById('pricing-subview-content');
+      const tabAnalytics = document.getElementById('tab-analytics');
+      const tabPricing = document.getElementById('tab-pricing');
+
+      if (tab === 'analytics') {
+        analyticsContent.classList.remove('hidden');
+        pricingContent.classList.add('hidden');
+
+        // Style Tab 1 Active
+        tabAnalytics.className = 'px-space-md py-2 border-2 border-outline bg-primary text-on-primary font-label-md text-label-md shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] flex items-center gap-space-xs';
+        tabPricing.className = 'px-space-md py-2 border-2 border-outline bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all flex items-center gap-space-xs font-label-md text-label-md';
+      } else {
+        analyticsContent.classList.add('hidden');
+        pricingContent.classList.remove('hidden');
+
+        // Style Tab 2 Active
+        tabPricing.className = 'px-space-md py-2 border-2 border-outline bg-primary text-on-primary font-label-md text-label-md shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] flex items-center gap-space-xs';
+        tabAnalytics.className = 'px-space-md py-2 border-2 border-outline bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all flex items-center gap-space-xs font-label-md text-label-md';
+      }
+    }
+  
+
+PAGE subscription-billing.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+MAIN w-full pt-16 bg-surface flex-1
+SPAN bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm px-space-xs py-0.5 border-2 border-outline uppercase font-semibold
+BUTTON bg-primary text-on-primary border-2 border-outline px-space-md py-space-xs font-label-md text-label-md flex items-center gap-space-xs shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+DIV w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-surface-container-lowest border-2 border-outline shadow-sm
+DIV grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start
+DIV grid grid-cols-1 md:grid-cols-4 gap-space-sm pt-space-xs border-t border-outline-variant
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications4 
+BUTTON# file_download Download Billing PDF 
+BUTTON# tune Modify Subscription 
+BUTTON# cancel Cancel Plan 
+BUTTON# Update Payment Mandate 
+SCRIPTS 
+
+PAGE subscriptions.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+MAIN w-full pt-16 bg-surface flex-1
+BUTTON flex items-center gap-space-xs px-space-md py-2 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all
+DIV grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md
+DIV flex flex-wrap items-center gap-space-xs flex-1 min-w-[280px]
+DIV relative flex-1 min-w-[240px] max-w-md
+BUTTON px-2 py-1 border border-outline bg-error text-on-error font-mono-metric-sm text-[11px] font-bold shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-opacity
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications4 
+BUTTON# file_download Export CSV 
+BUTTON# add_circle + New Subscription Plan 
+INPUT# Search customer, plan, or contract ID... 
+SELECT# All Cadences Monthly (₹) Quarterly (₹) Annual (₹) 
+SELECT# All Statuses Active Paused Overdue 
+BUTTON# filter_list More Filters (2) 
+BUTTON# Reset 
+BUTTON# visibility 
+BUTTON# more_vert 
+BUTTON# View 
+BUTTON# Resume 
+BUTTON# View 
+BUTTON# Retry Bill 
+BUTTON# View 
+BUTTON# Prev 
+BUTTON# 1 
+BUTTON# Next 
+SCRIPTS 
+
+PAGE warehouse-allocation.html
+LAYOUT HEADER fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline
+MAIN w-full pt-16 bg-surface flex-1
+DIV mt-space-md grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-0 border-2 border-outline bg-surface-container-lowest
+DIV w-full lg:w-[65%] flex flex-col gap-space-lg
+BUTTON w-full md:w-auto inline-flex items-center justify-center gap-space-xs bg-primary text-on-primary px-space-lg py-space-xs border-2 border-outline shadow-[2px_2px_0px_#1D2430] hover:bg-primary/90 transition-all font-label-md text-label-md font-bold tracking-tight
+ASIDE w-full lg:w-[35%] bg-surface-container-lowest border-2 border-outline shadow-sm flex flex-col
+FOOTER w-full bg-surface-dim border-t-2 border-outline mt-auto
+CONTROLS BUTTON# notifications4 
+BUTTON# picture_as_pdf Pick Lists (PDF) 
+BUTTON# rule Routing Audit 
+BUTTON#toggle-override-drawer tune Manual Depot Override 
+BUTTON# history Consolidate Remaining Backorder 
+BUTTON# check_circle Accept Suggested Split & Generate Waybills 
+BUTTON#close-override close 
+INPUT#  
+INPUT#  
+INPUT#  
+SELECT#override-reason Customer Delivery Optimization Regional Depot Quarantine Protocol Carrier Strike Contingency Direct  
+BUTTON#cancel-override Cancel 
+BUTTON# sync Apply Rebalance 
+SCRIPTS 
+    (function() {
+      const toggleBtn = document.getElementById('toggle-override-drawer');
+      const closeBtn = document.getElementById('close-override');
+      const cancelBtn = document.getElementById('cancel-override');
+      const panel = document.getElementById('override-panel');
+
+      function togglePanel() {
+        if (!panel) return;
+        panel.classList.toggle('hidden');
+      }
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', togglePanel);
+      }
+      if (closeBtn) {
+        closeBtn.addEventListener('click', togglePanel);
+      }
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', togglePanel);
+      }
+    })();
+  

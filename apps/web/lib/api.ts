@@ -76,6 +76,7 @@ async function send<T>(path: string, init: RequestInit, token: string | null): P
   try {
     response = await fetch(`${BASE}${path}`, {
       ...init,
+      signal: init.signal ?? AbortSignal.timeout(15_000),
       headers: {
         "content-type": "application/json",
         ...(token ? { authorization: `Bearer ${token}` } : {}),
@@ -85,7 +86,7 @@ async function send<T>(path: string, init: RequestInit, token: string | null): P
   } catch {
     // fetch only rejects when the request never reached the server. "Failed to
     // fetch" is useless to whoever is looking at the screen; name the address.
-    throw new ApiError(0, "API_UNREACHABLE", `Cannot reach the API at ${BASE}. Is it running?`);
+    throw new ApiError(0, "API_UNREACHABLE", "Unable to connect. Please try again in a moment.");
   }
   return unwrap<T>(response);
 }

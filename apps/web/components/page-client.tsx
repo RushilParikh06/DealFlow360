@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type CSSProperties } from "react";
 import { goLive } from "@/lib/live";
+import { wireAccessibility } from "@/lib/ui";
 import type { PageName } from "@/lib/routes";
 
 const routes = {
@@ -22,7 +23,11 @@ const routes = {
   portal: "/portal/quotations/Q-1042/",
 } as const;
 
-const text = (element: Element) => element.textContent?.replace(/\s+/g, " ").trim() ?? "";
+const text = (element: Element) => {
+  const copy = element.cloneNode(true) as Element;
+  copy.querySelectorAll(".material-symbols-outlined").forEach(icon => icon.remove());
+  return copy.textContent?.replace(/\s+/g, " ").trim() ?? "";
+};
 const go = (route: keyof typeof routes) => window.location.assign(routes[route]);
 
 function wireNavigation(root: HTMLElement, page: PageName) {
@@ -58,13 +63,26 @@ function wireNavigation(root: HTMLElement, page: PageName) {
 
   const mobileNav = nav.cloneNode(true) as HTMLElement;
   mobileNav.className = "df-mobile-nav";
+  mobileNav.id = "application-navigation";
+  mobileNav.setAttribute("aria-label", "Application navigation");
+  button.setAttribute("aria-controls", mobileNav.id);
   mobileNav.removeAttribute("data-active-classes");
   mobileNav.dataset.open = "false";
-  button.addEventListener("click", () => {
-    const open = mobileNav.dataset.open !== "true";
+  const setOpen = (open: boolean) => {
     mobileNav.dataset.open = String(open);
     button.setAttribute("aria-expanded", String(open));
+    button.setAttribute("aria-label", `${open ? "Close" : "Open"} application navigation`);
     button.textContent = open ? "×" : "☰";
+  };
+  button.addEventListener("click", () => setOpen(mobileNav.dataset.open !== "true"));
+  root.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && mobileNav.dataset.open === "true") {
+      setOpen(false);
+      button.focus();
+    }
+  });
+  root.addEventListener("click", (event) => {
+    if (!mobileNav.contains(event.target as Node) && !button.contains(event.target as Node)) setOpen(false);
   });
 
   nav.after(button);
@@ -81,9 +99,9 @@ function wireBrandLogo(root: HTMLElement) {
 function wirePageRoutes(root: HTMLElement, page: PageName) {
   const rules: [RegExp, RegExp, keyof typeof routes][] = [
     [/dashboard/, /New Quotation/, "quote"],
-    [/dashboard/, /Browse active ledger/, "quotations"],
-    [/dashboard/, /Review approvals queue|^Approvals 3 PENDING$/, "approvals"],
-    [/dashboard/, /Open Deal Health triage/, "deal-health"],
+    [/dashboard/, /Browse (active ledger|quotations)/i, "quotations"],
+    [/dashboard/, /Review approvals|^Approvals 3 PENDING$/i, "approvals"],
+    [/dashboard/, /Open Deal Health/i, "deal-health"],
     [/dashboard/, /^Q-1042$|Verify Line Items/, "approval"],
     [/dashboard/, /Approve Split/, "allocation"],
     [/^quotations$/, /^Q-1042$|New Quotation/, "quote"],
@@ -105,7 +123,10 @@ function wirePageRoutes(root: HTMLElement, page: PageName) {
   root.querySelectorAll<HTMLElement>("a, button").forEach((element) => {
     const match = rules.find(([pagePattern, textPattern]) => pagePattern.test(page) && textPattern.test(text(element)));
     if (!match) return;
-    element.style.cursor = "pointer";
+    if (element.tagName === "A") {
+      element.setAttribute("href", routes[match[2]]);
+      return;
+    }
     element.addEventListener("click", (event) => {
       event.preventDefault();
       go(match[2]);
@@ -115,9 +136,10 @@ function wirePageRoutes(root: HTMLElement, page: PageName) {
 
 function wirePortal(root: HTMLElement, page: PageName) {
   if (page !== "customer-quotation") return;
-  root.querySelectorAll<HTMLElement>(":scope > main header a, :scope > main header button").forEach((element) => {
-    if (text(element).includes("My Quotation")) element.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-    if (text(element).includes("Messages")) element.addEventListener("click", () => root.querySelector("#dynamicMessages")?.scrollIntoView({ behavior: "smooth" }));
+  root.querySelectorAll<HTMLAnchorElement>(":scope > main header a").forEach((element) => {
+    if (text(element).includes("My Quotation")) element.href = "#main-content";
+    if (text(element).includes("Messages")) element.href = "#dynamicMessages";
+    if (text(element).includes("Profile")) element.href = "#portal-profile";
   });
 }
 
@@ -134,7 +156,8 @@ export function PageClient({ bodyClass, html, page, scripts, theme }: Props) {
 
   useEffect(() => {
     const root = rootRef.current;
-    if (!root || root.dataset.wired === "true") return;
+    if (!root) return;
+    if (root.dataset.wired === "true") return wireAccessibility(root);
     root.dataset.wired = "true";
 
     scripts.forEach((script) => window.eval(script));
@@ -143,9 +166,11 @@ export function PageClient({ bodyClass, html, page, scripts, theme }: Props) {
     wirePageRoutes(root, page);
     wirePortal(root, page);
     document.dispatchEvent(new Event("DOMContentLoaded"));
-    // Real sign-in, real session chip, real records. Must run last: it reads
+    const cleanup = wireAccessibility(root);
+    // Sign-in and connected records. Must run last: it reads
     // the DOM the eval'd page scripts just finished building.
     goLive(root, page);
+    return cleanup;
   }, [page, scripts]);
 
   return (

@@ -1,11 +1,19 @@
 // GROUP OWNED.
 import 'reflect-metadata';
+import { existsSync } from 'node:fs';
 import { createServer } from 'node:net';
+import { loadEnvFile } from 'node:process';
+import { resolve } from 'node:path';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './modules/shared/all-exceptions.filter';
 import { ResponseInterceptor } from './modules/shared/response.interceptor';
+
+const envFile = resolve(process.cwd(), '.env');
+if (existsSync(envFile)) {
+  loadEnvFile(envFile);
+}
 
 const logger = new Logger('Bootstrap');
 

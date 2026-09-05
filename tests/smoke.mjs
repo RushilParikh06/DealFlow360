@@ -58,7 +58,7 @@ for (const module of readdirSync(controllersDir)) {
 }
 
 // Every literal path lib/live.ts fetches, minus its query string.
-const called = [...live.matchAll(/api\.(?:get|post|patch|del)<.*?>\("(\/[^"?]*)/g)].map((m) => m[1]);
+const called = [...live.matchAll(/api\.(?:get|post|patch|del)<.*?>\(["`](\/[^"`?]*)/g)].map((m) => m[1]);
 assert.ok(called.length > 0, "lib/live.ts calls no endpoints - the wiring is gone");
 
 for (const path of called) {

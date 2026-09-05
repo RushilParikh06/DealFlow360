@@ -20,7 +20,7 @@
 <img alt="DealFlow360 geometric logo" class="h-8 w-auto object-contain" src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20x%3D%271%27%20y%3D%271%27%20width%3D%2730%27%20height%3D%2730%27%20fill%3D%27%232457d6%27%20stroke%3D%27%231D2430%27%20stroke-width%3D%272%27%2F%3E%3Cpath%20d%3D%27M8%2023V9h6.5a7%207%200%200%201%200%2014z%27%20fill%3D%27%23FFFCF5%27%2F%3E%3Crect%20x%3D%2717.5%27%20y%3D%2714%27%20width%3D%277%27%20height%3D%274%27%20fill%3D%27%23FFFCF5%27%2F%3E%3C%2Fsvg%3E"/>
 <div class="flex flex-col">
 <span class="font-headline-sm text-headline-sm text-on-surface tracking-tight uppercase leading-none">DealFlow360</span>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Operations Engine</span>
+<span data-brand-description class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Operations Engine</span>
 </div>
 </div>
 <nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-primary text-on-primary border-2 border-outline shadow-sm font-label-md">
@@ -39,11 +39,11 @@
 <span class="material-symbols-outlined text-body-lg text-on-surface-variant mr-space-xxs">search</span>
 <span class="font-body-sm text-body-sm text-on-surface-variant mr-space-md">Search operations...</span>
 </div>
-<button class="relative p-1 text-on-surface hover:bg-surface-container border-2 border-outline shadow-sm bg-surface-container-lowest transition-all hover:opacity-90">
+<button aria-label="Notifications" class="relative p-1 text-on-surface hover:bg-surface-container border-2 border-outline shadow-sm bg-surface-container-lowest transition-all hover:opacity-90">
 <span class="material-symbols-outlined block text-body-lg">notifications</span>
 <span class="absolute -top-1.5 -right-1.5 bg-error text-on-error font-mono-metric-sm text-[10px] px-1 border border-outline font-bold leading-tight">4</span>
 </button>
-<div class="flex items-center gap-space-xs pl-space-xs border-l-2 border-outline">
+<div data-profile-preview class="flex items-center gap-space-xs pl-space-xs border-l-2 border-outline">
 <img alt="Profile" class="w-8 h-8 rounded-full object-cover border-2 border-outline" src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20fill%3D%27%23DCE2F3%27%2F%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2712.5%27%20r%3D%275.2%27%20fill%3D%27%231D2430%27%2F%3E%3Cpath%20d%3D%27M3.5%2032c0-6.9%205.6-11.2%2012.5-11.2S28.5%2025.1%2028.5%2032z%27%20fill%3D%27%231D2430%27%2F%3E%3C%2Fsvg%3E"/>
 <div class="hidden 2xl:flex flex-col text-left">
 <span class="font-label-md text-label-md text-on-surface leading-tight">M. Vance</span>
@@ -76,12 +76,12 @@ Unpaid (Due in 8 Days)
 </span>
 </div>
 <!-- Global Invoice Actions -->
-<div class="flex items-center gap-space-xs shrink-0">
-<button class="px-space-sm py-1.5 bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md hover:bg-surface-container transition-all flex items-center gap-1.5" id="btn-reminder">
+<div class="flex flex-wrap items-center gap-space-xs">
+<button data-unavailable="This action is not connected yet. No changes have been saved." aria-disabled="true" title="Not connected yet" class="px-space-sm py-1.5 bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md hover:bg-surface-container transition-all flex items-center gap-1.5" id="btn-reminder">
 <span class="material-symbols-outlined text-body-md">forward_to_inbox</span>
 <span>Send Reminder</span>
 </button>
-<button class="px-space-sm py-1.5 bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md hover:bg-surface-container transition-all flex items-center gap-1.5" id="btn-download">
+<button data-unavailable="This action is not connected yet. No changes have been saved." aria-disabled="true" title="Not connected yet" class="px-space-sm py-1.5 bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md hover:bg-surface-container transition-all flex items-center gap-1.5" id="btn-download">
 <span class="material-symbols-outlined text-body-md">file_download</span>
 <span>Download PDF</span>
 </button>
@@ -167,7 +167,7 @@ INR (₹) Domestic
 </div>
 </div>
 <div class="w-full overflow-x-auto">
-<table class="w-full text-left border-collapse">
+<table id="records-0" class="w-full text-left border-collapse">
 <thead>
 <tr class="bg-surface-container border-b-2 border-outline font-mono-metric-sm text-mono-metric-sm text-on-surface uppercase">
 <th class="py-2.5 px-space-md font-bold">Item Description</th>
@@ -287,7 +287,7 @@ INR (₹) Domestic
 </div>
 <div class="p-space-md flex flex-col gap-space-sm">
 <!-- Form: Payment Specifics -->
-<form class="flex flex-col gap-space-sm pt-1" id="record-payment-form" onsubmit="event.preventDefault(); handlePostPayment();">
+<form data-unavailable="This action is not connected yet. No changes have been saved." aria-disabled="true" title="Not connected yet" class="flex flex-col gap-space-sm pt-1" id="record-payment-form" onsubmit="event.preventDefault(); handlePostPayment();">
 <!-- Input: Amount to Record -->
 <div class="flex flex-col gap-1">
 <label class="font-mono-metric-sm text-mono-metric-sm text-on-surface uppercase font-bold" for="payment-amount">Amount (INR)</label>
@@ -327,7 +327,7 @@ INR (₹) Domestic
 <textarea class="w-full p-2 bg-surface-container-lowest border-2 border-outline font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary resize-none" id="allocation-memo" rows="2"></textarea>
 </div>
 <!-- Action Confirmation Button -->
-<button class="w-full py-2.5 mt-1 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md font-bold shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all flex items-center justify-center gap-2" id="btn-submit-payment" type="submit">
+<button data-unavailable="This action is not connected yet. No changes have been saved." aria-disabled="true" title="Not connected yet" class="w-full py-2.5 mt-1 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md font-bold shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all flex items-center justify-center gap-2" id="btn-submit-payment" type="submit">
 <span class="material-symbols-outlined text-body-md">lock_clock</span>
 <span>Confirm Payment</span>
 </button>

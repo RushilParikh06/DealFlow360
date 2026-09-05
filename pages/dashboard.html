@@ -146,7 +146,7 @@
           <span class="material-symbols-outlined text-[18px]">notifications</span>
           <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-outline"></span>
         </button>
-        <div class="flex items-center pl-1 border-l border-outline/40">
+        <div data-profile-preview class="flex items-center pl-1 border-l border-outline/40">
           <img alt="Profile" class="w-8 h-8 rounded-full object-cover border-[1.5px] border-outline shadow-sm" src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20fill%3D%27%23DCE2F3%27%2F%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2712.5%27%20r%3D%275.2%27%20fill%3D%27%231D2430%27%2F%3E%3Cpath%20d%3D%27M3.5%2032c0-6.9%205.6-11.2%2012.5-11.2S28.5%2025.1%2028.5%2032z%27%20fill%3D%27%231D2430%27%2F%3E%3C%2Fsvg%3E" />
         </div>
       </div>
@@ -171,7 +171,7 @@
             <a class="flex items-center gap-space-xs px-space-sm py-1.5 bg-surface-bright text-on-surface border-[1.5px] border-outline rounded-lg text-label-md font-label-md hover:bg-surface-dim transition-all shadow-sm" href="#">
               <span class="inline-block w-2 h-2 rounded-full bg-error"></span>
               <span>Approvals</span>
-              <span class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim px-1.5 py-0.2 border-[1.5px] border-outline font-bold">3 PENDING</span>
+              <span class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim px-1.5 py-0.5 border-[1.5px] border-outline font-bold">3 PENDING</span>
             </a>
             <button class="flex items-center gap-space-xs px-space-md py-1.5 bg-cobalt-active text-white border-[2px] border-outline rounded-lg text-label-md font-label-md shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all cursor-pointer">
               <span class="material-symbols-outlined text-[18px] font-bold">add</span>
@@ -246,8 +246,8 @@
                   <div>
                     <div class="flex items-center gap-space-xs flex-wrap">
                       <span class="font-mono-metric font-mono-metric text-on-surface font-bold">Acme Corp</span>
-                      <a class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim hover:bg-surface border border-outline px-1.5 py-0.2 rounded text-primary font-bold underline" href="#">Q-1042</a>
-                      <span class="font-label-sm text-label-sm bg-primary-container text-on-primary-container border border-outline px-1.5 py-0.2 rounded font-semibold">APPROVED</span>
+                      <a class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim hover:bg-surface border border-outline px-1.5 py-0.5 rounded text-primary font-bold underline" href="#">Q-1042</a>
+                      <span class="font-label-sm text-label-sm bg-primary-container text-on-primary-container border border-outline px-1.5 py-0.5 rounded font-semibold">APPROVED</span>
                     </div>
                     <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
                       Concession package approved by Finance (<strong class="text-on-surface font-semibold">R. Iyer</strong>). Ready for signature package generation.
@@ -262,8 +262,8 @@
                   <div>
                     <div class="flex items-center gap-space-xs flex-wrap">
                       <span class="font-mono-metric font-mono-metric text-on-surface font-bold">Beta Industries</span>
-                      <a class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim hover:bg-surface border border-outline px-1.5 py-0.2 rounded text-primary font-bold underline" href="#">Q-1039</a>
-                      <span class="font-label-sm text-label-sm bg-error-container text-on-error-container border border-outline px-1.5 py-0.2 rounded font-semibold">COUNTER-REQ</span>
+                      <a class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim hover:bg-surface border border-outline px-1.5 py-0.5 rounded text-primary font-bold underline" href="#">Q-1039</a>
+                      <span class="font-label-sm text-label-sm bg-error-container text-on-error-container border border-outline px-1.5 py-0.5 rounded font-semibold">COUNTER-REQ</span>
                     </div>
                     <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
                       Client requested counter discount (<strong class="text-error font-bold">15% vs 10% allowed</strong>). Margin dips to 18.2%.
@@ -278,8 +278,8 @@
                   <div>
                     <div class="flex items-center gap-space-xs flex-wrap">
                       <span class="font-mono-metric font-mono-metric text-on-surface font-bold">East Depot (Newark)</span>
-                      <span class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim border border-outline px-1.5 py-0.2 rounded text-on-surface font-bold">ORD #2291</span>
-                      <span class="font-label-sm text-label-sm bg-secondary-container text-on-secondary-fixed-variant border border-outline px-1.5 py-0.2 rounded font-semibold">ALLOCATED</span>
+                      <span class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim border border-outline px-1.5 py-0.5 rounded text-on-surface font-bold">ORD #2291</span>
+                      <span class="font-label-sm text-label-sm bg-secondary-container text-on-secondary-fixed-variant border border-outline px-1.5 py-0.5 rounded font-semibold">ALLOCATED</span>
                     </div>
                     <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
                       Stock allocation confirmed for delivery dispatch. 420 physical industrial units reserved.
@@ -294,8 +294,8 @@
                   <div>
                     <div class="flex items-center gap-space-xs flex-wrap">
                       <span class="font-mono-metric font-mono-metric text-on-surface font-bold">Nova Retail Group</span>
-                      <a class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim hover:bg-surface border border-outline px-1.5 py-0.2 rounded text-primary font-bold underline" href="#">Q-1035</a>
-                      <span class="font-label-sm text-label-sm bg-primary-container text-on-primary-container border border-outline px-1.5 py-0.2 rounded font-semibold">AUTO-RULE PASS</span>
+                      <a class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim hover:bg-surface border border-outline px-1.5 py-0.5 rounded text-primary font-bold underline" href="#">Q-1035</a>
+                      <span class="font-label-sm text-label-sm bg-primary-container text-on-primary-container border border-outline px-1.5 py-0.5 rounded font-semibold">AUTO-RULE PASS</span>
                     </div>
                     <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
                       Auto-approved by Deal Velocity engine. Standard payment terms (Net-30) and zero custom riders.
@@ -310,8 +310,8 @@
                   <div>
                     <div class="flex items-center gap-space-xs flex-wrap">
                       <span class="font-mono-metric font-mono-metric text-on-surface font-bold">Zenith Co</span>
-                      <a class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim hover:bg-surface border border-outline px-1.5 py-0.2 rounded text-primary font-bold underline" href="#">Q-1030</a>
-                      <span class="font-label-sm text-label-sm bg-error-container text-error border border-outline px-1.5 py-0.2 rounded font-bold">IDLE 9 DAYS</span>
+                      <a class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim hover:bg-surface border border-outline px-1.5 py-0.5 rounded text-primary font-bold underline" href="#">Q-1030</a>
+                      <span class="font-label-sm text-label-sm bg-error-container text-error border border-outline px-1.5 py-0.5 rounded font-bold">IDLE 9 DAYS</span>
                     </div>
                     <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
                       Deal flagged by SLA Governance. Client viewed portal 6 days ago; no checkout or feedback logged.
@@ -333,7 +333,7 @@
                   <span class="material-symbols-outlined text-[18px] text-error font-bold">priority_high</span>
                   <span class="font-headline-sm text-headline-sm uppercase tracking-tight text-on-surface">Urgent Work Queue</span>
                 </div>
-                <span class="font-mono-metric-sm text-mono-metric-sm bg-error-container text-on-error-container px-1.5 py-0.2 border border-outline font-bold rounded">
+                <span class="font-mono-metric-sm text-mono-metric-sm bg-error-container text-on-error-container px-1.5 py-0.5 border border-outline font-bold rounded">
                   3 TASKS
                 </span>
               </div>
@@ -343,7 +343,7 @@
                   <div class="flex items-start justify-between gap-1 mb-1">
                     <div>
                       <span class="font-mono-metric text-mono-metric font-bold text-on-surface">Q-1042 Acme Corp</span>
-                      <span class="inline-block ml-1 font-mono-metric-sm text-mono-metric-sm bg-error text-on-error px-1 py-0.2 border border-outline rounded font-bold">High Risk</span>
+                      <span class="inline-block ml-1 font-mono-metric-sm text-mono-metric-sm bg-error text-on-error px-1 py-0.5 border border-outline rounded font-bold">High Risk</span>
                     </div>
                     <span class="font-mono-metric-sm text-mono-metric-sm text-secondary font-bold">14m left</span>
                   </div>
@@ -361,7 +361,7 @@
                   <div class="flex items-start justify-between gap-1 mb-1">
                     <div>
                       <span class="font-mono-metric text-mono-metric font-bold text-on-surface">Q-1039 Beta Ind</span>
-                      <span class="inline-block ml-1 font-mono-metric-sm text-mono-metric-sm bg-surface-bright border border-outline px-1 py-0.2 rounded font-bold text-secondary">Margin Check</span>
+                      <span class="inline-block ml-1 font-mono-metric-sm text-mono-metric-sm bg-surface-bright border border-outline px-1 py-0.5 rounded font-bold text-secondary">Margin Check</span>
                     </div>
                     <span class="font-mono-metric-sm text-mono-metric-sm text-secondary">2h left</span>
                   </div>
@@ -379,7 +379,7 @@
                   <div class="flex items-start justify-between gap-1 mb-1">
                     <div>
                       <span class="font-mono-metric text-mono-metric font-bold text-on-surface">Order #2288 Dispatch</span>
-                      <span class="inline-block ml-1 font-mono-metric-sm text-mono-metric-sm bg-surface-bright border border-outline px-1 py-0.2 rounded font-bold text-secondary">Logistics</span>
+                      <span class="inline-block ml-1 font-mono-metric-sm text-mono-metric-sm bg-surface-bright border border-outline px-1 py-0.5 rounded font-bold text-secondary">Logistics</span>
                     </div>
                     <span class="font-mono-metric-sm text-mono-metric-sm text-secondary">4h left</span>
                   </div>

@@ -3,11 +3,12 @@ import type { Config } from "tailwindcss";
 const color = (name: string) => `rgb(var(--df-${name}) / <alpha-value>)`;
 
 export default {
-  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "../../pages/**/*.html"],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./lib/**/*.ts", "../../pages/**/*.html"],
   darkMode: "class",
   theme: {
     extend: {
       colors: {
+        "cobalt-active": color("primary"),
         "on-tertiary-container": color("on-tertiary-container"),
         "secondary-container": color("secondary-container"),
         "on-primary-fixed": color("on-primary-fixed"),

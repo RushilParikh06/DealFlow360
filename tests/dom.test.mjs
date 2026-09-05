@@ -40,7 +40,7 @@ const SAMPLE_ROW = `
 
 const reset = () => {
   tbody.innerHTML = SAMPLE_ROW;
-  delete tbody.dataset.dfLive;
+  delete tbody.dataset.live;
 };
 
 // --- one row per record, design intact ---------------------------------------
@@ -54,11 +54,12 @@ fillTable(tbody, [{ code: "QT-1004" }, { code: "QT-1005" }], (r) => ({
 
 const rows = [...tbody.querySelectorAll("tr")];
 assert.equal(rows.length, 2, "one row per record");
-assert.equal(tbody.dataset.dfLive, "true", "live tables must opt out of the 3-row demo trim");
+assert.equal(tbody.dataset.live, "true", "live tables must be visible after hydration");
 
 const cells = rows[0].querySelectorAll("td");
 
 assert.equal(cells[0].querySelector("a")?.textContent, "QT-1004", "code keeps its link element");
+assert.equal(cells[0].querySelector("a")?.getAttribute("href"), null, "records must not inherit a sample detail URL");
 
 const iconCell = cells[1];
 assert.equal(
