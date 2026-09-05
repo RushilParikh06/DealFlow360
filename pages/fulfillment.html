@@ -1,765 +1,766 @@
 <!DOCTYPE html>
-
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Courier+Prime:wght@400;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-container": "#ffd5c5", "secondary-container": "#dce2f3", "on-primary-fixed": "#00164d", "error": "#DC2626", "surface-container-low": "#F7F4EC", "on-secondary-fixed": "#151c27", "inverse-primary": "#b5c4ff", "primary-fixed": "#dce1ff", "inverse-surface": "#2e3038", "inverse-on-surface": "#f0f0fb", "on-secondary": "#ffffff", "on-error-container": "#93000a", "surface-container-highest": "#DCD5C6", "tertiary-fixed": "#ffdbcd", "surface-bright": "#faf8ff", "surface-dim": "#E9E3D8", "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#ffb597", "on-background": "#191b23", "surface-container-lowest": "#FFFFFF", "on-secondary-fixed-variant": "#404754", "tertiary": "#832f00", "outline-variant": "#D1C9BC", "surface-container": "#EFEAE0", "on-tertiary-fixed-variant": "#7e2c00", "on-error": "#ffffff", "surface": "#F4F0E7", "outline": "#1D2430", "secondary-fixed": "#dce2f3", "on-surface-variant": "#434654", "surface-container-high": "#E5DFD3", "error-container": "#ffdad6", "primary-container": "#E0E7FA", "on-primary-container": "#173E9D", "on-primary": "#ffffff", "secondary-fixed-dim": "#c0c7d7", "tertiary-container": "#aa3f00", "on-surface": "#191b23", "primary": "#003fb3", "secondary": "#585f6c", "primary-fixed-dim": "#b5c4ff", "on-secondary-container": "#5e6573", "surface-tint": "#1f54d3", "background": "#faf8ff", "on-primary-fixed-variant": "#003cad", "surface-variant": "#e2e1ec", "on-tertiary-fixed": "#360f00" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1rem", "space-sm": "0.75rem", "margin-desktop": "2rem", "margin-mobile": "1rem", "space-xl": "2rem", "border-width": "1.5px", "space-xxs": "0.25rem", "space-xs": "0.5rem", "space-2xl": "3rem" }, "fontFamily": { "label-sm": ["IBM Plex Sans"], "headline-md": ["IBM Plex Sans"], "body-md": ["IBM Plex Sans"], "headline-lg-mobile": ["IBM Plex Sans"], "headline-lg": ["IBM Plex Sans"], "body-sm": ["IBM Plex Sans"], "label-md": ["IBM Plex Sans"], "headline-sm": ["IBM Plex Sans"], "mono-metric": ["Courier Prime"], "mono-metric-sm": ["Courier Prime"], "body-lg": ["IBM Plex Sans"] }, "fontSize": { "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "mono-metric": ["14px", { "lineHeight": "20px", "fontWeight": "700" }], "mono-metric-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }] } } } };</script><link href="../assets/css/app.css" rel="stylesheet"/><script defer src="../assets/js/app.js"></script></head><body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col"><header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline"><div class="h-16 w-full px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-xs"><img alt="DealFlow360 geometric logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VHTIU3t9-5rRk-CEKSXno3byMT0JASngdLJRV904p8U_SpkyPTzh2Xuu2dCnJCDxbo4K___rwJ946wLetzcW5xB3TqrwF2alarH-2m2wnuy8Laa0Cf32rKxeg8N1dCEw7hU7ii2cpAOTCZ6ID0zI-0qLvWGutArulL4Jcr7wWjc4vuyAhgri9_D5Erubic9uiR5RE006yohwQcycMiadCCVMNNT7E2dd26FsSdcrpyoXXQ4pNfsg4WRKQ"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight uppercase leading-none">DealFlow360</span><span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Operations Engine</span></div></div><nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-primary text-on-primary border-2 border-outline shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] font-label-md"><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="dashboard" href="#">Dashboard</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="quotations" href="#">Quotations</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="approvals" href="#">Approvals</a><a aria-current="page" class="px-space-xs py-1 transition-all bg-primary text-on-primary border-2 border-outline shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] font-label-md" data-path="fulfillment" href="#">Fulfillment</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="subscriptions" href="#">Subscriptions</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="invoices" href="#">Invoices</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="deal-health" href="#">Deal Health</a><a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="admin-reports" href="#">Reports</a></nav></div><div class="flex items-center gap-space-sm"><div class="hidden md:flex items-center bg-surface-container-lowest border-2 border-outline px-space-xs py-1 shadow-[2px_2px_0px_#1D2430]"><span class="material-symbols-outlined text-body-lg text-on-surface-variant mr-space-xxs">search</span><span class="font-body-sm text-body-sm text-on-surface-variant mr-space-md">Search operations...</span><kbd class="bg-surface-dim px-space-xxs py-0.5 border border-outline font-mono-metric-sm text-mono-metric-sm text-on-surface">⌘K</kbd></div><div class="hidden lg:flex items-center gap-space-xxs bg-surface-dim border-2 border-outline px-space-xs py-1"><span class="w-2 h-2 rounded-full bg-primary inline-block"></span><span class="font-mono-metric-sm text-mono-metric-sm text-on-surface uppercase">US-EAST</span></div><button class="relative p-1 text-on-surface hover:bg-surface-container border-2 border-outline shadow-[2px_2px_0px_#1D2430] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none bg-surface-container-lowest"><span class="material-symbols-outlined block text-body-lg">notifications</span><span class="absolute -top-1.5 -right-1.5 bg-error text-on-error font-mono-metric-sm text-[10px] px-1 border border-outline font-bold leading-tight">4</span></button><div class="flex items-center gap-space-xs pl-space-xs border-l-2 border-outline"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border-2 border-outline" src="https://lh3.googleusercontent.com/aida/AEtjO1V_1Shot5C3nLuW2ogAZ0eSQ2c1JdLSSJ6eTaaIofRglUnaH85C7mgH-ZIwsgv7gwHfJwZa2NvM1U2ESIzMlXZw_E2D19Fa7wAaxZ5DP872BDrHRCg56GrFcEa9qecR6PAOF8obskwHq0YVdn8aZbQmXXTYU9-NzD1K14AzRxqO_Eis0cFTMWDaH-Wg1xSNzyCw_MQBMbzmHA_BPynq7zFPtWX_CIy_P3gltnsF9dtBlVYuqKbYKDMxSQ"/><div class="hidden 2xl:flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface leading-tight">M. Vance</span><span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Sales Ops Lead</span></div></div></div></div></header><main class="w-full pt-16 bg-surface flex-1"><div class="flex flex-col w-full">
-<!-- Top Command Context Bar -->
-<div class="w-full bg-surface px-margin-desktop py-space-md">
-<!-- Breadcrumbs & Status Flag -->
-<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-xs">
-<div class="flex items-center gap-space-xs font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">
-<span class="text-primary font-bold">LOGISTICS OPS</span>
-<span class="text-outline-variant">/</span>
-<span class="text-on-surface">STOCK LEDGER &amp; ALLOCATION ENGINE</span>
-<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 bg-surface-container-highest text-on-surface border border-outline">
-<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-<span>LIVE SYNC: 42s AGO</span>
-</span>
-</div>
-<div class="flex items-center gap-space-sm">
-<div class="hidden sm:flex items-center gap-1.5 text-body-sm font-mono-metric-sm text-on-surface-variant bg-surface-container-lowest px-2 py-0.5 border border-outline">
-<span class="material-symbols-outlined text-[16px] text-primary">hub</span>
-<span>ROUTING NODES: ACTIVE (3/3)</span>
-</div>
-</div>
-</div>
-<!-- Page Title & Operational Actions -->
-<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-md border-b-2 border-outline">
-<div class="flex flex-col gap-space-xxs">
-<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight uppercase">
-          Fulfillment &amp; Stock
-        </h1>
-<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
-          Real-time inventory allocation, multi-depot stock levels, and order dispatch staging.
-        </p>
-</div>
-<!-- Tactical Buttons -->
-<div class="flex items-center gap-space-sm shrink-0">
-<button class="px-space-md py-space-xs bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md tracking-wider uppercase hover:bg-surface-container transition-all active:translate-x-[1px] active:translate-y-[1px]" id="openThresholdModal">
-<span class="flex items-center gap-1.5">
-<span class="material-symbols-outlined text-[18px]">tune</span>
-            Reorder Thresholds
-          </span>
-</button>
-<button class="px-space-md py-space-xs bg-primary text-on-primary border-2 border-outline font-label-md text-label-md tracking-wider uppercase shadow-[3px_3px_0px_#1D2430] hover:bg-on-primary-container active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all" id="openTransferModal">
-<span class="flex items-center gap-1.5">
-<span class="material-symbols-outlined text-[18px]">move_up</span>
-            Stock Transfer
-          </span>
-</button>
-</div>
-</div>
-<!-- Top Metric Row: Brutalist Structured Horizontal Band -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md my-space-lg">
-<!-- Metric 1: Staged Orders -->
-<div class="bg-surface-container-lowest border-2 border-outline p-space-md shadow-[3px_3px_0px_#1D2430] flex flex-col justify-between">
-<div class="flex items-start justify-between border-b border-outline-variant pb-space-xs">
-<div class="flex flex-col">
-<span class="font-mono-metric-sm text-mono-metric-sm uppercase tracking-wider text-on-surface-variant">Queue Depth</span>
-<span class="font-headline-md text-headline-md text-on-surface uppercase mt-0.5">8 Orders Staged</span>
-</div>
-<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant font-mono-metric-sm text-[11px] border border-outline">
-            ON TARGET
-          </span>
-</div>
-<div class="pt-space-sm flex items-baseline justify-between">
-<span class="font-mono-metric text-mono-metric text-on-surface">₹1,84,200 <span class="font-body-sm text-on-surface-variant font-normal">pending dispatch</span></span>
-<span class="material-symbols-outlined text-primary text-[20px]">local_shipping</span>
-</div>
-</div>
-<!-- Metric 2: Low-Stock SKU Alert (Emphasized Red Outline) -->
-<div class="bg-surface-container-lowest border-2 border-error p-space-md shadow-[3px_3px_0px_#DC2626] flex flex-col justify-between relative overflow-hidden">
-<div class="absolute top-0 right-0 w-2 h-full bg-error"></div>
-<div class="flex items-start justify-between border-b border-error/30 pb-space-xs">
-<div class="flex flex-col">
-<div class="flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
-<span class="font-mono-metric-sm text-mono-metric-sm uppercase tracking-wider text-error font-bold">Depot Warning</span>
-</div>
-<span class="font-headline-md text-headline-md text-error uppercase mt-0.5">2 Low-Stock SKUs</span>
-</div>
-<span class="px-2 py-0.5 bg-error text-on-error font-mono-metric-sm text-[11px] font-bold border border-outline">
-            BELOW REORDER
-          </span>
-</div>
-<div class="pt-space-sm flex items-center justify-between font-mono-metric-sm text-mono-metric-sm text-on-surface">
-<span class="truncate"><strong class="font-bold text-on-surface">Laptop Pro 14</strong> (East Depot: 4 avail)</span>
-<span class="material-symbols-outlined text-error text-[20px]">error</span>
-</div>
-</div>
-<!-- Metric 3: Depot Utilization Gauges -->
-<div class="bg-surface-container-lowest border-2 border-outline p-space-md shadow-[3px_3px_0px_#1D2430] flex flex-col justify-between">
-<div class="flex items-start justify-between border-b border-outline-variant pb-space-xs">
-<div class="flex flex-col">
-<span class="font-mono-metric-sm text-mono-metric-sm uppercase tracking-wider text-on-surface-variant">Hub Capacities</span>
-<span class="font-headline-md text-headline-md text-on-surface uppercase mt-0.5">Depot Utilization</span>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant text-[20px]">warehouse</span>
-</div>
-<div class="pt-space-xs space-y-2">
-<div>
-<div class="flex justify-between font-mono-metric-sm text-mono-metric-sm mb-1">
-<span>Main Hub: <strong class="text-error">98.4%</strong> (Critical)</span>
-<span class="text-on-surface-variant">Cap: 50,000 u</span>
-</div>
-<div class="w-full h-2 bg-surface-container border border-outline overflow-hidden">
-<div class="h-full bg-error w-[98.4%]"></div>
-</div>
-</div>
-<div>
-<div class="flex justify-between font-mono-metric-sm text-mono-metric-sm mb-1">
-<span>East Depot: <strong class="text-primary">84.1%</strong> (Balanced)</span>
-<span class="text-on-surface-variant">Cap: 15,000 u</span>
-</div>
-<div class="w-full h-2 bg-surface-container border border-outline overflow-hidden">
-<div class="h-full bg-primary w-[84.1%]"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Operational Split Banner Notice (Tactile Ledger Note) -->
-<div class="bg-primary-container border-2 border-outline p-space-sm mb-space-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-xs">
-<div class="flex items-center gap-space-xs font-mono-metric text-mono-metric text-on-primary-container">
-<span class="material-symbols-outlined text-[20px]">info</span>
-<span>INVENTORY DERIVATION INVARIANT: AVAILABLE = [ON HAND] - [RESERVED]. LOCK VERIFIED.</span>
-</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-primary-container uppercase tracking-wider">Automated Re-calculation Engine v4.2</span>
-</div>
-<!-- Section 1: Multi-Depot Inventory Ledger -->
-<section class="flex flex-col gap-space-sm mb-space-2xl">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
-<div class="flex items-center gap-space-xs">
-<div class="w-3 h-3 bg-primary border border-outline"></div>
-<h2 class="font-headline-md text-headline-md text-on-surface uppercase tracking-tight">
-            Multi-Depot Inventory Ledger
-          </h2>
-<span class="px-2 py-0.5 bg-surface-container font-mono-metric-sm text-mono-metric-sm border border-outline text-on-surface-variant">
-            3 Items Shown
-          </span>
-</div>
-<!-- Ledger Action & Filter Controls -->
-<div class="flex flex-wrap items-center gap-space-xs">
-<!-- Search SKU Input -->
-<div class="relative flex items-center">
-<span class="material-symbols-outlined absolute left-2 text-[18px] text-on-surface-variant pointer-events-none">search</span>
-<input class="pl-8 pr-3 py-1 bg-surface-container-lowest border-2 border-outline font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3]" id="skuSearchInput" placeholder="Search SKU or Product..." type="text"/>
-</div>
-<!-- Depot Selector -->
-<div class="relative">
-<select class="appearance-none bg-surface-container-lowest border-2 border-outline px-3 py-1 pr-8 font-mono-metric-sm text-mono-metric-sm uppercase text-on-surface focus:outline-none cursor-pointer" id="depotFilterSelect">
-<option value="ALL">All Depots</option>
-<option value="Main Warehouse">Main Warehouse</option>
-<option value="East Depot">East Depot</option>
-<option value="Central Staging">Central Staging</option>
-</select>
-<span class="material-symbols-outlined absolute right-1.5 top-1.5 text-[18px] pointer-events-none text-on-surface-variant">expand_more</span>
-</div>
-<!-- Category Selector -->
-<div class="relative">
-<select class="appearance-none bg-surface-container-lowest border-2 border-outline px-3 py-1 pr-8 font-mono-metric-sm text-mono-metric-sm uppercase text-on-surface focus:outline-none cursor-pointer" id="categoryFilterSelect">
-<option value="ALL">All Categories</option>
-<option value="HW">Hardware (HW)</option>
-<option value="SV">Services / Kits (SV)</option>
-</select>
-<span class="material-symbols-outlined absolute right-1.5 top-1.5 text-[18px] pointer-events-none text-on-surface-variant">expand_more</span>
-</div>
-<!-- Export Ledger -->
-<button class="px-3 py-1 bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container transition-all flex items-center gap-1 active:translate-x-[1px] active:translate-y-[1px]" id="exportLedgerBtn">
-<span class="material-symbols-outlined text-[16px]">file_download</span>
-            Export Ledger
-          </button>
-</div>
-</div>
-<!-- Ledger Table Container with Solid 2px Border -->
-<div class="border-2 border-outline bg-surface-container-lowest overflow-x-auto shadow-[3px_3px_0px_#1D2430]">
-<table class="w-full text-left border-collapse" id="inventoryTable">
-<thead>
-<tr class="bg-surface-dim border-b-2 border-outline font-mono-metric-sm text-mono-metric-sm text-on-surface uppercase tracking-wider">
-<th class="py-2.5 px-space-md border-r border-outline-variant">Product / SKU</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant">Depot Location</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant text-right">On Hand</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant text-right">Reserved</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant text-right bg-surface-container-high font-bold text-primary">Available (Derived)</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant text-right">Reorder Point</th>
-<th class="py-2.5 px-space-md text-center">Stock Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant font-mono-metric text-mono-metric text-on-surface">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low transition-colors item-row" data-depot="Main Warehouse" data-sku="HW-LP14">
-<td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-on-surface leading-tight">Laptop Pro 14</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">SKU: HW-LP14</span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant">
-<span class="inline-flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-outline"></span>
-                  Main Warehouse
-                </span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right">40</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">18</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-primary bg-primary-container/30">22</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">15</td>
-<td class="py-space-xs px-space-md text-center">
-<span class="inline-block px-2 py-0.5 border border-outline bg-[#E7F6EC] text-[#0A6C35] font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
-                  IN STOCK
-                </span>
-</td>
-</tr>
-<!-- Row 2 (Low stock) -->
-<tr class="hover:bg-surface-container-low transition-colors bg-error-container/20 item-row" data-depot="East Depot" data-sku="HW-LP14">
-<td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-error leading-tight">Laptop Pro 14</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-error">SKU: HW-LP14</span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant font-bold text-on-surface">
-<span class="inline-flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-error"></span>
-                  East Depot
-                </span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right">10</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">6</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-error bg-error-container/60">4</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">10</td>
-<td class="py-space-xs px-space-md text-center">
-<span class="inline-block px-2 py-0.5 border border-error bg-error text-on-error font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
-                  CRITICAL LOW
-                </span>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-surface-container-low transition-colors item-row" data-depot="Main Warehouse" data-sku="HW-DCK-02">
-<td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-on-surface leading-tight">Thunderbolt Docking Station</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">SKU: HW-DCK-02</span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant">
-<span class="inline-flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-outline"></span>
-                  Main Warehouse
-                </span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right">65</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">12</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-primary bg-primary-container/30">53</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">20</td>
-<td class="py-space-xs px-space-md text-center">
-<span class="inline-block px-2 py-0.5 border border-outline bg-surface-container text-on-surface font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
-                  OPTIMAL
-                </span>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="hover:bg-surface-container-low transition-colors item-row" data-depot="East Depot" data-sku="HW-DCK-02">
-<td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-on-surface leading-tight">Thunderbolt Docking Station</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">SKU: HW-DCK-02</span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant">
-<span class="inline-flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-outline"></span>
-                  East Depot
-                </span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right">25</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">4</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-primary bg-primary-container/30">21</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">10</td>
-<td class="py-space-xs px-space-md text-center">
-<span class="inline-block px-2 py-0.5 border border-outline bg-surface-container text-on-surface font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
-                  OPTIMAL
-                </span>
-</td>
-</tr>
-<!-- Row 5 -->
-<tr class="hover:bg-surface-container-low transition-colors item-row" data-depot="Central Staging" data-sku="SV-SET-TK">
-<td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-on-surface leading-tight">Onsite Setup Toolkits</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">SKU: SV-SET-TK</span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant">
-<span class="inline-flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-outline"></span>
-                  Central Staging
-                </span>
-</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right">14</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">2</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-primary bg-primary-container/30">12</td>
-<td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">5</td>
-<td class="py-space-xs px-space-md text-center">
-<span class="inline-block px-2 py-0.5 border border-outline bg-[#E7F6EC] text-[#0A6C35] font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
-                  IN STOCK
-                </span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="flex items-center justify-between text-body-sm text-on-surface-variant font-mono-metric-sm px-1">
-<span>Displaying 3 of 5 SKU depot pairings</span>
-<span class="text-on-surface font-semibold">Formula: Available = [On Hand] - [Reserved]</span>
-</div>
-</section>
-<!-- Section 2: Orders Awaiting Fulfillment -->
-<section class="flex flex-col gap-space-sm pb-space-2xl">
-<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-<div class="flex items-center gap-space-xs">
-<div class="w-3 h-3 bg-tertiary border border-outline"></div>
-<h2 class="font-headline-md text-headline-md text-on-surface uppercase tracking-tight">
-            Orders Awaiting Fulfillment
-          </h2>
-</div>
-<div class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">
-          AUTOMATIC SPLIT RECOMMENDATIONS ACTIVE
-        </div>
-</div>
-<!-- Filter Tabs with Hard-Brutalist Active State -->
-<div class="flex flex-wrap gap-space-xs border-b-2 border-outline pb-px" id="orderFilterTabs">
-<button class="order-tab px-space-md py-1.5 border-2 border-outline bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] font-bold text-primary" data-tab="all">
-          All (8)
-        </button>
-<button class="order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all" data-tab="split">
-          Split Required (3)
-        </button>
-<button class="order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all" data-tab="backordered">
-          Backordered (2)
-        </button>
-<button class="order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all" data-tab="ready">
-          Ready to Ship (3)
-        </button>
-</div>
-<!-- Fulfillment Queue Table -->
-<div class="border-2 border-outline bg-surface-container-lowest overflow-x-auto shadow-[3px_3px_0px_#1D2430]">
-<table class="w-full text-left border-collapse" id="ordersQueueTable">
-<thead>
-<tr class="bg-surface-dim border-b-2 border-outline font-mono-metric-sm text-mono-metric-sm text-on-surface uppercase tracking-wider">
-<th class="py-2.5 px-space-md border-r border-outline-variant">Order / Quote ID</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant">Customer</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant text-right">Allocated Items</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant">Routing Strategy</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant">Assigned Depots</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant text-center">Priority</th>
-<th class="py-2.5 px-space-md border-r border-outline-variant text-center">Status</th>
-<th class="py-2.5 px-space-md text-center">Action</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant font-mono-metric text-mono-metric text-on-surface">
-<!-- Row 1: ORD-2291 / Acme Corp (Highlight) -->
-<tr class="bg-primary-container/20 hover:bg-primary-container/30 transition-colors order-item" data-category="split">
-<td class="py-space-md px-space-md border-r border-outline-variant">
-<div class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">ORD-2291</div>
-<div class="font-mono-metric-sm text-mono-metric-sm text-primary font-bold">Quote: Q-1042</div>
-</td>
-<td class="py-space-md px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-on-surface">Acme Corp</div>
-<span class="inline-block px-1.5 py-0.2 bg-surface-container border border-outline font-mono-metric-sm text-[10px] uppercase font-bold">Enterprise Tier</span>
-</td>
-<td class="py-space-md px-space-md border-r border-outline-variant text-right">
-<div class="font-bold text-on-surface">24 units total</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">3 SKUs</span>
-</td>
-<td class="py-space-md px-space-md border-r border-outline-variant">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed border border-outline font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
-<span class="material-symbols-outlined text-[14px]">call_split</span>
-                  Multi-Depot Split
-                </span>
-</td>
-<td class="py-space-md px-space-md border-r border-outline-variant font-body-sm text-body-sm">
-<div class="font-mono-metric-sm text-on-surface"><span class="font-bold">Main Hub</span> (18)</div>
-<div class="font-mono-metric-sm text-on-surface"><span class="font-bold">East Depot</span> (6)</div>
-</td>
-<td class="py-space-md px-space-md border-r border-outline-variant text-center">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-error-container text-error font-mono-metric-sm text-mono-metric-sm uppercase font-bold border border-error">
-<span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
-                  HIGH
-                </span>
-</td>
-<td class="py-space-md px-space-md border-r border-outline-variant text-center">
-<span class="inline-block px-2 py-1 bg-[#FEF3C7] text-[#92400E] border border-outline font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
-                  Split Pending
-                </span>
-</td>
-<td class="py-space-md px-space-md text-center">
-<button class="review-split-btn px-space-md py-1.5 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md uppercase tracking-wider shadow-[3px_3px_0px_#1D2430] hover:bg-on-primary-container active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all" data-order="ORD-2291">
-                  Review Split
-                </button>
-</td>
-</tr>
-<!-- Row 2: ORD-2285 / Zenith Co -->
-<tr class="hover:bg-surface-container-low transition-colors order-item" data-category="backordered">
-<td class="py-space-sm px-space-md border-r border-outline-variant">
-<div class="font-headline-sm text-headline-sm text-on-surface leading-tight">ORD-2285</div>
-<div class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Quote: Q-1030</div>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-on-surface">Zenith Co</div>
-<span class="font-mono-metric-sm text-[11px] text-on-surface-variant">Standard Commercial</span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-right">
-<div class="font-bold text-on-surface">15 units</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">1 SKU</span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-surface-container border border-outline font-mono-metric-sm text-mono-metric-sm uppercase">
-                  Single Depot
-                </span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant font-mono-metric-sm">
-                East Depot (15)
-              </td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-center">
-<span class="font-mono-metric-sm text-on-surface-variant uppercase">Standard</span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-center">
-<span class="inline-block px-2 py-0.5 bg-error text-on-error font-mono-metric-sm text-mono-metric-sm uppercase font-bold border border-outline">
-                  Backorder
-                </span>
-</td>
-<td class="py-space-sm px-space-md text-center">
-<button class="px-space-sm py-1 bg-surface-container-lowest text-on-surface border border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container transition-all">
-                  View Allocation
-                </button>
-</td>
-</tr>
-<!-- Row 3: ORD-2289 / Nova Retail -->
-<tr class="hover:bg-surface-container-low transition-colors order-item" data-category="ready">
-<td class="py-space-sm px-space-md border-r border-outline-variant">
-<div class="font-headline-sm text-headline-sm text-on-surface leading-tight">ORD-2289</div>
-<div class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Quote: Q-1035</div>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-on-surface">Nova Retail</div>
-<span class="font-mono-metric-sm text-[11px] text-on-surface-variant">Direct Partner</span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-right">
-<div class="font-bold text-on-surface">10 units</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">2 SKUs</span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-surface-container border border-outline font-mono-metric-sm text-mono-metric-sm uppercase">
-                  Single Depot
-                </span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant font-mono-metric-sm">
-                Main Warehouse (10)
-              </td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-center">
-<span class="font-mono-metric-sm text-on-surface-variant uppercase">Standard</span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-center">
-<span class="inline-block px-2 py-0.5 bg-[#E7F6EC] text-[#0A6C35] font-mono-metric-sm text-mono-metric-sm uppercase font-bold border border-outline">
-                  Ready to Pick
-                </span>
-</td>
-<td class="py-space-sm px-space-md text-center">
-<button class="dispatch-action-btn px-space-md py-1 bg-surface-container text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container-high transition-all active:translate-x-[1px] active:translate-y-[1px]">
-                  Dispatch
-                </button>
-</td>
-</tr>
-<!-- Row 4: ORD-2290 / Beta Industries -->
-<tr class="hover:bg-surface-container-low transition-colors order-item" data-category="split">
-<td class="py-space-sm px-space-md border-r border-outline-variant">
-<div class="font-headline-sm text-headline-sm text-on-surface leading-tight">ORD-2290</div>
-<div class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Quote: Q-1039</div>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant font-body-md">
-<div class="font-headline-sm text-headline-sm text-on-surface">Beta Industries</div>
-<span class="font-mono-metric-sm text-[11px] text-on-surface-variant">High Volume</span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-right">
-<div class="font-bold text-on-surface">45 units</div>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">4 SKUs</span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed border border-outline font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
-<span class="material-symbols-outlined text-[14px]">call_split</span>
-                  Multi-Depot Split
-                </span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant font-mono-metric-sm">
-                Main Hub + Transit
-              </td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-center">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-error-container text-error font-mono-metric-sm text-mono-metric-sm uppercase font-bold border border-error">
-                  URGENT
-                </span>
-</td>
-<td class="py-space-sm px-space-md border-r border-outline-variant text-center">
-<span class="inline-block px-2 py-0.5 bg-surface-container text-on-surface-variant font-mono-metric-sm text-mono-metric-sm uppercase border border-outline">
-                  Allocating
-                </span>
-</td>
-<td class="py-space-sm px-space-md text-center">
-<button class="review-split-btn px-space-md py-1 bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container transition-all" data-order="ORD-2290">
-                  Review Split
-                </button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-</div>
-<!-- Interactive Slide-over Drawer: Review Multi-Depot Split (ORD-2291 Acme Corp) -->
-<div class="fixed inset-0 bg-outline/60 z-50 hidden flex justify-end transition-opacity" id="splitDrawerBackdrop">
-<div class="w-full max-w-2xl bg-surface h-full border-l-2 border-outline flex flex-col justify-between overflow-y-auto transform transition-transform duration-150" id="splitDrawerPanel">
-<!-- Drawer Header -->
-<div class="p-space-lg bg-surface-container border-b-2 border-outline flex items-center justify-between">
-<div class="flex flex-col">
-<div class="flex items-center gap-2">
-<span class="font-mono-metric text-mono-metric bg-primary text-on-primary px-2 py-0.5 border border-outline uppercase">ROUTING ENGINE</span>
-<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">DISPATCH STAGING</span>
-</div>
-<h3 class="font-headline-lg text-headline-lg text-on-surface uppercase mt-1">Split Strategy: ORD-2291</h3>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Customer: Acme Corp (Quote Q-1042) · High Priority</span>
-</div>
-<button class="p-1 border-2 border-outline bg-surface-container-lowest hover:bg-surface-dim active:translate-x-[1px] active:translate-y-[1px]" id="closeDrawerBtn">
-<span class="material-symbols-outlined block">close</span>
-</button>
-</div>
-<!-- Drawer Content Body -->
-<div class="p-space-lg flex-1 space-y-space-lg bg-surface">
-<!-- Algorithm Explanation Callout -->
-<div class="border-2 border-outline bg-surface-container-lowest p-space-md shadow-[3px_3px_0px_#1D2430]">
-<div class="flex items-center gap-2 font-mono-metric-sm text-mono-metric-sm text-primary font-bold uppercase mb-1">
-<span class="material-symbols-outlined text-[18px]">schema</span>
-            Optimization Algorithm Match: Min Cost &amp; Proximity
-          </div>
-<p class="font-body-md text-body-md text-on-surface">
-            Due to stock constraints at East Depot (4 avail / 10 required for SKU HW-LP14), order dispatch has been partitioned into two shipments to meet Acme Corp delivery SLAs.
-          </p>
-</div>
-<!-- Split Partition 1 -->
-<div class="border-2 border-outline bg-surface-container-lowest">
-<div class="bg-surface-dim px-space-md py-space-xs border-b-2 border-outline flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 bg-primary border border-outline"></span>
-<span class="font-headline-sm text-headline-sm text-on-surface uppercase font-bold">Consignment 1 of 2: Main Hub Depot</span>
-</div>
-<span class="px-2 py-0.5 bg-surface-container border border-outline font-mono-metric-sm text-mono-metric-sm font-bold">
-              18 UNITS
-            </span>
-</div>
-<div class="p-space-md space-y-space-xs">
-<div class="flex justify-between items-center py-1 border-b border-outline-variant font-mono-metric text-mono-metric">
-<span>Laptop Pro 14 (HW-LP14)</span>
-<span class="font-bold">6 Units</span>
-</div>
-<div class="flex justify-between items-center py-1 border-b border-outline-variant font-mono-metric text-mono-metric">
-<span>Thunderbolt Docking Station (HW-DCK-02)</span>
-<span class="font-bold">12 Units</span>
-</div>
-<div class="pt-2 flex items-center justify-between text-body-sm font-mono-metric-sm text-on-surface-variant">
-<span>Courier: BlueDart Enterprise Priority</span>
-<span class="text-primary font-bold">Ready to Dispatch</span>
-</div>
-</div>
-</div>
-<!-- Split Partition 2 -->
-<div class="border-2 border-outline bg-surface-container-lowest">
-<div class="bg-surface-dim px-space-md py-space-xs border-b-2 border-outline flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 bg-tertiary-container border border-outline"></span>
-<span class="font-headline-sm text-headline-sm text-on-surface uppercase font-bold">Consignment 2 of 2: East Depot</span>
-</div>
-<span class="px-2 py-0.5 bg-surface-container border border-outline font-mono-metric-sm text-mono-metric-sm font-bold">
-              6 UNITS
-            </span>
-</div>
-<div class="p-space-md space-y-space-xs">
-<div class="flex justify-between items-center py-1 border-b border-outline-variant font-mono-metric text-mono-metric">
-<span>Laptop Pro 14 (HW-LP14)</span>
-<span class="font-bold text-error">4 Units (Stock Drain)</span>
-</div>
-<div class="flex justify-between items-center py-1 border-b border-outline-variant font-mono-metric text-mono-metric">
-<span>Onsite Setup Toolkits (SV-SET-TK)</span>
-<span class="font-bold">2 Units</span>
-</div>
-<div class="pt-2 flex items-center justify-between text-body-sm font-mono-metric-sm text-on-surface-variant">
-<span>Courier: Delhivery Surface Express</span>
-<span class="text-on-surface font-bold">Awaiting Pick Slip</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Drawer Sticky Footer Actions -->
-<div class="p-space-md bg-surface-container-high border-t-2 border-outline flex items-center justify-between gap-space-md">
-<button class="px-space-md py-space-xs bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container" id="cancelDrawerBtn">
-          Cancel
-        </button>
-<div class="flex items-center gap-space-sm">
-<button class="px-space-md py-space-xs bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container" id="editAllocationBtn">
-            Adjust Quantities
-          </button>
-<button class="px-space-lg py-space-xs bg-primary text-on-primary border-2 border-outline font-label-md text-label-md uppercase tracking-wider shadow-[3px_3px_0px_#1D2430] hover:bg-on-primary-container active:translate-x-[3px] active:translate-y-[3px] active:shadow-none" id="approveSplitBtn">
-            Approve &amp; Generate Slips
-          </button>
-</div>
-</div>
-</div>
-</div>
-<!-- Stock Transfer Modal -->
-<div class="fixed inset-0 bg-outline/60 z-50 hidden flex items-center justify-center p-4" id="transferModal">
-<div class="w-full max-w-lg bg-surface border-2 border-outline shadow-[4px_4px_0px_#1D2430] p-space-lg flex flex-col gap-space-md">
-<div class="flex items-center justify-between border-b-2 border-outline pb-space-xs">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary">move_up</span>
-<h3 class="font-headline-md text-headline-md text-on-surface uppercase">Inter-Depot Stock Transfer</h3>
-</div>
-<button class="p-1 border border-outline hover:bg-surface-container" id="closeTransferModal">
-<span class="material-symbols-outlined block text-[18px]">close</span>
-</button>
-</div>
-<div class="space-y-space-sm font-mono-metric-sm text-mono-metric-sm">
-<div>
-<label class="block uppercase font-bold text-on-surface mb-1">SKU to Relocate</label>
-<select class="w-full border-2 border-outline p-2 bg-surface-container-lowest font-body-md text-body-md text-on-surface">
-<option>HW-LP14 - Laptop Pro 14 (Main: 40, East: 10)</option>
-<option>HW-DCK-02 - Thunderbolt Docking Station (Main: 65, East: 25)</option>
-<option>SV-SET-TK - Onsite Setup Toolkits (Central: 14)</option>
-</select>
-</div>
-<div class="grid grid-cols-2 gap-space-sm">
-<div>
-<label class="block uppercase font-bold text-on-surface mb-1">Source Depot</label>
-<select class="w-full border-2 border-outline p-2 bg-surface-container-lowest font-body-md text-body-md text-on-surface">
-<option>Main Warehouse</option>
-<option>East Depot</option>
-</select>
-</div>
-<div>
-<label class="block uppercase font-bold text-on-surface mb-1">Destination Depot</label>
-<select class="w-full border-2 border-outline p-2 bg-surface-container-lowest font-body-md text-body-md text-on-surface">
-<option>East Depot</option>
-<option>Main Warehouse</option>
-</select>
-</div>
-</div>
-<div>
-<label class="block uppercase font-bold text-on-surface mb-1">Transfer Units (Monospace)</label>
-<input class="w-full border-2 border-outline p-2 bg-surface-container-lowest font-mono-metric text-mono-metric text-on-surface" max="40" min="1" type="number" value="10"/>
-</div>
-</div>
-<div class="flex items-center justify-end gap-space-sm border-t-2 border-outline pt-space-md">
-<button class="px-space-md py-1 border-2 border-outline bg-surface-container-lowest uppercase font-label-md" id="cancelTransferModal">Cancel</button>
-<button class="px-space-md py-1 border-2 border-outline bg-primary text-on-primary uppercase font-label-md shadow-[3px_3px_0px_#1D2430] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none" id="submitTransferModal">Initiate Transit</button>
-</div>
-</div>
-</div>
-<!-- Client-side Interactive Script -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. Table Filter: SKU & Depot Logic
-      const skuInput = document.getElementById('skuSearchInput');
-      const depotSelect = document.getElementById('depotFilterSelect');
-      const categorySelect = document.getElementById('categoryFilterSelect');
-      const rows = document.querySelectorAll('.item-row');
-
-      function filterLedger() {
-        const query = skuInput.value.toLowerCase();
-        const selectedDepot = depotSelect.value;
-        const selectedCat = categorySelect.value;
-
-        rows.forEach(row => {
-          const rowDepot = row.getAttribute('data-depot');
-          const rowSku = row.getAttribute('data-sku');
-          const text = row.innerText.toLowerCase();
-
-          const matchesSearch = !query || text.includes(query);
-          const matchesDepot = selectedDepot === 'ALL' || rowDepot === selectedDepot;
-          const matchesCat = selectedCat === 'ALL' || rowSku.startsWith(selectedCat);
-
-          if (matchesSearch && matchesDepot && matchesCat) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
-        });
-      }
-
-      skuInput.addEventListener('input', filterLedger);
-      depotSelect.addEventListener('change', filterLedger);
-      categorySelect.addEventListener('change', filterLedger);
-
-      // 2. Orders Queue Tab Filtering
-      const orderTabs = document.querySelectorAll('.order-tab');
-      const orderItems = document.querySelectorAll('.order-item');
-
-      orderTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          orderTabs.forEach(t => {
-            t.className = 'order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all';
-          });
-          tab.className = 'order-tab px-space-md py-1.5 border-2 border-outline bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider shadow-[3px_3px_0px_#1D2430] translate-x-[-1px] translate-y-[-1px] font-bold text-primary';
-
-          const tabType = tab.getAttribute('data-tab');
-          orderItems.forEach(item => {
-            const category = item.getAttribute('data-category');
-            if (tabType === 'all' || tabType === category) {
-              item.style.display = '';
-            } else {
-              item.style.display = 'none';
-            }
-          });
-        });
-      });
-
-      // 3. Slide-over Split Review Drawer
-      const drawer = document.getElementById('splitDrawerBackdrop');
-      const closeDrawerBtn = document.getElementById('closeDrawerBtn');
-      const cancelDrawerBtn = document.getElementById('cancelDrawerBtn');
-      const approveSplitBtn = document.getElementById('approveSplitBtn');
-      const reviewButtons = document.querySelectorAll('.review-split-btn');
-
-      function openDrawer() {
-        drawer.classList.remove('hidden');
-      }
-
-      function closeDrawer() {
-        drawer.classList.add('hidden');
-      }
-
-      reviewButtons.forEach(btn => btn.addEventListener('click', openDrawer));
-      closeDrawerBtn.addEventListener('click', closeDrawer);
-      cancelDrawerBtn.addEventListener('click', closeDrawer);
-      drawer.addEventListener('click', (e) => {
-        if (e.target === drawer) closeDrawer();
-      });
-
-      approveSplitBtn.addEventListener('click', () => {
-        alert('Split Consignments Approved. Dispatch slips and warehouse picklists dispatched to Main Hub and East Depot.');
-        closeDrawer();
-      });
-
-      // 4. Stock Transfer Modal
-      const transferModal = document.getElementById('transferModal');
-      const openTransferModal = document.getElementById('openTransferModal');
-      const closeTransferModal = document.getElementById('closeTransferModal');
-      const cancelTransferModal = document.getElementById('cancelTransferModal');
-      const submitTransferModal = document.getElementById('submitTransferModal');
-
-      openTransferModal.addEventListener('click', () => transferModal.classList.remove('hidden'));
-      closeTransferModal.addEventListener('click', () => transferModal.classList.add('hidden'));
-      cancelTransferModal.addEventListener('click', () => transferModal.classList.add('hidden'));
-      submitTransferModal.addEventListener('click', () => {
-        alert('Inter-depot transfer manifest registered. 10 Units staged for transit.');
-        transferModal.classList.add('hidden');
-      });
-
-      // 5. Reorder Threshold Placeholder
-      document.getElementById('openThresholdModal').addEventListener('click', () => {
-        alert('Reorder thresholds configuration opened: Low stock triggers set to 15% depot safety buffer.');
-      });
-
-      // 6. Export Ledger Trigger
-      document.getElementById('exportLedgerBtn').addEventListener('click', () => {
-        alert('CSV Export Generated: "DealFlow360_Inventory_Ledger_Live.csv"');
-      });
-    });
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Courier+Prime:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <style>
+    @layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-container": "#ffd5c5", "secondary-container": "#dce2f3", "on-primary-fixed": "#00164d", "error": "#DC2626", "surface-container-low": "#F7F4EC", "on-secondary-fixed": "#151c27", "inverse-primary": "#b5c4ff", "primary-fixed": "#dce1ff", "inverse-surface": "#2e3038", "inverse-on-surface": "#f0f0fb", "on-secondary": "#ffffff", "on-error-container": "#93000a", "surface-container-highest": "#DCD5C6", "tertiary-fixed": "#ffdbcd", "surface-bright": "#faf8ff", "surface-dim": "#E9E3D8", "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#ffb597", "on-background": "#191b23", "surface-container-lowest": "#FFFFFF", "on-secondary-fixed-variant": "#404754", "tertiary": "#832f00", "outline-variant": "#D1C9BC", "surface-container": "#EFEAE0", "on-tertiary-fixed-variant": "#7e2c00", "on-error": "#ffffff", "surface": "#F4F0E7", "outline": "#1D2430", "secondary-fixed": "#dce2f3", "on-surface-variant": "#434654", "surface-container-high": "#E5DFD3", "error-container": "#ffdad6", "primary-container": "#E0E7FA", "on-primary-container": "#173E9D", "on-primary": "#ffffff", "secondary-fixed-dim": "#c0c7d7", "tertiary-container": "#aa3f00", "on-surface": "#191b23", "primary": "#003fb3", "secondary": "#585f6c", "primary-fixed-dim": "#b5c4ff", "on-secondary-container": "#5e6573", "surface-tint": "#1f54d3", "background": "#faf8ff", "on-primary-fixed-variant": "#003cad", "surface-variant": "#e2e1ec", "on-tertiary-fixed": "#360f00" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1rem", "space-sm": "0.75rem", "margin-desktop": "2rem", "margin-mobile": "1rem", "space-xl": "2rem", "border-width": "1.5px", "space-xxs": "0.25rem", "space-xs": "0.5rem", "space-2xl": "3rem" }, "fontFamily": { "label-sm": ["IBM Plex Sans"], "headline-md": ["IBM Plex Sans"], "body-md": ["IBM Plex Sans"], "headline-lg-mobile": ["IBM Plex Sans"], "headline-lg": ["IBM Plex Sans"], "body-sm": ["IBM Plex Sans"], "label-md": ["IBM Plex Sans"], "headline-sm": ["IBM Plex Sans"], "mono-metric": ["Courier Prime"], "mono-metric-sm": ["Courier Prime"], "body-lg": ["IBM Plex Sans"] }, "fontSize": { "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "mono-metric": ["14px", { "lineHeight": "20px", "fontWeight": "700" }], "mono-metric-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }] } } } };
   </script>
-</div></main><footer class="w-full bg-surface-dim border-t-2 border-outline mt-auto"><div class="w-full px-margin-desktop py-space-xs flex flex-col md:flex-row items-center justify-between gap-space-sm font-mono-metric-sm text-mono-metric-sm text-on-surface-variant"><div>© 2025 DealFlow360 Enterprise Engine. All rights reserved.</div><div class="flex items-center gap-space-md"><span>SOC2 Type II Certified</span><span class="w-1.5 h-1.5 bg-outline rounded-full"></span><span>ISO 27001 Verified</span><span class="w-1.5 h-1.5 bg-outline rounded-full"></span><a class="text-on-surface hover:underline" href="#">API Documentation</a></div></div></footer></body></html>
+  <link href="../assets/css/app.css" rel="stylesheet"/>
+  <script defer src="../assets/js/app.js"></script>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col">
+  <header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b-2 border-outline">
+    <div class="h-16 w-full px-margin-desktop flex items-center justify-between gap-space-md">
+      <div class="flex items-center gap-space-lg shrink-0">
+        <div class="flex items-center gap-space-xs">
+          <img alt="DealFlow360 geometric logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VHTIU3t9-5rRk-CEKSXno3byMT0JASngdLJRV904p8U_SpkyPTzh2Xuu2dCnJCDxbo4K___rwJ946wLetzcW5xB3TqrwF2alarH-2m2wnuy8Laa0Cf32rKxeg8N1dCEw7hU7ii2cpAOTCZ6ID0zI-0qLvWGutArulL4Jcr7wWjc4vuyAhgri9_D5Erubic9uiR5RE006yohwQcycMiadCCVMNNT7E2dd26FsSdcrpyoXXQ4pNfsg4WRKQ"/>
+          <div class="flex flex-col">
+            <span class="font-headline-sm text-headline-sm text-on-surface tracking-tight uppercase leading-none">DealFlow360</span>
+            <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase tracking-wider">Operations Engine</span>
+          </div>
+        </div>
+        <nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-primary text-on-primary border-2 border-outline shadow-sm font-label-md">
+          <a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="dashboard" href="#">Dashboard</a>
+          <a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="quotations" href="#">Quotations</a>
+          <a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="approvals" href="#">Approvals</a>
+          <a aria-current="page" class="px-space-xs py-1 transition-all bg-primary text-on-primary border-2 border-outline shadow-sm font-label-md" data-path="fulfillment" href="#">Fulfillment</a>
+          <a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="subscriptions" href="#">Subscriptions</a>
+          <a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="invoices" href="#">Invoices</a>
+          <a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="deal-health" href="#">Deal Health</a>
+          <a class="px-space-xs py-1 border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="admin-reports" href="#">Reports</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden md:flex items-center bg-surface-container-lowest border-2 border-outline px-space-xs py-1 shadow-sm">
+          <span class="material-symbols-outlined text-body-lg text-on-surface-variant mr-space-xxs">search</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">Search operations...</span>
+        </div>
+        <button class="relative p-1 text-on-surface hover:bg-surface-container border-2 border-outline shadow-sm bg-surface-container-lowest transition-all hover:opacity-90">
+          <span class="material-symbols-outlined block text-body-lg">notifications</span>
+          <span class="absolute -top-1.5 -right-1.5 bg-error text-on-error font-mono-metric-sm text-[10px] px-1 border border-outline font-bold leading-tight">4</span>
+        </button>
+        <div class="flex items-center gap-space-xs pl-space-xs border-l-2 border-outline">
+          <img alt="Profile" class="w-8 h-8 rounded-full object-cover border-2 border-outline" src="https://lh3.googleusercontent.com/aida/AEtjO1V_1Shot5C3nLuW2ogAZ0eSQ2c1JdLSSJ6eTaaIofRglUnaH85C7mgH-ZIwsgv7gwHfJwZa2NvM1U2ESIzMlXZw_E2D19Fa7wAaxZ5DP872BDrHRCg56GrFcEa9qecR6PAOF8obskwHq0YVdn8aZbQmXXTYU9-NzD1K14AzRxqO_Eis0cFTMWDaH-Wg1xSNzyCw_MQBMbzmHA_BPynq7zFPtWX_CIy_P3gltnsF9dtBlVYuqKbYKDMxSQ"/>
+          <div class="hidden 2xl:flex flex-col text-left">
+            <span class="font-label-md text-label-md text-on-surface leading-tight">M. Vance</span>
+            <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Sales Ops Lead</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="w-full pt-16 bg-surface flex-1">
+    <div class="flex flex-col w-full">
+      <div class="w-full bg-surface px-margin-desktop py-space-md">
+        
+        <!-- Page Title & Operational Actions -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-md border-b-2 border-outline">
+          <div class="flex flex-col gap-space-xxs">
+            <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight uppercase">
+              Fulfillment &amp; Stock
+            </h1>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+              Real-time inventory allocation, multi-depot stock levels, and order dispatch staging.
+            </p>
+          </div>
+          
+          <!-- Tactical Buttons -->
+          <div class="flex items-center gap-space-sm shrink-0">
+            <button class="px-space-md py-space-xs bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md tracking-wider uppercase hover:bg-surface-container transition-all" id="openThresholdModal">
+              <span class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">tune</span>
+                Reorder Thresholds
+              </span>
+            </button>
+            <button class="px-space-md py-space-xs bg-primary text-on-primary border-2 border-outline font-label-md text-label-md tracking-wider uppercase shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all" id="openTransferModal">
+              <span class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">move_up</span>
+                Stock Transfer
+              </span>
+            </button>
+          </div>
+        </div>
 
+        <!-- Top Metric Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md my-space-lg">
+          <!-- Metric 1: Staged Orders -->
+          <div class="bg-surface-container-lowest border-2 border-outline p-space-md shadow-sm flex flex-col justify-between">
+            <div class="flex items-start justify-between border-b border-outline-variant pb-space-xs">
+              <div class="flex flex-col">
+                <span class="font-mono-metric-sm text-mono-metric-sm uppercase tracking-wider text-on-surface-variant">Queue Depth</span>
+                <span class="font-headline-md text-headline-md text-on-surface uppercase mt-0.5">8 Orders Staged</span>
+              </div>
+              <span class="px-2 py-0.5 bg-surface-container text-on-surface-variant font-mono-metric-sm text-[11px] border border-outline">
+                ON TARGET
+              </span>
+            </div>
+            <div class="pt-space-sm flex items-baseline justify-between">
+              <span class="font-mono-metric text-mono-metric text-on-surface">₹1,84,200 <span class="font-body-sm text-on-surface-variant font-normal">pending dispatch</span></span>
+              <span class="material-symbols-outlined text-primary text-[20px]">local_shipping</span>
+            </div>
+          </div>
+
+          <!-- Metric 2: Low-Stock SKU Alert -->
+          <div class="bg-surface-container-lowest border-2 border-error p-space-md shadow-sm flex flex-col justify-between relative overflow-hidden">
+            <div class="flex items-start justify-between border-b border-error/30 pb-space-xs">
+              <div class="flex flex-col">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-error"></span>
+                  <span class="font-mono-metric-sm text-mono-metric-sm uppercase tracking-wider text-error font-bold">Depot Warning</span>
+                </div>
+                <span class="font-headline-md text-headline-md text-error uppercase mt-0.5">2 Low-Stock SKUs</span>
+              </div>
+              <span class="px-2 py-0.5 bg-error text-on-error font-mono-metric-sm text-[11px] font-bold border border-outline">
+                BELOW REORDER
+              </span>
+            </div>
+            <div class="pt-space-sm flex items-center justify-between font-mono-metric-sm text-mono-metric-sm text-on-surface">
+              <span class="truncate"><strong class="font-bold text-on-surface">Laptop Pro 14</strong> (East Depot: 4 avail)</span>
+              <span class="material-symbols-outlined text-error text-[20px]">error</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 1: Multi-Depot Inventory Ledger -->
+        <section class="flex flex-col gap-space-sm mb-space-2xl mt-space-xl">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+            <div class="flex items-center gap-space-xs">
+              <h2 class="font-headline-md text-headline-md text-on-surface uppercase tracking-tight">
+                Multi-Depot Inventory Ledger
+              </h2>
+              <span class="px-2 py-0.5 bg-surface-container font-mono-metric-sm text-mono-metric-sm border border-outline text-on-surface-variant">
+                5 Items Shown
+              </span>
+            </div>
+            
+            <!-- Ledger Action & Filter Controls -->
+            <div class="flex flex-wrap items-center gap-space-xs">
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-2 text-[18px] text-on-surface-variant pointer-events-none">search</span>
+                <input class="pl-8 pr-3 py-1 bg-surface-container-lowest border-2 border-outline font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary focus:shadow-sm" id="skuSearchInput" placeholder="Search SKU or Product..." type="text"/>
+              </div>
+              <div class="relative">
+                <select class="appearance-none bg-surface-container-lowest border-2 border-outline px-3 py-1 pr-8 font-mono-metric-sm text-mono-metric-sm uppercase text-on-surface focus:outline-none cursor-pointer" id="depotFilterSelect">
+                  <option value="ALL">All Depots</option>
+                  <option value="Main Warehouse">Main Warehouse</option>
+                  <option value="East Depot">East Depot</option>
+                  <option value="Central Staging">Central Staging</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-1.5 top-1.5 text-[18px] pointer-events-none text-on-surface-variant">expand_more</span>
+              </div>
+              <div class="relative">
+                <select class="appearance-none bg-surface-container-lowest border-2 border-outline px-3 py-1 pr-8 font-mono-metric-sm text-mono-metric-sm uppercase text-on-surface focus:outline-none cursor-pointer" id="categoryFilterSelect">
+                  <option value="ALL">All Categories</option>
+                  <option value="HW">Hardware (HW)</option>
+                  <option value="SV">Services / Kits (SV)</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-1.5 top-1.5 text-[18px] pointer-events-none text-on-surface-variant">expand_more</span>
+              </div>
+              <button class="px-3 py-1 bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container transition-all flex items-center gap-1" id="exportLedgerBtn">
+                <span class="material-symbols-outlined text-[16px]">file_download</span>
+                Export Ledger
+              </button>
+            </div>
+          </div>
+
+          <!-- Ledger Table Container -->
+          <div class="border-2 border-outline bg-surface-container-lowest overflow-x-auto shadow-sm">
+            <table class="w-full text-left border-collapse" id="inventoryTable">
+              <thead>
+                <tr class="bg-surface-dim border-b-2 border-outline font-mono-metric-sm text-mono-metric-sm text-on-surface uppercase tracking-wider">
+                  <th class="py-2.5 px-space-md border-r border-outline-variant">Product / SKU</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant">Depot Location</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant text-right">On Hand</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant text-right">Reserved</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant text-right bg-surface-container-high font-bold text-primary">Available (Derived)</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant text-right">Reorder Point</th>
+                  <th class="py-2.5 px-space-md text-center">Stock Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-outline-variant font-mono-metric text-mono-metric text-on-surface">
+                <!-- Row 1 -->
+                <tr class="hover:bg-surface-container-low transition-colors item-row" data-depot="Main Warehouse" data-sku="HW-LP14">
+                  <td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-on-surface leading-tight">Laptop Pro 14</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">SKU: HW-LP14</span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant">
+                    <span class="inline-flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-outline"></span>
+                      Main Warehouse
+                    </span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right">40</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">18</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-primary bg-primary-container/30">22</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">15</td>
+                  <td class="py-space-xs px-space-md text-center">
+                    <span class="inline-block px-2 py-0.5 border border-outline bg-[#E7F6EC] text-[#0A6C35] font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
+                      IN STOCK
+                    </span>
+                  </td>
+                </tr>
+                <!-- Row 2 -->
+                <tr class="hover:bg-surface-container-low transition-colors bg-error-container/20 item-row" data-depot="East Depot" data-sku="HW-LP14">
+                  <td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-error leading-tight">Laptop Pro 14</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-error">SKU: HW-LP14</span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant font-bold text-on-surface">
+                    <span class="inline-flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-error"></span>
+                      East Depot
+                    </span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right">10</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">6</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-error bg-error-container/60">4</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">10</td>
+                  <td class="py-space-xs px-space-md text-center">
+                    <span class="inline-block px-2 py-0.5 border border-error bg-error text-on-error font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
+                      CRITICAL LOW
+                    </span>
+                  </td>
+                </tr>
+                <!-- Row 3 -->
+                <tr class="hover:bg-surface-container-low transition-colors item-row" data-depot="Main Warehouse" data-sku="HW-DCK-02">
+                  <td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-on-surface leading-tight">Thunderbolt Docking Station</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">SKU: HW-DCK-02</span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant">
+                    <span class="inline-flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-outline"></span>
+                      Main Warehouse
+                    </span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right">65</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">12</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-primary bg-primary-container/30">53</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">20</td>
+                  <td class="py-space-xs px-space-md text-center">
+                    <span class="inline-block px-2 py-0.5 border border-outline bg-surface-container text-on-surface font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
+                      OPTIMAL
+                    </span>
+                  </td>
+                </tr>
+                <!-- Row 4 -->
+                <tr class="hover:bg-surface-container-low transition-colors item-row" data-depot="East Depot" data-sku="HW-DCK-02">
+                  <td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-on-surface leading-tight">Thunderbolt Docking Station</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">SKU: HW-DCK-02</span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant">
+                    <span class="inline-flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-outline"></span>
+                      East Depot
+                    </span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right">25</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">4</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-primary bg-primary-container/30">21</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">10</td>
+                  <td class="py-space-xs px-space-md text-center">
+                    <span class="inline-block px-2 py-0.5 border border-outline bg-surface-container text-on-surface font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
+                      OPTIMAL
+                    </span>
+                  </td>
+                </tr>
+                <!-- Row 5 -->
+                <tr class="hover:bg-surface-container-low transition-colors item-row" data-depot="Central Staging" data-sku="SV-SET-TK">
+                  <td class="py-space-xs px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-on-surface leading-tight">Onsite Setup Toolkits</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">SKU: SV-SET-TK</span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant">
+                    <span class="inline-flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-outline"></span>
+                      Central Staging
+                    </span>
+                  </td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right">14</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">2</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right font-bold text-primary bg-primary-container/30">12</td>
+                  <td class="py-space-xs px-space-md border-r border-outline-variant text-right text-on-surface-variant">5</td>
+                  <td class="py-space-xs px-space-md text-center">
+                    <span class="inline-block px-2 py-0.5 border border-outline bg-[#E7F6EC] text-[#0A6C35] font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
+                      IN STOCK
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex items-center justify-between text-body-sm text-on-surface-variant font-mono-metric-sm px-1">
+            <span>Displaying 5 of 5 SKU depot pairings</span>
+            <span class="text-on-surface font-semibold">Formula: Available = [On Hand] - [Reserved]</span>
+          </div>
+        </section>
+
+        <!-- Section 2: Orders Awaiting Fulfillment -->
+        <section class="flex flex-col gap-space-sm pb-space-2xl">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+            <div class="flex items-center gap-space-xs">
+              <h2 class="font-headline-md text-headline-md text-on-surface uppercase tracking-tight">
+                Orders Awaiting Fulfillment
+              </h2>
+            </div>
+          </div>
+          
+          <!-- Filter Tabs -->
+          <div class="flex flex-wrap gap-space-xs border-b-2 border-outline pb-px" id="orderFilterTabs">
+            <button class="order-tab px-space-md py-1.5 border-2 border-outline bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider shadow-sm font-bold text-primary" data-tab="all">
+              All (4)
+            </button>
+            <button class="order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all" data-tab="split">
+              Split Required (2)
+            </button>
+            <button class="order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all" data-tab="backordered">
+              Backordered (1)
+            </button>
+            <button class="order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all" data-tab="ready">
+              Ready to Ship (1)
+            </button>
+          </div>
+
+          <!-- Fulfillment Queue Table -->
+          <div class="border-2 border-outline bg-surface-container-lowest overflow-x-auto shadow-sm">
+            <table class="w-full text-left border-collapse" id="ordersQueueTable">
+              <thead>
+                <tr class="bg-surface-dim border-b-2 border-outline font-mono-metric-sm text-mono-metric-sm text-on-surface uppercase tracking-wider">
+                  <th class="py-2.5 px-space-md border-r border-outline-variant">Order / Quote ID</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant">Customer</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant text-right">Allocated Items</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant">Routing Strategy</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant">Assigned Depots</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant text-center">Priority</th>
+                  <th class="py-2.5 px-space-md border-r border-outline-variant text-center">Status</th>
+                  <th class="py-2.5 px-space-md text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-outline-variant font-mono-metric text-mono-metric text-on-surface">
+                <!-- Row 1 -->
+                <tr class="bg-primary-container/20 hover:bg-primary-container/30 transition-colors order-item" data-category="split">
+                  <td class="py-space-md px-space-md border-r border-outline-variant">
+                    <div class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">ORD-2291</div>
+                    <div class="font-mono-metric-sm text-mono-metric-sm text-primary font-bold">Quote: Q-1042</div>
+                  </td>
+                  <td class="py-space-md px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-on-surface">Acme Corp</div>
+                    <span class="inline-block px-1.5 py-0.2 bg-surface-container border border-outline font-mono-metric-sm text-[10px] uppercase font-bold">Enterprise Tier</span>
+                  </td>
+                  <td class="py-space-md px-space-md border-r border-outline-variant text-right">
+                    <div class="font-bold text-on-surface">24 units total</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">3 SKUs</span>
+                  </td>
+                  <td class="py-space-md px-space-md border-r border-outline-variant">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed border border-outline font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
+                      <span class="material-symbols-outlined text-[14px]">call_split</span>
+                      Multi-Depot Split
+                    </span>
+                  </td>
+                  <td class="py-space-md px-space-md border-r border-outline-variant font-body-sm text-body-sm">
+                    <div class="font-mono-metric-sm text-on-surface"><span class="font-bold">Main Hub</span> (18)</div>
+                    <div class="font-mono-metric-sm text-on-surface"><span class="font-bold">East Depot</span> (6)</div>
+                  </td>
+                  <td class="py-space-md px-space-md border-r border-outline-variant text-center">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-error-container text-error font-mono-metric-sm text-mono-metric-sm uppercase font-bold border border-error">
+                      <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                      HIGH
+                    </span>
+                  </td>
+                  <td class="py-space-md px-space-md border-r border-outline-variant text-center">
+                    <span class="inline-block px-2 py-1 bg-[#FEF3C7] text-[#92400E] border border-outline font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
+                      Split Pending
+                    </span>
+                  </td>
+                  <td class="py-space-md px-space-md text-center">
+                    <button class="review-split-btn px-space-md py-1.5 bg-primary text-on-primary border-2 border-outline font-label-md text-label-md uppercase tracking-wider shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all" data-order="ORD-2291">
+                      Review Split
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 2 -->
+                <tr class="hover:bg-surface-container-low transition-colors order-item" data-category="backordered">
+                  <td class="py-space-sm px-space-md border-r border-outline-variant">
+                    <div class="font-headline-sm text-headline-sm text-on-surface leading-tight">ORD-2285</div>
+                    <div class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Quote: Q-1030</div>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-on-surface">Zenith Co</div>
+                    <span class="font-mono-metric-sm text-[11px] text-on-surface-variant">Standard Commercial</span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-right">
+                    <div class="font-bold text-on-surface">15 units</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">1 SKU</span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-surface-container border border-outline font-mono-metric-sm text-mono-metric-sm uppercase">
+                      Single Depot
+                    </span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant font-mono-metric-sm">
+                    East Depot (15)
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-center">
+                    <span class="font-mono-metric-sm text-on-surface-variant uppercase">Standard</span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-center">
+                    <span class="inline-block px-2 py-0.5 bg-error text-on-error font-mono-metric-sm text-mono-metric-sm uppercase font-bold border border-outline">
+                      Backorder
+                    </span>
+                  </td>
+                  <td class="py-space-sm px-space-md text-center">
+                    <button class="px-space-sm py-1 bg-surface-container-lowest text-on-surface border border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container transition-all">
+                      View Allocation
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 3 -->
+                <tr class="hover:bg-surface-container-low transition-colors order-item" data-category="ready">
+                  <td class="py-space-sm px-space-md border-r border-outline-variant">
+                    <div class="font-headline-sm text-headline-sm text-on-surface leading-tight">ORD-2289</div>
+                    <div class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Quote: Q-1035</div>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-on-surface">Nova Retail</div>
+                    <span class="font-mono-metric-sm text-[11px] text-on-surface-variant">Direct Partner</span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-right">
+                    <div class="font-bold text-on-surface">10 units</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">2 SKUs</span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-surface-container border border-outline font-mono-metric-sm text-mono-metric-sm uppercase">
+                      Single Depot
+                    </span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant font-mono-metric-sm">
+                    Main Warehouse (10)
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-center">
+                    <span class="font-mono-metric-sm text-on-surface-variant uppercase">Standard</span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-center">
+                    <span class="inline-block px-2 py-0.5 bg-[#E7F6EC] text-[#0A6C35] font-mono-metric-sm text-mono-metric-sm uppercase font-bold border border-outline">
+                      Ready to Pick
+                    </span>
+                  </td>
+                  <td class="py-space-sm px-space-md text-center">
+                    <button class="dispatch-action-btn px-space-md py-1 bg-surface-container text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container-high transition-all">
+                      Dispatch
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 4 -->
+                <tr class="hover:bg-surface-container-low transition-colors order-item" data-category="split">
+                  <td class="py-space-sm px-space-md border-r border-outline-variant">
+                    <div class="font-headline-sm text-headline-sm text-on-surface leading-tight">ORD-2290</div>
+                    <div class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">Quote: Q-1039</div>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant font-body-md">
+                    <div class="font-headline-sm text-headline-sm text-on-surface">Beta Industries</div>
+                    <span class="font-mono-metric-sm text-[11px] text-on-surface-variant">High Volume</span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-right">
+                    <div class="font-bold text-on-surface">45 units</div>
+                    <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">4 SKUs</span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed border border-outline font-mono-metric-sm text-mono-metric-sm uppercase font-bold">
+                      <span class="material-symbols-outlined text-[14px]">call_split</span>
+                      Multi-Depot Split
+                    </span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant font-mono-metric-sm">
+                    Main Hub + Transit
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-center">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-error-container text-error font-mono-metric-sm text-mono-metric-sm uppercase font-bold border border-error">
+                      URGENT
+                    </span>
+                  </td>
+                  <td class="py-space-sm px-space-md border-r border-outline-variant text-center">
+                    <span class="inline-block px-2 py-0.5 bg-surface-container text-on-surface-variant font-mono-metric-sm text-mono-metric-sm uppercase border border-outline">
+                      Allocating
+                    </span>
+                  </td>
+                  <td class="py-space-sm px-space-md text-center">
+                    <button class="review-split-btn px-space-md py-1 bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container transition-all" data-order="ORD-2290">
+                      Review Split
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Interactive Slide-over Drawer: Review Multi-Depot Split -->
+      <div class="fixed inset-0 bg-outline/60 z-50 hidden flex justify-end transition-opacity" id="splitDrawerBackdrop">
+        <div class="w-full max-w-2xl bg-surface h-full border-l-2 border-outline flex flex-col justify-between overflow-y-auto transform transition-transform duration-150" id="splitDrawerPanel">
+          <!-- Drawer Header -->
+          <div class="p-space-lg bg-surface-container border-b-2 border-outline flex items-center justify-between">
+            <div class="flex flex-col">
+              <h3 class="font-headline-lg text-headline-lg text-on-surface uppercase mt-1">Split Strategy: ORD-2291</h3>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">Customer: Acme Corp (Quote Q-1042) · High Priority</span>
+            </div>
+            <button class="p-1 border-2 border-outline bg-surface-container-lowest hover:bg-surface-dim transition-all" id="closeDrawerBtn">
+              <span class="material-symbols-outlined block">close</span>
+            </button>
+          </div>
+          
+          <!-- Drawer Content Body -->
+          <div class="p-space-lg flex-1 space-y-space-lg bg-surface">
+            <!-- Split Partition 1 -->
+            <div class="border-2 border-outline bg-surface-container-lowest">
+              <div class="bg-surface-dim px-space-md py-space-xs border-b-2 border-outline flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="font-headline-sm text-headline-sm text-on-surface uppercase font-bold">Consignment 1 of 2: Main Hub Depot</span>
+                </div>
+                <span class="px-2 py-0.5 bg-surface-container border border-outline font-mono-metric-sm text-mono-metric-sm font-bold">
+                  18 UNITS
+                </span>
+              </div>
+              <div class="p-space-md space-y-space-xs">
+                <div class="flex justify-between items-center py-1 border-b border-outline-variant font-mono-metric text-mono-metric">
+                  <span>Laptop Pro 14 (HW-LP14)</span>
+                  <span class="font-bold">6 Units</span>
+                </div>
+                <div class="flex justify-between items-center py-1 border-b border-outline-variant font-mono-metric text-mono-metric">
+                  <span>Thunderbolt Docking Station (HW-DCK-02)</span>
+                  <span class="font-bold">12 Units</span>
+                </div>
+                <div class="pt-2 flex items-center justify-between text-body-sm font-mono-metric-sm text-on-surface-variant">
+                  <span>Courier: BlueDart Enterprise Priority</span>
+                  <span class="text-primary font-bold">Ready to Dispatch</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Split Partition 2 -->
+            <div class="border-2 border-outline bg-surface-container-lowest">
+              <div class="bg-surface-dim px-space-md py-space-xs border-b-2 border-outline flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="font-headline-sm text-headline-sm text-on-surface uppercase font-bold">Consignment 2 of 2: East Depot</span>
+                </div>
+                <span class="px-2 py-0.5 bg-surface-container border border-outline font-mono-metric-sm text-mono-metric-sm font-bold">
+                  6 UNITS
+                </span>
+              </div>
+              <div class="p-space-md space-y-space-xs">
+                <div class="flex justify-between items-center py-1 border-b border-outline-variant font-mono-metric text-mono-metric">
+                  <span>Laptop Pro 14 (HW-LP14)</span>
+                  <span class="font-bold text-error">4 Units (Stock Drain)</span>
+                </div>
+                <div class="flex justify-between items-center py-1 border-b border-outline-variant font-mono-metric text-mono-metric">
+                  <span>Onsite Setup Toolkits (SV-SET-TK)</span>
+                  <span class="font-bold">2 Units</span>
+                </div>
+                <div class="pt-2 flex items-center justify-between text-body-sm font-mono-metric-sm text-on-surface-variant">
+                  <span>Courier: Delhivery Surface Express</span>
+                  <span class="text-on-surface font-bold">Awaiting Pick Slip</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Drawer Sticky Footer Actions -->
+          <div class="p-space-md bg-surface-container-high border-t-2 border-outline flex items-center justify-between gap-space-md">
+            <button class="px-space-md py-space-xs bg-surface-container-lowest text-on-surface border-2 border-outline font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container transition-all" id="cancelDrawerBtn">
+              Cancel
+            </button>
+            <button class="px-space-md py-space-xs bg-primary text-on-primary border-2 border-outline font-label-md text-label-md uppercase tracking-wider shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all" id="approveSplitBtn">
+              Approve &amp; Generate Slips
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stock Transfer Modal -->
+      <div class="fixed inset-0 bg-outline/60 z-50 hidden flex items-center justify-center p-4" id="transferModal">
+        <div class="w-full max-w-lg bg-surface border-2 border-outline shadow-sm p-space-lg flex flex-col gap-space-md">
+          <div class="flex items-center justify-between border-b-2 border-outline pb-space-xs">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">move_up</span>
+              <h3 class="font-headline-md text-headline-md text-on-surface uppercase">Inter-Depot Stock Transfer</h3>
+            </div>
+            <button class="p-1 border border-outline hover:bg-surface-container transition-all" id="closeTransferModal">
+              <span class="material-symbols-outlined block text-[18px]">close</span>
+            </button>
+          </div>
+          
+          <div class="space-y-space-sm font-mono-metric-sm text-mono-metric-sm">
+            <div>
+              <label class="block uppercase font-bold text-on-surface mb-1">SKU to Relocate</label>
+              <select class="w-full border-2 border-outline p-2 bg-surface-container-lowest font-body-md text-body-md text-on-surface">
+                <option>HW-LP14 - Laptop Pro 14 (Main: 40, East: 10)</option>
+                <option>HW-DCK-02 - Thunderbolt Docking Station (Main: 65, East: 25)</option>
+                <option>SV-SET-TK - Onsite Setup Toolkits (Central: 14)</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-space-sm">
+              <div>
+                <label class="block uppercase font-bold text-on-surface mb-1">Source Depot</label>
+                <select class="w-full border-2 border-outline p-2 bg-surface-container-lowest font-body-md text-body-md text-on-surface">
+                  <option>Main Warehouse</option>
+                  <option>East Depot</option>
+                </select>
+              </div>
+              <div>
+                <label class="block uppercase font-bold text-on-surface mb-1">Destination Depot</label>
+                <select class="w-full border-2 border-outline p-2 bg-surface-container-lowest font-body-md text-body-md text-on-surface">
+                  <option>East Depot</option>
+                  <option>Main Warehouse</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block uppercase font-bold text-on-surface mb-1">Transfer Units (Monospace)</label>
+              <input class="w-full border-2 border-outline p-2 bg-surface-container-lowest font-mono-metric text-mono-metric text-on-surface" max="40" min="1" type="number" value="10"/>
+            </div>
+          </div>
+          
+          <div class="flex items-center justify-end gap-space-sm border-t-2 border-outline pt-space-md">
+            <button class="px-space-md py-1 border-2 border-outline bg-surface-container-lowest uppercase font-label-md hover:bg-surface-container transition-all" id="cancelTransferModal">Cancel</button>
+            <button class="px-space-md py-1 border-2 border-outline bg-primary text-on-primary uppercase font-label-md shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-all" id="submitTransferModal">Initiate Transit</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Client-side Interactive Script -->
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          // 1. Table Filter: SKU & Depot Logic
+          const skuInput = document.getElementById('skuSearchInput');
+          const depotSelect = document.getElementById('depotFilterSelect');
+          const categorySelect = document.getElementById('categoryFilterSelect');
+          const rows = document.querySelectorAll('.item-row');
+
+          function filterLedger() {
+            const query = skuInput.value.toLowerCase();
+            const selectedDepot = depotSelect.value;
+            const selectedCat = categorySelect.value;
+
+            rows.forEach(row => {
+              const rowDepot = row.getAttribute('data-depot');
+              const rowSku = row.getAttribute('data-sku');
+              const text = row.innerText.toLowerCase();
+
+              const matchesSearch = !query || text.includes(query);
+              const matchesDepot = selectedDepot === 'ALL' || rowDepot === selectedDepot;
+              const matchesCat = selectedCat === 'ALL' || rowSku.startsWith(selectedCat);
+
+              if (matchesSearch && matchesDepot && matchesCat) {
+                row.style.display = '';
+              } else {
+                row.style.display = 'none';
+              }
+            });
+          }
+
+          skuInput.addEventListener('input', filterLedger);
+          depotSelect.addEventListener('change', filterLedger);
+          categorySelect.addEventListener('change', filterLedger);
+
+          // 2. Orders Queue Tab Filtering
+          const orderTabs = document.querySelectorAll('.order-tab');
+          const orderItems = document.querySelectorAll('.order-item');
+
+          orderTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+              orderTabs.forEach(t => {
+                t.className = 'order-tab px-space-md py-1.5 border-2 border-transparent hover:border-outline hover:bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-all';
+              });
+              tab.className = 'order-tab px-space-md py-1.5 border-2 border-outline bg-surface-container-lowest font-label-md text-label-md uppercase tracking-wider shadow-sm font-bold text-primary';
+
+              const tabType = tab.getAttribute('data-tab');
+              orderItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                if (tabType === 'all' || tabType === category) {
+                  item.style.display = '';
+                } else {
+                  item.style.display = 'none';
+                }
+              });
+            });
+          });
+
+          // 3. Slide-over Split Review Drawer
+          const drawer = document.getElementById('splitDrawerBackdrop');
+          const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+          const cancelDrawerBtn = document.getElementById('cancelDrawerBtn');
+          const approveSplitBtn = document.getElementById('approveSplitBtn');
+          const reviewButtons = document.querySelectorAll('.review-split-btn');
+
+          function openDrawer() {
+            drawer.classList.remove('hidden');
+          }
+
+          function closeDrawer() {
+            drawer.classList.add('hidden');
+          }
+
+          reviewButtons.forEach(btn => btn.addEventListener('click', openDrawer));
+          closeDrawerBtn.addEventListener('click', closeDrawer);
+          cancelDrawerBtn.addEventListener('click', closeDrawer);
+          drawer.addEventListener('click', (e) => {
+            if (e.target === drawer) closeDrawer();
+          });
+
+          approveSplitBtn.addEventListener('click', () => {
+            console.log('Split Consignments Approved. Dispatch slips and warehouse picklists dispatched to Main Hub and East Depot.');
+            closeDrawer();
+          });
+
+          // 4. Stock Transfer Modal
+          const transferModal = document.getElementById('transferModal');
+          const openTransferModal = document.getElementById('openTransferModal');
+          const closeTransferModal = document.getElementById('closeTransferModal');
+          const cancelTransferModal = document.getElementById('cancelTransferModal');
+          const submitTransferModal = document.getElementById('submitTransferModal');
+
+          openTransferModal.addEventListener('click', () => transferModal.classList.remove('hidden'));
+          closeTransferModal.addEventListener('click', () => transferModal.classList.add('hidden'));
+          cancelTransferModal.addEventListener('click', () => transferModal.classList.add('hidden'));
+          submitTransferModal.addEventListener('click', () => {
+            console.log('Inter-depot transfer manifest registered. 10 Units staged for transit.');
+            transferModal.classList.add('hidden');
+          });
+
+          // 5. Reorder Threshold Placeholder
+          document.getElementById('openThresholdModal').addEventListener('click', () => {
+            console.log('Reorder thresholds configuration opened: Low stock triggers set to 15% depot safety buffer.');
+          });
+
+          // 6. Export Ledger Trigger
+          document.getElementById('exportLedgerBtn').addEventListener('click', () => {
+            console.log('CSV Export Generated: "DealFlow360_Inventory_Ledger_Live.csv"');
+          });
+        });
+      </script>
+    </div>
+  </main>
+  <footer class="w-full bg-surface-dim border-t-2 border-outline mt-auto">
+    <div class="w-full px-margin-desktop py-space-xs flex flex-col md:flex-row items-center justify-between gap-space-sm font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">
+      <div>© 2025 DealFlow360 Enterprise Engine. All rights reserved.</div>
+      <div class="flex items-center gap-space-md">
+        <span>SOC2 Type II Certified</span>
+        <span class="w-1.5 h-1.5 bg-outline rounded-full"></span>
+        <span>ISO 27001 Verified</span>
+        <span class="w-1.5 h-1.5 bg-outline rounded-full"></span>
+        <a class="text-on-surface hover:underline" href="#">API Documentation</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

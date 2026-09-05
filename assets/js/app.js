@@ -1,5 +1,6 @@
 (() => {
   const routes = {
+    login: "pages/login.html",
     dashboard: "pages/dashboard.html",
     quotations: "pages/quotations.html",
     approvals: "pages/approvals.html",
@@ -71,6 +72,13 @@
     document.querySelector("body > header").append(mobileNav);
   }
 
+  function wireBrandLogo() {
+    document.querySelectorAll('img[alt*="DealFlow360"]').forEach(image => {
+      image.src = new URL("assets/logo.svg", root);
+      image.alt = "DealFlow360 logo";
+    });
+  }
+
   function wirePageRoutes() {
     const routeRules = [
       [/dashboard/, /New Quotation/, "quote"],
@@ -114,8 +122,22 @@
     document.getElementById("role-internal")?.addEventListener("click", () => { role = "internal"; });
     document.getElementById("role-customer")?.addEventListener("click", () => { role = "customer"; });
     document.getElementById("submit-btn")?.addEventListener("click", () => {
-      setTimeout(() => go(role === "customer" ? "portal" : "dashboard"), 1000);
+      go(role === "customer" ? "portal" : "dashboard");
     });
+  }
+
+  function wireLogout() {
+    const profileImage = document.querySelector('img[alt="Profile"]');
+    if (!profileImage) return;
+
+    const logoutButton = document.createElement("button");
+    logoutButton.type = "button";
+    logoutButton.dataset.logout = "true";
+    logoutButton.setAttribute("aria-label", "Log out");
+    logoutButton.className = "inline-flex items-center gap-space-xxs px-space-xs py-1 bg-surface-container-lowest text-on-surface border border-outline hover:bg-surface-container transition-colors font-label-md text-label-md";
+    logoutButton.innerHTML = '<span class="material-symbols-outlined text-[16px]">logout</span><span class="hidden sm:inline">Log out</span>';
+    logoutButton.addEventListener("click", () => go("login"));
+    profileImage.replaceWith(logoutButton);
   }
 
   function isolatePortal() {
@@ -132,8 +154,10 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     isolatePortal();
+    wireBrandLogo();
     wireNavigation();
     wirePageRoutes();
     wireLogin();
+    wireLogout();
   });
 })();

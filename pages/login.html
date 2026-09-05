@@ -45,29 +45,18 @@
 </head>
 
 <body class="bg-surface font-body-md text-body-md text-on-surface flex items-center justify-center min-h-screen">
-  <main class="w-full max-w-lg p-space-lg">
-    <div class="flex flex-col w-full max-w-4xl mx-auto">
+  <main class="w-full max-w-6xl px-space-md py-space-xl md:px-space-xl">
+    <div class="flex flex-col w-full max-w-5xl mx-auto">
       <div
-        class="w-full bg-surface-bright border-[2px] border-outline shadow-[4px_4px_0px_#1D2430] rounded-lg overflow-hidden flex flex-col md:flex-row">
+        class="w-full bg-surface-bright border-[2px] border-outline shadow-sm rounded-lg overflow-hidden flex flex-col md:flex-row">
         <!-- Left Brand & Context Panel -->
         <div
-          class="w-full md:w-5/12 bg-surface-dim p-space-lg flex flex-col justify-between border-b-[2px] md:border-b-0 md:border-r-[2px] border-outline">
+          class="w-full md:w-5/12 bg-surface-dim p-space-lg md:p-space-xl flex flex-col justify-between border-b-[2px] md:border-b-0 md:border-r-[2px] border-outline">
           <div class="flex flex-col">
-            <!-- Badge Indicator -->
-            <div class="flex items-center gap-space-xs mb-space-md">
-              <span class="inline-flex items-center justify-center w-2 h-2 rounded-none bg-primary"></span>
-              <span
-                class="font-mono-metric-sm text-mono-metric-sm tracking-wider uppercase text-on-surface-variant">SYS_AUTH
-                // v4.19</span>
-            </div>
             <h1
               class="font-headline-lg text-headline-lg text-on-surface tracking-tight uppercase leading-none mb-space-xs">
               DealFlow360
             </h1>
-            <div
-              class="inline-block bg-primary text-on-primary font-mono-metric text-mono-metric uppercase px-2 py-0.5 mb-space-md border border-outline w-fit">
-              ENTERPRISE
-            </div>
             <p class="font-body-md text-body-md text-on-surface-variant leading-snug mb-space-lg">
               Unified Deal Governance, CPQ &amp; Operations Platform.
             </p>
@@ -75,9 +64,9 @@
             <div class="flex flex-col gap-space-sm">
               <!-- Internal Staff Workspace Option -->
               <button
-                class="text-left w-full p-space-sm bg-surface-bright border border-outline shadow-[2px_2px_0px_#1D2430] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#1D2430] transition-all"
+                class="text-left w-full p-space-sm bg-surface-bright border border-outline shadow-sm"
                 id="role-internal" onclick="selectRole('internal')" type="button">
-                <div class="flex items-center justify-between mb-space-xxs">
+                <div class="flex items-center justify-between">
                   <span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-[16px] text-primary">corporate_fare</span>
                     Internal Staff Workspace
@@ -86,16 +75,12 @@
                     class="text-[10px] font-mono-metric bg-primary-container text-on-primary-container px-1 border border-outline"
                     id="badge-internal">ACTIVE</span>
                 </div>
-                <p class="font-body-sm text-body-sm text-on-surface-variant">
-                  Route to <span class="font-mono-metric-sm text-primary font-semibold">/dashboard</span> with dynamic
-                  delegation and operational approval tiers.
-                </p>
               </button>
               <!-- Customer Portal Access Option -->
               <button
-                class="text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-all"
+                class="text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-colors"
                 id="role-customer" onclick="selectRole('customer')" type="button">
-                <div class="flex items-center justify-between mb-space-xxs">
+                <div class="flex items-center justify-between">
                   <span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
                     Customer Portal Access
@@ -104,27 +89,12 @@
                     class="text-[10px] font-mono-metric bg-surface-variant text-on-surface-variant px-1 border border-outline hidden"
                     id="badge-customer">STANDBY</span>
                 </div>
-                <p class="font-body-sm text-body-sm text-on-surface-variant">
-                  Route to <span class="font-mono-metric-sm text-on-surface font-semibold">/portal/quotations</span>
-                  with zero-knowledge cryptographic isolation.
-                </p>
               </button>
-            </div>
-          </div>
-          <!-- Left Panel Ledger Footnote -->
-          <div class="pt-space-lg mt-space-md border-t border-outline flex flex-col gap-1">
-            <div class="flex items-center justify-between">
-              <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase">Node
-                Cluster</span>
-              <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface flex items-center gap-1">
-                <span class="w-1.5 h-1.5 bg-emerald-600 inline-block"></span>
-                us-east-prod-04 • 18ms
-              </span>
             </div>
           </div>
         </div>
         <!-- Right Authentication Interactive Panel -->
-        <div class="w-full md:w-7/12 bg-surface-bright p-space-lg flex flex-col justify-between">
+        <div class="w-full md:w-7/12 bg-surface-bright p-space-lg md:p-space-xl flex flex-col justify-between">
           <div>
             <!-- Mode Tabs -->
             <div class="flex border-b border-outline mb-space-md">
@@ -140,23 +110,19 @@
                 Sign Up
               </button>
             </div>
-            <form class="flex flex-col gap-space-md" id="auth-form" onsubmit="event.preventDefault(); simulateAuth();">
+            <form class="flex flex-col gap-space-md" id="auth-form" onsubmit="event.preventDefault();">
               <!-- Target Workspace Selection -->
               <div class="flex flex-col gap-1">
                 <label
                   class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface flex items-center justify-between"
                   for="workspace-select">
                   <span>Target Organization</span>
-                  <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant font-normal">ENV:
-                    PROD</span>
                 </label>
                 <div class="relative">
                   <select
-                    class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3] appearance-none pr-8"
+                    class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:shadow-sm appearance-none pr-8"
                     id="workspace-select">
                     <option value="acme-prod">Acme Enterprise (Production)</option>
-                    <option value="apex-eu">Apex Global Holdings (Frankfurt-02)</option>
-                    <option value="starlight-dev">Starlight Media (Sandbox / Staging)</option>
                   </select>
                   <span
                     class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface text-[18px]">
@@ -170,17 +136,11 @@
                   class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface flex items-center justify-between"
                   for="work-email">
                   <span>Work Email</span>
-                  <span class="font-mono-metric-sm text-mono-metric-sm text-emerald-700 flex items-center gap-0.5">
-                    <span class="material-symbols-outlined text-[14px]">check</span> Domain Verified
-                  </span>
                 </label>
                 <div class="relative flex items-center">
                   <input
-                    class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-mono-metric text-mono-metric text-on-surface focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3] pr-10"
-                    id="work-email" required="" type="email" value="alex.vance@acme-enterprise.com" />
-                  <span class="material-symbols-outlined absolute right-2.5 text-emerald-700 text-[18px]">
-                    verified
-                  </span>
+                    class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-mono-metric text-mono-metric text-on-surface focus:outline-none focus:border-primary focus:shadow-sm"
+                    id="work-email" required="" type="email" value="" />
                 </div>
               </div>
               <!-- Password Input -->
@@ -188,12 +148,12 @@
                 <div class="flex items-center justify-between">
                   <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface"
                     for="password-input">Password</label>
-                  <a class="font-label-sm text-label-sm text-primary hover:underline" href="#">Forgot Key?</a>
+                  <a class="font-label-sm text-label-sm text-primary hover:underline" href="#">Forgot Password?</a>
                 </div>
                 <div class="relative flex items-center">
                   <input
-                    class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-mono-metric text-mono-metric text-on-surface focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3] pr-10"
-                    id="password-input" required="" type="password" value="••••••••••••••••" />
+                    class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-mono-metric text-mono-metric text-on-surface focus:outline-none focus:border-primary focus:shadow-sm pr-10"
+                    id="password-input" required="" type="password" value="" />
                   <button aria-label="Toggle password visibility"
                     class="absolute right-2.5 text-on-surface-variant hover:text-on-surface focus:outline-none"
                     onclick="togglePasswordVisibility()" type="button">
@@ -213,41 +173,13 @@
               </div>
               <!-- Primary CTA Action -->
               <button
-                class="mt-space-xs w-full py-2.5 px-space-md bg-primary text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider border-[2px] border-outline shadow-[3px_3px_0px_#1D2430] hover:translate-x-[1.5px] hover:translate-y-[1.5px] hover:shadow-[1.5px_1.5px_0px_#1D2430] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[0px_0px_0px_#1D2430] transition-all flex items-center justify-center gap-space-xs"
+                class="mt-space-xs w-full py-2.5 px-space-md bg-primary text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider border-[2px] border-outline shadow-[2px_2px_0px_#1D2430] hover:opacity-90 transition-opacity flex items-center justify-center gap-space-xs"
                 id="submit-btn" type="submit">
-                <span>Sign In to Workspace</span>
+                <span>Sign In</span>
                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
               </button>
             </form>
           </div>
-          <!-- Compliance & Security Badges Footer -->
-          <div
-            class="mt-space-lg pt-space-sm border-t border-outline flex flex-wrap items-center justify-between gap-space-xs">
-            <div
-              class="flex items-center gap-space-xs font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase">
-              <span>SOC2 TYPE II</span>
-              <span class="text-outline">•</span>
-              <span>256-BIT TLS</span>
-              <span class="text-outline">•</span>
-              <span>ISO 27001</span>
-            </div>
-            <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface-variant">HW-TOKEN-COMPLIANT</span>
-          </div>
-        </div>
-      </div>
-      <!-- Operational Status Sub-Bar -->
-      <div
-        class="w-full mt-space-sm px-space-xs flex items-center justify-between text-on-surface-variant font-mono-metric-sm text-mono-metric-sm">
-        <div class="flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-[14px]">lock</span>
-          <span>SECURE PORT: 8443 / TLS 1.3</span>
-        </div>
-        <div class="flex items-center gap-space-sm">
-          <a class="hover:text-primary transition-colors" href="#">Incident Status</a>
-          <span>/</span>
-          <a class="hover:text-primary transition-colors" href="#">Key Management</a>
-          <span>/</span>
-          <a class="hover:text-primary transition-colors" href="#">Support</a>
         </div>
       </div>
       <script>
@@ -270,13 +202,13 @@
           const badgeCustomer = document.getElementById('badge-customer');
 
           if (role === 'internal') {
-            internalCard.className = "text-left w-full p-space-sm bg-surface-bright border border-outline shadow-[2px_2px_0px_#1D2430] transition-all";
-            customerCard.className = "text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-all";
+            internalCard.className = "text-left w-full p-space-sm bg-surface-bright border border-outline shadow-sm";
+            customerCard.className = "text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-colors";
             badgeInternal.classList.remove('hidden');
             badgeCustomer.classList.add('hidden');
           } else {
-            customerCard.className = "text-left w-full p-space-sm bg-surface-bright border border-outline shadow-[2px_2px_0px_#1D2430] transition-all";
-            internalCard.className = "text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-all";
+            customerCard.className = "text-left w-full p-space-sm bg-surface-bright border border-outline shadow-sm";
+            internalCard.className = "text-left w-full p-space-sm bg-surface border border-outline opacity-75 hover:opacity-100 hover:bg-surface-bright transition-colors";
             badgeCustomer.classList.remove('hidden');
             badgeInternal.classList.add('hidden');
           }
@@ -290,26 +222,12 @@
           if (tab === 'signin') {
             signinBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface-bright border-t-[2px] border-l-[2px] border-r-[2px] border-outline -mb-[1px] font-bold text-primary flex items-center gap-1.5";
             signupBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface text-secondary hover:text-on-surface transition-colors border-b border-outline";
-            submitBtn.querySelector('span').innerText = 'Sign In to Workspace';
+            submitBtn.querySelector('span').innerText = 'Sign In';
           } else {
             signupBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface-bright border-t-[2px] border-l-[2px] border-r-[2px] border-outline -mb-[1px] font-bold text-primary flex items-center gap-1.5";
             signinBtn.className = "font-label-md text-label-md uppercase tracking-wider py-space-xs px-space-md bg-surface text-secondary hover:text-on-surface transition-colors border-b border-outline";
-            submitBtn.querySelector('span').innerText = 'Register Workspace Identity';
+            submitBtn.querySelector('span').innerText = 'Sign Up';
           }
-        }
-
-        function simulateAuth() {
-          const submitBtn = document.getElementById('submit-btn');
-          const origText = submitBtn.querySelector('span').innerText;
-          submitBtn.querySelector('span').innerText = 'VERIFYING CREDENTIALS...';
-          submitBtn.disabled = true;
-          setTimeout(() => {
-            submitBtn.querySelector('span').innerText = 'AUTHENTICATED // ROUTING';
-            setTimeout(() => {
-              submitBtn.querySelector('span').innerText = origText;
-              submitBtn.disabled = false;
-            }, 1000);
-          }, 800);
         }
       </script>
     </div>

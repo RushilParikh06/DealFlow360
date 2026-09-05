@@ -4,6 +4,7 @@ import { useEffect, useRef, type CSSProperties } from "react";
 import type { PageName } from "@/lib/routes";
 
 const routes = {
+  login: "/login/",
   dashboard: "/dashboard/",
   quotations: "/quotations/",
   approvals: "/approvals/",
@@ -69,6 +70,13 @@ function wireNavigation(root: HTMLElement, page: PageName) {
   root.querySelector(":scope > header")?.append(mobileNav);
 }
 
+function wireBrandLogo(root: HTMLElement) {
+  root.querySelectorAll<HTMLImageElement>('img[alt*="DealFlow360"]').forEach((image) => {
+    image.src = "/assets/logo.svg";
+    image.alt = "DealFlow360 logo";
+  });
+}
+
 function wirePageRoutes(root: HTMLElement, page: PageName) {
   const rules: [RegExp, RegExp, keyof typeof routes][] = [
     [/dashboard/, /New Quotation/, "quote"],
@@ -114,6 +122,20 @@ function wireLogin(root: HTMLElement, page: PageName) {
   });
 }
 
+function wireLogout(root: HTMLElement) {
+  const profileImage = root.querySelector<HTMLImageElement>('img[alt="Profile"]');
+  if (!profileImage) return;
+
+  const logoutButton = document.createElement("button");
+  logoutButton.type = "button";
+  logoutButton.dataset.logout = "true";
+  logoutButton.setAttribute("aria-label", "Log out");
+  logoutButton.className = "inline-flex items-center gap-space-xxs px-space-xs py-1 bg-surface-container-lowest text-on-surface border-2 border-outline shadow-[2px_2px_0px_#1D2430] hover:bg-surface-container active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-label-md text-label-md";
+  logoutButton.innerHTML = '<span class="material-symbols-outlined text-[16px]">logout</span><span class="hidden sm:inline">Log out</span>';
+  logoutButton.addEventListener("click", () => window.location.assign(routes.login));
+  profileImage.replaceWith(logoutButton);
+}
+
 function wirePortal(root: HTMLElement, page: PageName) {
   if (page !== "customer-quotation") return;
   root.querySelectorAll<HTMLElement>(":scope > main header a, :scope > main header button").forEach((element) => {
@@ -139,9 +161,11 @@ export function PageClient({ bodyClass, html, page, scripts, theme }: Props) {
     root.dataset.wired = "true";
 
     scripts.forEach((script) => window.eval(script));
+    wireBrandLogo(root);
     wireNavigation(root, page);
     wirePageRoutes(root, page);
     wireLogin(root, page);
+    wireLogout(root);
     wirePortal(root, page);
     document.dispatchEvent(new Event("DOMContentLoaded"));
   }, [page, scripts]);
