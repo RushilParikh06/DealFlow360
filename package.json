@@ -1,0 +1,12 @@
+{
+  "name": "dealflow360",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "dev": "pnpm --filter @dealflow360/web dev",
+    "build": "pnpm --filter @dealflow360/web build",
+    "typecheck": "pnpm --filter @dealflow360/web typecheck",
+    "lint": "pnpm --filter @dealflow360/web lint",
+    "test": "node tests/smoke.mjs"
+  }
+}

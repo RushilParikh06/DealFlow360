@@ -10,11 +10,16 @@ const pages = [
 
 for (const page of pages) {
   const html = readFileSync(new URL(`../pages/${page}.html`, import.meta.url), "utf8");
-  assert.match(html, /\.\.\/assets\/css\/app\.css/);
-  assert.match(html, /\.\.\/assets\/js\/app\.js/);
+  assert.match(html, /<body[^>]*>/);
 }
 
-const portal = readFileSync(new URL("../pages/customer-quotation.html", import.meta.url), "utf8");
-assert.match(portal, /<html class="portal-page"/);
+const packageJson = JSON.parse(readFileSync(new URL("../apps/web/package.json", import.meta.url), "utf8"));
+assert.deepEqual(
+  ["next", "react", "react-dom"].filter((dependency) => !packageJson.dependencies[dependency]),
+  []
+);
 
-console.log(`DealFlow360 smoke check passed: ${pages.length} pages.`);
+const routeSource = readFileSync(new URL("../apps/web/lib/routes.ts", import.meta.url), "utf8");
+for (const page of pages) assert.match(routeSource, new RegExp(`"${page}"`));
+
+console.log(`DealFlow360 Next.js smoke check passed: ${pages.length} pages.`);

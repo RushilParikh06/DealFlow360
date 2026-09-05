@@ -1,0 +1,7 @@
+packages:
+  - apps/*
+
+onlyBuiltDependencies:
+  - sharp
+allowBuilds:
+  sharp: set this to true or false

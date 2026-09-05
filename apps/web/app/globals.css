@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --df-on-tertiary-container: 255 213 197;
+  --df-secondary-container: 220 226 243;
+  --df-on-primary-fixed: 0 22 77;
+  --df-error: 220 38 38;
+  --df-surface-container-low: 247 244 236;
+  --df-on-secondary-fixed: 21 28 39;
+  --df-inverse-primary: 181 196 255;
+  --df-primary-fixed: 220 225 255;
+  --df-inverse-surface: 46 48 56;
+  --df-inverse-on-surface: 240 240 251;
+  --df-on-secondary: 255 255 255;
+  --df-on-error-container: 147 0 10;
+  --df-surface-container-highest: 220 213 198;
+  --df-tertiary-fixed: 255 219 205;
+  --df-surface-bright: 250 248 255;
+  --df-surface-dim: 233 227 216;
+  --df-on-tertiary: 255 255 255;
+  --df-tertiary-fixed-dim: 255 181 151;
+  --df-on-background: 25 27 35;
+  --df-surface-container-lowest: 255 255 255;
+  --df-on-secondary-fixed-variant: 64 71 84;
+  --df-tertiary: 131 47 0;
+  --df-outline-variant: 209 201 188;
+  --df-surface-container: 239 234 224;
+  --df-on-tertiary-fixed-variant: 126 44 0;
+  --df-on-error: 255 255 255;
+  --df-surface: 244 240 231;
+  --df-outline: 29 36 48;
+  --df-secondary-fixed: 220 226 243;
+  --df-on-surface-variant: 67 70 84;
+  --df-surface-container-high: 229 223 211;
+  --df-error-container: 255 218 214;
+  --df-primary-container: 224 231 250;
+  --df-on-primary-container: 23 62 157;
+  --df-on-primary: 255 255 255;
+  --df-secondary-fixed-dim: 192 199 215;
+  --df-tertiary-container: 170 63 0;
+  --df-on-surface: 25 27 35;
+  --df-primary: 0 63 179;
+  --df-secondary: 88 95 108;
+  --df-primary-fixed-dim: 181 196 255;
+  --df-on-secondary-container: 94 101 115;
+  --df-surface-tint: 31 84 211;
+  --df-background: 250 248 255;
+  --df-on-primary-fixed-variant: 0 60 173;
+  --df-surface-variant: 226 225 236;
+  --df-on-tertiary-fixed: 54 15 0;
+  --df-gutter: 1rem;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+[data-page-root] {
+  min-height: 100vh;
+}
+
+[data-page-root] > main > :first-child {
+  margin-top: 0 !important;
+}
+
+[data-page-root] > main > :last-child {
+  margin-bottom: 0 !important;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+:focus-visible {
+  outline: 3px solid #2457d6 !important;
+  outline-offset: 2px;
+}
+
+a,
+button,
+select,
+input,
+textarea {
+  accent-color: #2457d6;
+}
+
+[data-page-root] > header nav a[aria-current="page"] {
+  border: 2px solid #1d2430 !important;
+  background: #2457d6 !important;
+  color: #fff !important;
+  box-shadow: 3px 3px 0 #1d2430 !important;
+  transform: translate(-1px, -1px);
+}
+
+[data-page="customer-quotation"] > header.fixed {
+  display: none;
+}
+
+[data-page="customer-quotation"] > main {
+  padding-top: 0 !important;
+}
+
+.df-menu-button {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #1d2430;
+  background: #fffcf5;
+  color: #111827;
+  font: 700 20px/1 "IBM Plex Sans", sans-serif;
+}
+
+.df-mobile-nav {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  [data-page-root] > header nav:not(.df-mobile-nav) {
+    display: none !important;
+  }
+
+  .df-menu-button {
+    display: inline-flex;
+  }
+
+  .df-mobile-nav[data-open="true"] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    gap: 8px;
+    padding: 12px 16px 16px;
+    border-bottom: 2px solid #1d2430;
+    background: #fffcf5;
+  }
+
+  .df-mobile-nav a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1.5px solid #1d2430;
+    color: #111827;
+    font: 600 14px/1.2 "IBM Plex Sans", sans-serif;
+  }
+
+  .df-mobile-nav a[aria-current="page"] {
+    background: #2457d6;
+    color: white;
+    box-shadow: 3px 3px 0 #1d2430;
+  }
+}
+
+@media (max-width: 639px) {
+  .df-mobile-nav[data-open="true"] {
+    grid-template-columns: 1fr;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+
+  button,
+  a,
+  select,
+  input {
+    min-height: 44px;
+  }
+}
