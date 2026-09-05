@@ -126,6 +126,11 @@ body {
   background: rgb(var(--df-surface-container-lowest));
 }
 
+[data-page-root] tbody > tr:nth-child(n + 4),
+[data-entry-list] > :nth-child(n + 4) {
+  display: none;
+}
+
 [data-page-root] > main > :first-child {
   margin-top: 0 !important;
 }
