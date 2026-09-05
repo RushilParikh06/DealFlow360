@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Courier+Prime:wght@400;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"on-secondary-container":"#5e6573","on-background":"#191b23","on-secondary-fixed-variant":"#404754","tertiary-fixed-dim":"#ffb597","on-tertiary-fixed-variant":"#7e2c00","surface-variant":"#e2e1ec","surface-container-lowest":"#ffffff","secondary-container":"#dce2f3","secondary":"#585f6c","primary-container":"#2457d6","outline-variant":"#c3c5d7","on-tertiary-fixed":"#360f00","on-tertiary-container":"#ffd5c5","on-primary-container":"#173E9D","surface":"#F4F0E7","inverse-primary":"#b5c4ff","primary":"#003fb3","on-tertiary":"#ffffff","error-container":"#FEE2E2","surface-container-highest":"#e2e1ec","on-surface":"#191b23","surface-container-low":"#F7F4EC","surface-container-high":"#e7e7f2","on-primary-fixed-variant":"#003cad","on-surface-variant":"#434654","primary-fixed-dim":"#b5c4ff","tertiary-fixed":"#ffdbcd","background":"#faf8ff","surface-dim":"#E9E3D8","tertiary":"#832f00","surface-container":"#ededf8","on-error-container":"#93000a","surface-bright":"#FFFCF5","inverse-surface":"#2e3038","surface-tint":"#1f54d3","outline":"#1D2430","on-primary":"#ffffff","error":"#DC2626","inverse-on-surface":"#f0f0fb","secondary-fixed-dim":"#c0c7d7","tertiary-container":"#aa3f00","primary-fixed":"#dce1ff","on-secondary-fixed":"#151c27","secondary-fixed":"#dce2f3","on-error":"#ffffff","on-secondary":"#ffffff","on-primary-fixed":"#00164d"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xs":"0.5rem","space-xxs":"0.25rem","space-lg":"1.5rem","gutter":"1rem","border-width":"1.5px","space-xl":"2rem","space-sm":"0.75rem","space-md":"1rem","margin-mobile":"1rem","margin-desktop":"2rem","space-2xl":"3rem"},"fontFamily":{"label-sm":["IBM Plex Sans"],"mono-metric-sm":["Courier Prime"],"body-lg":["IBM Plex Sans"],"headline-md":["IBM Plex Sans"],"label-md":["IBM Plex Sans"],"body-md":["IBM Plex Sans"],"headline-lg-mobile":["IBM Plex Sans"],"mono-metric":["Courier Prime"],"body-sm":["IBM Plex Sans"],"headline-lg":["IBM Plex Sans"],"headline-sm":["IBM Plex Sans"]},"fontSize":{"label-sm":["12px",{"lineHeight":"16px","fontWeight":"500"}],"mono-metric-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","fontWeight":"600"}],"label-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-lg-mobile":["24px",{"lineHeight":"32px","fontWeight":"600"}],"mono-metric":["14px",{"lineHeight":"20px","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-lg":["28px",{"lineHeight":"36px","fontWeight":"600"}],"headline-sm":["16px",{"lineHeight":"24px","fontWeight":"600"}]}}}}</script><link href="../assets/css/app.css" rel="stylesheet"/><script defer src="../assets/js/app.js"></script></head><body class="bg-surface font-body-md text-body-md text-on-surface">
+<!-- Top Horizontal Application Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-bright border-b-[1.5px] border-outline">
+<div class="h-14 w-full px-4 lg:px-6 flex items-center justify-between gap-space-md">
+<!-- Left: Brand + Nav Links -->
+<div class="flex items-center gap-space-md overflow-x-auto">
+<div class="flex items-center gap-space-xs flex-shrink-0 mr-1">
+<img alt="DealFlow360 Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VHTIU3t9-5rRk-CEKSXno3byMT0JASngdLJRV904p8U_SpkyPTzh2Xuu2dCnJCDxbo4K___rwJ946wLetzcW5xB3TqrwF2alarH-2m2wnuy8Laa0Cf32rKxeg8N1dCEw7hU7ii2cpAOTCZ6ID0zI-0qLvWGutArulL4Jcr7wWjc4vuyAhgri9_D5Erubic9uiR5RE006yohwQcycMiadCCVMNNT7E2dd26FsSdcrpyoXXQ4pNfsg4WRKQ"/>
+<span class="font-headline-sm text-[15px] tracking-tight text-on-surface uppercase font-bold">DealFlow360</span>
+</div>
+<!-- Navigation Links -->
+<nav aria-label="Main Navigation" class="flex items-center gap-1 flex-shrink-0">
+<a class="px-space-xs py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-dim font-label-sm text-label-sm rounded transition-all" href="#">Dashboard</a>
+<a aria-current="page" class="px-space-xs py-1 bg-[#2457D6] text-white border-[1.5px] border-outline shadow-[3px_3px_0px_#1D2430] font-label-sm text-label-sm font-semibold rounded" href="#">Quotations</a>
+<a class="px-space-xs py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-dim font-label-sm text-label-sm rounded transition-all" href="#">Approvals</a>
+<a class="px-space-xs py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-dim font-label-sm text-label-sm rounded transition-all" href="#">Fulfillment</a>
+<a class="px-space-xs py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-dim font-label-sm text-label-sm rounded transition-all" href="#">Subscriptions</a>
+<a class="px-space-xs py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-dim font-label-sm text-label-sm rounded transition-all" href="#">Invoices</a>
+<a class="px-space-xs py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-dim font-label-sm text-label-sm rounded transition-all" href="#">Deal Health</a>
+<a class="px-space-xs py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-dim font-label-sm text-label-sm rounded transition-all" href="#">Reports</a>
+</nav>
+</div>
+<!-- Right: Search, Region badge, Notifications, Profile -->
+<div class="flex items-center gap-space-sm flex-shrink-0">
+<div class="hidden md:flex items-center gap-space-xs bg-surface px-space-sm py-[5px] border-[1.5px] border-outline rounded text-secondary shadow-[1.5px_1.5px_0px_#1D2430]">
+<span class="material-symbols-outlined text-[16px] text-on-surface">search</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant pr-space-xs">Search contracts, deals...</span>
+<kbd class="font-mono-metric-sm text-[11px] bg-surface-dim px-1 border border-outline rounded text-on-surface">⌘K</kbd>
+</div>
+<span class="hidden xl:inline-flex items-center gap-space-xxs bg-surface-dim px-space-xs py-[4px] border-[1.5px] border-outline rounded text-label-sm font-label-sm shadow-[1.5px_1.5px_0px_#1D2430]">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span class="font-mono-metric-sm text-mono-metric-sm text-on-surface font-semibold">US-EAST</span>
+</span>
+<button aria-label="Notifications" class="relative p-space-xs bg-surface border-[1.5px] border-outline rounded hover:bg-surface-dim transition-colors text-on-surface shadow-[1.5px_1.5px_0px_#1D2430]">
+<span class="material-symbols-outlined text-[18px] block">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-outline"></span>
+</button>
+<div class="flex items-center pl-space-xs border-l-[1.5px] border-outline">
+<img alt="Profile" class="w-8 h-8 rounded-full object-cover border-[1.5px] border-outline shadow-[1.5px_1.5px_0px_#1D2430]" src="https://lh3.googleusercontent.com/aida/AEtjO1V_1Shot5C3nLuW2ogAZ0eSQ2c1JdLSSJ6eTaaIofRglUnaH85C7mgH-ZIwsgv7gwHfJwZa2NvM1U2ESIzMlXZw_E2D19Fa7wAaxZ5DP872BDrHRCg56GrFcEa9qecR6PAOF8obskwHq0YVdn8aZbQmXXTYU9-NzD1K14AzRxqO_Eis0cFTMWDaH-Wg1xSNzyCw_MQBMbzmHA_BPynq7zFPtWX_CIy_P3gltnsF9dtBlVYuqKbYKDMxSQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Container (Full width, no left sidebar) -->
+<div class="w-full">
+<main class="pt-16 min-h-screen bg-surface w-full px-4 lg:px-6 py-space-md">
+<div class="flex flex-col w-full max-w-[1600px] mx-auto gap-space-md">
+<!-- Contextual Top Header -->
+<div class="flex flex-col gap-space-xs bg-surface-bright p-space-md border-[1.5px] border-outline rounded shadow-[2px_2px_0px_#1D2430]">
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xxs">
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="flex items-center gap-space-xs font-mono-metric-sm text-mono-metric-sm text-secondary">
+<span class="hover:text-primary transition-colors cursor-pointer">Quotations</span>
+<span>/</span>
+<span class="text-on-surface font-semibold">Q-1042</span>
+<span>/</span>
+<span class="text-secondary">Acme Corp Enterprise Deal Desk</span>
+</nav>
+<!-- Title & Status -->
+<div class="flex items-center gap-space-sm mt-space-xxs flex-wrap">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Quotation Q-1042 — Acme Corp</h1>
+<span class="inline-flex items-center gap-space-xxs bg-[#FEF3C7] text-[#92400E] border-[1.5px] border-outline px-space-xs py-[2px] rounded text-label-sm font-label-sm font-bold uppercase tracking-wider shadow-[1px_1px_0px_#1D2430]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#D97706] animate-pulse"></span>
+                Pending Approval
+              </span>
+</div>
+</div>
+<!-- Action CTAs -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="inline-flex items-center justify-center gap-space-xs bg-surface-bright hover:bg-surface-dim active:translate-x-[1px] active:translate-y-[1px] text-on-surface font-label-md text-label-md px-space-sm py-[8px] border-[1.5px] border-outline rounded shadow-[1.5px_1.5px_0px_#1D2430] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>Save Draft</span>
+</button>
+<button class="inline-flex items-center justify-center gap-space-xs bg-surface-bright hover:bg-surface-dim active:translate-x-[1px] active:translate-y-[1px] text-on-surface font-label-md text-label-md px-space-sm py-[8px] border-[1.5px] border-outline rounded shadow-[1.5px_1.5px_0px_#1D2430] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span>Preview Customer View</span>
+</button>
+<button class="inline-flex items-center justify-center gap-space-xs bg-[#2457D6] text-on-primary hover:bg-[#173E9D] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none font-label-md text-label-md font-semibold px-space-md py-[8px] border-[2px] border-outline rounded shadow-[3px_3px_0px_#1D2430] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">approval</span>
+<span>Submit for Approval (Requires Manager &amp; Finance signoff)</span>
+</button>
+</div>
+</div>
+<!-- Metadata Strip -->
+<div class="mt-space-xs pt-space-xs border-t-[1.5px] border-outline grid grid-cols-2 md:grid-cols-5 gap-space-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Customer Tier</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface mt-[2px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary">workspace_premium</span>
+              Gold Account <span class="font-mono-metric-sm text-mono-metric-sm text-secondary font-normal">(Cap: 15% HW / 10% Services)</span>
+</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Deal Desk Owner</span>
+<span class="font-body-md text-body-md text-on-surface mt-[2px] flex items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-surface-dim border border-outline flex items-center justify-center font-mono-metric-sm text-[10px]">M</span>
+              M. Shah
+            </span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Price List</span>
+<span class="font-mono-metric text-mono-metric text-on-surface mt-[2px]">Corp Std FY25 (INR)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Created</span>
+<span class="font-mono-metric text-mono-metric text-on-surface mt-[2px]">Sep 2, 2025</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Validity</span>
+<span class="font-mono-metric text-mono-metric text-on-surface mt-[2px]">30 Calendar Days</span>
+</div>
+</div>
+</div>
+<!-- Policy Escalation Alert horizontal information band -->
+<div class="relative bg-[#FEF3C7] border-[2px] border-outline rounded p-space-sm pl-space-lg shadow-[3px_3px_0px_#1D2430] overflow-hidden flex items-start gap-space-sm">
+<div class="absolute left-0 top-0 bottom-0 w-[8px] bg-error border-r-[1.5px] border-outline"></div>
+<div class="p-1 rounded bg-error/10 border-[1.5px] border-error text-error flex-shrink-0">
+<span class="material-symbols-outlined text-[20px] block">warning</span>
+</div>
+<div class="flex flex-col flex-1">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight uppercase">Policy Escalation Alert: Line Item Exception (Tier 2 Override)</span>
+<span class="bg-error text-on-error font-mono-metric-sm text-mono-metric-sm font-bold px-space-xxs py-[1px] border border-outline rounded">RULE #GOV-412</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-[2px]">
+            Line item <strong class="font-semibold underline decoration-error">#2 (Onsite Setup Service)</strong> exceeds the Category Discount Limit of <strong>10.0%</strong> by <strong class="text-error font-mono-metric font-bold">+8.0%</strong>. Automated governance routing will trigger mandatory High-Risk Double Sign-off upon submission.
+          </p>
+</div>
+<div class="hidden lg:flex flex-col items-end justify-center self-center pl-space-md border-l border-outline">
+<span class="font-label-sm text-label-sm uppercase text-secondary font-semibold">Escalation Route</span>
+<span class="font-mono-metric-sm text-mono-metric-sm font-bold text-on-surface mt-[2px]">L2_FIN_EXEC_DIRECT</span>
+</div>
+</div>
+<!-- Two-column core layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start">
+<!-- Left Column: BOQ & Recommendations (8 Cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-md">
+<!-- BOQ Container -->
+<div class="bg-surface-bright border-[1.5px] border-outline rounded shadow-[2px_2px_0px_#1D2430] overflow-hidden flex flex-col">
+<!-- Table Toolbar -->
+<div class="p-space-sm bg-surface-dim border-b-[1.5px] border-outline flex flex-wrap items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-on-surface">inventory_2</span>
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Bill of Quantities</span>
+<span class="bg-surface-bright px-space-xs py-[2px] border-[1.5px] border-outline rounded font-mono-metric-sm text-mono-metric-sm font-bold">3 items</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="inline-flex items-center gap-space-xxs bg-surface-bright hover:bg-surface border-[1.5px] border-outline px-space-xs py-space-xxs rounded font-label-sm text-label-sm text-on-surface transition-all shadow-[1px_1px_0px_#1D2430]" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Add Product</span>
+</button>
+<button class="inline-flex items-center gap-space-xxs bg-surface-bright hover:bg-surface border-[1.5px] border-outline px-space-xs py-space-xxs rounded font-label-sm text-label-sm text-on-surface transition-all shadow-[1px_1px_0px_#1D2430]" type="button">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>Add Service Bundle</span>
+</button>
+<button class="inline-flex items-center gap-space-xxs bg-surface-bright hover:bg-surface border-[1.5px] border-outline px-space-xs py-space-xxs rounded font-label-sm text-label-sm text-on-surface transition-all shadow-[1px_1px_0px_#1D2430]" type="button">
+<span class="material-symbols-outlined text-[16px]">percent</span>
+<span>Discount Bulk Apply</span>
+</button>
+</div>
+</div>
+<!-- Bill of Quantities Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-dim border-b-[1.5px] border-outline text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-space-xs px-space-sm w-8">#</th>
+<th class="py-space-xs px-space-sm">Line Item / SKU Details</th>
+<th class="py-space-xs px-space-sm text-center w-16">Qty</th>
+<th class="py-space-xs px-space-sm text-right">List Price</th>
+<th class="py-space-xs px-space-sm text-center">Disc. %</th>
+<th class="py-space-xs px-space-sm text-center">Ceiling</th>
+<th class="py-space-xs px-space-sm text-center">Gov Status</th>
+<th class="py-space-xs px-space-sm text-right">Line Total</th>
+</tr>
+</thead>
+<tbody class="divide-y-[1.5px] divide-outline">
+<!-- Line 1 -->
+<tr class="bg-surface-bright hover:bg-[#F9F7F1] transition-colors">
+<td class="py-space-sm px-space-sm font-mono-metric-sm text-mono-metric-sm text-secondary">01</td>
+<td class="py-space-sm px-space-sm">
+<div class="font-headline-sm text-[14px] leading-tight text-on-surface font-semibold">Laptop Pro 14</div>
+<div class="font-mono-metric-sm text-[11px] text-secondary mt-[2px]">SKU: HW-LP14 • Core i7, 32GB, 1TB SSD</div>
+</td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="font-mono-metric text-mono-metric text-on-surface">2</span>
+</td>
+<td class="py-space-sm px-space-sm text-right font-mono-metric text-mono-metric text-on-surface">
+                      ₹5,500.00
+                    </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="font-mono-metric text-mono-metric text-on-surface bg-surface-dim px-space-xs py-[2px] border border-outline rounded">12.0%</span>
+</td>
+<td class="py-space-sm px-space-sm text-center font-mono-metric-sm text-mono-metric-sm text-secondary">
+                      15.0%
+                    </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center gap-1 bg-[#DEF7EC] text-[#03543F] border border-[#31C48D] px-space-xs py-[2px] rounded text-label-sm font-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                        OK (Within limit)
+                      </span>
+</td>
+<td class="py-space-sm px-space-sm text-right font-mono-metric text-mono-metric font-bold text-on-surface">
+                      ₹9,680.00
+                    </td>
+</tr>
+<!-- Line 2: THE KEY FLAG - Soft-brutalist exception treatment -->
+<tr class="bg-[#FFF5F5] relative">
+<td class="py-space-sm px-space-sm font-mono-metric-sm text-mono-metric-sm text-error font-bold border-l-[4px] border-l-error">02</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-[14px] leading-tight text-on-surface font-semibold">Onsite Setup Service</span>
+<span class="material-symbols-outlined text-[16px] text-error">priority_high</span>
+</div>
+<div class="font-mono-metric-sm text-[11px] text-error font-semibold mt-[2px]">SKU: SV-SET-01 • Tier 1 Field Deployment Engineer</div>
+</td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="font-mono-metric text-mono-metric text-on-surface">1</span>
+</td>
+<td class="py-space-sm px-space-sm text-right font-mono-metric text-mono-metric text-on-surface">
+                      ₹2,500.00
+                    </td>
+<td class="py-space-sm px-space-sm text-center">
+<div class="inline-flex items-center justify-center gap-1 bg-surface-bright px-space-xs py-[2px] border-[2px] border-error rounded shadow-[1px_1px_0px_#DC2626]">
+<span class="font-mono-metric text-mono-metric font-bold text-error">18.0%</span>
+<span class="material-symbols-outlined text-[14px] text-error">error</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-center font-mono-metric-sm text-mono-metric-sm text-secondary font-bold">
+                      10.0%
+                    </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center gap-1 bg-error-container text-error border-[1.5px] border-error px-space-xs py-[2px] rounded text-label-sm font-label-sm font-bold tracking-tight shadow-[1px_1px_0px_#1D2430]">
+<span class="material-symbols-outlined text-[14px]">gavel</span>
+                        OVER LIMIT (+8 pt limit: 10%)
+                      </span>
+</td>
+<td class="py-space-sm px-space-sm text-right font-mono-metric text-mono-metric font-bold text-on-surface">
+                      ₹2,050.00
+                    </td>
+</tr>
+<!-- Line 3 -->
+<tr class="bg-surface-bright hover:bg-[#F9F7F1] transition-colors">
+<td class="py-space-sm px-space-sm font-mono-metric-sm text-mono-metric-sm text-secondary">03</td>
+<td class="py-space-sm px-space-sm">
+<div class="font-headline-sm text-[14px] leading-tight text-on-surface font-semibold">Extended Warranty 2yr</div>
+<div class="font-mono-metric-sm text-[11px] text-secondary mt-[2px]">SKU: SV-WAR-2Y • Standard Next-Biz-Day SLA</div>
+</td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="font-mono-metric text-mono-metric text-on-surface">1</span>
+</td>
+<td class="py-space-sm px-space-sm text-right font-mono-metric text-mono-metric text-on-surface">
+                      ₹750.00
+                    </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="font-mono-metric text-mono-metric text-on-surface bg-surface-dim px-space-xs py-[2px] border border-outline rounded">10.0%</span>
+</td>
+<td class="py-space-sm px-space-sm text-center font-mono-metric-sm text-mono-metric-sm text-secondary">
+                      15.0%
+                    </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center gap-1 bg-[#DEF7EC] text-[#03543F] border border-[#31C48D] px-space-xs py-[2px] rounded text-label-sm font-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                        OK (Within limit)
+                      </span>
+</td>
+<td class="py-space-sm px-space-sm text-right font-mono-metric text-mono-metric font-bold text-on-surface">
+                      ₹675.00
+                    </td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Sub-Bar Info -->
+<div class="p-space-xs bg-surface-dim border-t-[1.5px] border-outline flex items-center justify-between text-secondary font-mono-metric-sm text-mono-metric-sm">
+<span>* Pricing based on Master Services Agreement Q2-INDIA-STD</span>
+<span>Currency: INR (₹)</span>
+</div>
+</div>
+<!-- Commercial Recommendations & Margin Boosters -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between flex-wrap gap-1">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">auto_awesome</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight uppercase">Commercial Recommendations &amp; Margin Boosters</h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">AI Suggested attach items for Acme Corp</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
+<!-- Recommendation 1 -->
+<div class="bg-surface-bright border-[1.5px] border-outline rounded p-space-sm flex flex-col justify-between shadow-[2px_2px_0px_#1D2430] hover:translate-y-[-1px] transition-transform">
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="bg-surface-dim px-space-xxs py-[1px] border border-outline rounded font-mono-metric-sm text-[10px] text-on-surface font-semibold">ACC-HW</span>
+<span class="font-mono-metric-sm text-[11px] text-[#03543F] font-bold bg-[#DEF7EC] px-1 rounded border border-[#31C48D]">Margin +₹18</span>
+</div>
+<h3 class="font-headline-sm text-[14px] text-on-surface font-semibold mt-space-xxs">Wireless Precision Mouse</h3>
+<p class="font-mono-metric-sm text-mono-metric-sm text-secondary mt-[2px]">SKU: HW-ACC-09</p>
+<div class="font-mono-metric text-mono-metric font-bold text-on-surface mt-space-xs">₹65.00</div>
+</div>
+<button class="mt-space-sm inline-flex items-center justify-center gap-1 bg-surface hover:bg-surface-dim active:translate-x-[1px] active:translate-y-[1px] text-on-surface border-[1.5px] border-outline py-space-xxs rounded font-label-sm text-label-sm font-semibold transition-all shadow-[1px_1px_0px_#1D2430]" type="button">
+<span class="material-symbols-outlined text-[14px]">add</span>
+<span>Add to Quote</span>
+</button>
+</div>
+<!-- Recommendation 2 -->
+<div class="bg-surface-bright border-[1.5px] border-outline rounded p-space-sm flex flex-col justify-between shadow-[2px_2px_0px_#1D2430] hover:translate-y-[-1px] transition-transform">
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="bg-surface-dim px-space-xxs py-[1px] border border-outline rounded font-mono-metric-sm text-[10px] text-on-surface font-semibold">PERIPHERAL</span>
+<span class="font-mono-metric-sm text-[11px] text-primary font-bold bg-[#E0E7FA] px-1 rounded border border-primary/30">Promo: 12% off</span>
+</div>
+<h3 class="font-headline-sm text-[14px] text-on-surface font-semibold mt-space-xxs">Thunderbolt Docking Station</h3>
+<p class="font-mono-metric-sm text-mono-metric-sm text-secondary mt-[2px]">SKU: HW-DCK-02</p>
+<div class="font-mono-metric text-mono-metric font-bold text-on-surface mt-space-xs">₹240.00</div>
+</div>
+<button class="mt-space-sm inline-flex items-center justify-center gap-1 bg-surface hover:bg-surface-dim active:translate-x-[1px] active:translate-y-[1px] text-on-surface border-[1.5px] border-outline py-space-xxs rounded font-label-sm text-label-sm font-semibold transition-all shadow-[1px_1px_0px_#1D2430]" type="button">
+<span class="material-symbols-outlined text-[14px]">add</span>
+<span>Add to Quote</span>
+</button>
+</div>
+<!-- Recommendation 3 -->
+<div class="bg-surface-bright border-[1.5px] border-outline rounded p-space-sm flex flex-col justify-between shadow-[2px_2px_0px_#1D2430] hover:translate-y-[-1px] transition-transform">
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="bg-surface-dim px-space-xxs py-[1px] border border-outline rounded font-mono-metric-sm text-[10px] text-on-surface font-semibold">SERVICE SLA</span>
+<span class="font-mono-metric-sm text-[11px] text-tertiary font-bold bg-[#FFEDD5] px-1 rounded border border-tertiary/30">ARPU +₹100/mo</span>
+</div>
+<h3 class="font-headline-sm text-[14px] text-on-surface font-semibold mt-space-xxs">Enterprise 24/7 Care SLA</h3>
+<p class="font-mono-metric-sm text-mono-metric-sm text-secondary mt-[2px]">SKU: SV-SLA-ENT</p>
+<div class="font-mono-metric text-mono-metric font-bold text-on-surface mt-space-xs">₹1,200.00<span class="text-[11px] text-secondary font-normal">/yr</span></div>
+</div>
+<button class="mt-space-sm inline-flex items-center justify-center gap-1 bg-surface hover:bg-surface-dim active:translate-x-[1px] active:translate-y-[1px] text-on-surface border-[1.5px] border-outline py-space-xxs rounded font-label-sm text-label-sm font-semibold transition-all shadow-[1px_1px_0px_#1D2430]" type="button">
+<span class="material-symbols-outlined text-[14px]">add</span>
+<span>Add to Quote</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sticky Commercial & Governance Summary (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-md lg:sticky lg:top-20">
+<!-- Commercial Financial Panel -->
+<div class="bg-surface-bright border-[1.5px] border-outline rounded p-space-md shadow-[3px_3px_0px_#1D2430] flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-xs border-b-[1.5px] border-outline">
+<div class="flex items-center gap-space-xxs">
+<span class="material-symbols-outlined text-[18px] text-on-surface">receipt_long</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">Commercial Summary</h3>
+</div>
+<span class="font-mono-metric-sm text-mono-metric-sm bg-surface-dim px-space-xxs py-[2px] border border-outline rounded text-secondary">LEDGER FY25</span>
+</div>
+<!-- Metric Breakdown -->
+<div class="flex flex-col gap-space-xs font-mono-metric text-mono-metric">
+<div class="flex items-center justify-between text-secondary">
+<span class="font-body-md text-body-md">Subtotal (List Price)</span>
+<span class="text-on-surface">₹14,250.00</span>
+</div>
+<div class="flex items-center justify-between text-error font-medium">
+<span class="font-body-md text-body-md flex items-center gap-1">
+<span>Blended Discount</span>
+<span class="font-mono-metric-sm text-[11px] bg-error-container text-error px-1 border border-error rounded">-12.9%</span>
+</span>
+<span>-₹1,845.00</span>
+</div>
+<div class="flex items-center justify-between text-on-surface pt-space-xxs border-t border-dashed border-outline">
+<span class="font-body-md text-body-md">Net Taxable Base</span>
+<span class="font-bold">₹12,405.00</span>
+</div>
+<div class="flex items-center justify-between text-secondary">
+<span class="font-body-md text-body-md">Estimated GST (18%)</span>
+<span class="text-on-surface">₹2,232.90</span>
+</div>
+</div>
+<!-- Prominent Total Payable box -->
+<div class="bg-surface-dim border-[1.5px] border-outline p-space-sm rounded shadow-[2px_2px_0px_#1D2430] flex flex-col gap-space-xxs mt-space-xxs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Total Payable (INR)</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">ALL TAXES INCL</span>
+</div>
+<div class="font-mono-metric text-[28px] leading-none font-bold text-on-surface tracking-tight">
+                ₹14,637.90
+              </div>
+<div class="flex items-center justify-between pt-space-xs mt-space-xxs border-t border-outline/50">
+<span class="font-label-sm text-label-sm text-secondary">Gross Margin Health</span>
+<span class="inline-flex items-center gap-1 font-mono-metric-sm text-mono-metric-sm font-bold text-[#03543F]">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                  28.4% <span class="text-secondary font-normal">(Target ≥ 25%)</span>
+</span>
+</div>
+</div>
+<!-- Approval Diagnostics Box -->
+<div class="bg-[#FFF5F5] border-[1.5px] border-error rounded p-space-sm flex flex-col gap-space-xs mt-space-xxs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xxs">
+<span class="material-symbols-outlined text-[18px] text-error">gavel</span>
+<span class="font-headline-sm text-[13px] font-bold text-error uppercase">Governance Diagnostic</span>
+</div>
+<span class="bg-error text-on-error font-mono-metric-sm text-mono-metric-sm font-bold px-space-xs py-[1px] border border-outline rounded shadow-[1px_1px_0px_#1D2430]">
+                  HIGH RISK
+                </span>
+</div>
+<div class="text-[12px] leading-tight text-on-surface bg-surface-bright p-space-xs border border-error rounded font-body-sm">
+<strong class="text-error font-semibold">Trigger:</strong> Onsite Setup Service: 18% discount exceeds 10% Gold tier limit by 8.0 points.
+              </div>
+<!-- Required Approval Sequence Flow -->
+<div class="flex flex-col gap-space-xxs mt-space-xxs">
+<span class="font-label-sm text-[11px] uppercase tracking-wider text-secondary font-semibold">Required Approval Sequence</span>
+<div class="flex flex-col gap-1">
+<!-- Step 1 -->
+<div class="flex items-center justify-between p-space-xxs bg-surface-bright border-[1.5px] border-outline rounded">
+<div class="flex items-center gap-space-xs">
+<span class="w-5 h-5 rounded-full bg-[#FEF3C7] text-[#92400E] border border-outline flex items-center justify-center font-mono-metric-sm text-[11px] font-bold">1</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">M. Vance</span>
+<span class="font-mono-metric-sm text-[10px] text-secondary leading-none">Sales Ops Manager</span>
+</div>
+</div>
+<span class="font-label-sm text-[10px] uppercase font-bold text-[#D97706] bg-[#FEF3C7] px-space-xxs py-[2px] border border-outline rounded">
+                      Pending
+                    </span>
+</div>
+<!-- Step 2 -->
+<div class="flex items-center justify-between p-space-xxs bg-surface-dim/60 border-[1.5px] border-outline/60 rounded">
+<div class="flex items-center gap-space-xs">
+<span class="w-5 h-5 rounded-full bg-surface-bright text-secondary border border-outline/50 flex items-center justify-center font-mono-metric-sm text-[11px] font-bold">2</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-medium text-secondary">R. Iyer</span>
+<span class="font-mono-metric-sm text-[10px] text-secondary leading-none">Finance Director</span>
+</div>
+</div>
+<span class="font-label-sm text-[10px] uppercase font-medium text-secondary bg-surface-bright px-space-xxs py-[2px] border border-outline/40 rounded">
+                      Queued
+                    </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Deal Desk Notes Section -->
+<div class="flex flex-col gap-space-xxs mt-space-xxs">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold" for="deal-notes">Deal Desk Justification Notes</label>
+<span class="font-mono-metric-sm text-[11px] text-secondary">Markdown OK</span>
+</div>
+<textarea class="w-full bg-surface-container-lowest border-[1.5px] border-outline rounded p-space-xs font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3] transition-all resize-none" id="deal-notes" placeholder="Provide strategic rationale for discounting service line item... (e.g. Acme multi-year commit)" rows="3">Client requested bundled discount on deployment to close Q3 upfront commit. Total deal blended margin still holds strong at 28.4% (above target 25%). Recommended for approval.</textarea>
+</div>
+<!-- Bottom Audit Stamp -->
+<div class="pt-space-xs border-t border-outline flex items-center justify-between text-secondary font-mono-metric-sm text-[10px]">
+<span>INTEGRITY HASH: #4F89-A2</span>
+<span>COMPLIANCE POLICY v4.1</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
+
