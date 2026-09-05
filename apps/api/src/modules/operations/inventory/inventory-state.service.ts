@@ -1,4 +1,4 @@
-import { AppError } from '../types.ts';
+import { AppError } from '../types';
 
 export type ReservationStatus = 'AVAILABLE' | 'RESERVED' | 'ALLOCATED' | 'SHIPPED' | 'RELEASED';
 

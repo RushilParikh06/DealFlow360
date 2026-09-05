@@ -1,17 +1,7 @@
-// ############################################################################
-// TEMPORARY STUB - B1 OWNS THIS FILE.
-//
-// B2 cannot evaluate a quotation that does not exist, so this holds the minimum
-// columns the field list in plan.md section 6 already fixes. B1 replaces this
-// file wholesale. B2 must NOT add columns here - ask B1.
-//
-// Announce in chat before running the first migration:
-//   "pushing a stub sales.prisma so intelligence can run, B1 overwrite it"
-//
-// Only ONE file in the whole api reads these tables:
-//   apps/api/src/modules/intelligence/services/quote-reader.service.ts
-// When B1's real schema lands, that adapter is the only thing that changes.
-// ############################################################################
+// B1-owned models (plan.md section 4). Field shapes below are load-bearing for
+// B2's quote-reader.service.ts and ops-reader.service.ts - renaming needs a
+// heads-up in chat. QuotationLine.costMinor is a UNIT cost; B2 multiplies by
+// qty itself, never store a line-total cost here.
 
 model CustomerTier {
   id        String   @id @default(cuid())
@@ -50,8 +40,25 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  refreshTokens RefreshToken[]
+
   @@index([role])
   @@map("users")
+}
+
+/// Refresh tokens are stored hashed and revocable, never the bearer value itself.
+model RefreshToken {
+  id         String    @id @default(cuid())
+  userId     String
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("refresh_tokens")
 }
 
 model Quotation {
@@ -74,6 +81,7 @@ model Quotation {
 
   customer Customer        @relation(fields: [customerId], references: [id])
   lines    QuotationLine[]
+  order    Order?
 
   @@index([status, lastActivityAt])
   @@index([customerId])
@@ -90,7 +98,6 @@ model QuotationLine {
   discountBps    Int      @default(0)
   lineTotalMinor Int
   /// UNIT cost, not line cost. B2 computes lineCost as costMinor * qty.
-  /// If B1 seeds this as a line total instead, tell B2 - it changes marginBps.
   costMinor      Int      @default(0)
   lineType       LineType @default(ONE_TIME)
   createdAt      DateTime @default(now())
@@ -113,7 +120,8 @@ model Order {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  lines OrderLine[]
+  quotation Quotation   @relation(fields: [quotationId], references: [id])
+  lines     OrderLine[]
 
   @@map("orders")
 }

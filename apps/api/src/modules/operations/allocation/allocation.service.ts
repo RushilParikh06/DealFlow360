@@ -1,4 +1,4 @@
-import type { Money } from '../types.ts';
+import type { Money } from '../types';
 
 export interface OrderLineRequest {
   productId: string;

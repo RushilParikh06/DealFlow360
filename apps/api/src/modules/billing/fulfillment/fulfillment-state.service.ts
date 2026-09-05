@@ -1,4 +1,4 @@
-import { AppError } from '../../operations/types.ts';
+import { AppError } from '../../operations/types';
 
 export type FulfillmentStatus =
   | 'ORDER_CONFIRMED'

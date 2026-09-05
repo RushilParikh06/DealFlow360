@@ -2,10 +2,10 @@
 //
 // Two things worth reading twice:
 //
-// 1. QUOTE_STATE_PORT is bound to TemporaryQuoteStateAdapter. plan.md invariant 5
-//    says B2 must never write quotations.status directly. When B1 ships the real
-//    quote-state.service.ts, this ONE line changes and the adapter file is
-//    deleted. Nothing else in the module knows the difference.
+// 1. QUOTE_STATE_PORT is bound to B1's real QuoteStateService (apps/api/src/
+//    modules/sales/services/quote-state.service.ts). plan.md invariant 5 says
+//    B2 must never write quotations.status directly, so it only ever depends
+//    on this port. The temporary adapter this used to point at is deleted.
 //
 // 2. The engine/ folder is deliberately NOT in providers. It exports pure
 //    functions with no Nest decorators and no DI, which is why the 49 unit tests
@@ -30,7 +30,7 @@ import { EvaluationService } from './services/evaluation.service';
 import { OpsReaderService } from './services/ops-reader.service';
 import { PolicyService } from './services/policy.service';
 import { QuoteReaderService } from './services/quote-reader.service';
-import { TemporaryQuoteStateAdapter } from './services/quote-state.adapter';
+import { QuoteStateService } from '../sales/services/quote-state.service';
 import { UpsellService } from './services/upsell.service';
 
 @Module({
@@ -57,8 +57,9 @@ import { UpsellService } from './services/upsell.service';
     AllocationService,
     DealHealthService,
 
-    // THE SEAM. Replace useClass with B1's QuoteStateService when it lands.
-    { provide: QUOTE_STATE_PORT, useClass: TemporaryQuoteStateAdapter },
+    // THE SEAM. B1's real implementation - the temporary adapter is gone.
+    QuoteStateService,
+    { provide: QUOTE_STATE_PORT, useClass: QuoteStateService },
   ],
   exports: [
     // B1 and B3 consume these; they do not reach into the engine directly.

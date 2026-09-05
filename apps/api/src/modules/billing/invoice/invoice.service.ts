@@ -1,5 +1,5 @@
-import { AppError, type Money } from '../../operations/types.ts';
-import type { FulfillmentStatus } from '../fulfillment/fulfillment-state.service.ts';
+import { AppError, type Money } from '../../operations/types';
+import type { FulfillmentStatus } from '../fulfillment/fulfillment-state.service';
 
 export type InvoiceStatus = 'DRAFT' | 'ISSUED' | 'PARTIALLY_PAID' | 'PAID' | 'VOID' | 'OVERDUE';
 

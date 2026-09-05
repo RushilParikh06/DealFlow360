@@ -1,4 +1,4 @@
-import { applyBps, type Money } from '../types.ts';
+import { applyBps, type Money } from '../types';
 
 export interface TaxRule {
   categoryId: string;

@@ -1,5 +1,5 @@
-import { AppError } from '../../operations/types.ts';
-import type { InvoiceStatus } from '../invoice/invoice.service.ts';
+import { AppError } from '../../operations/types';
+import type { InvoiceStatus } from '../invoice/invoice.service';
 
 /**
  * POST /invoices/:id/payments (plan.md section 8). Payments are simulated, no

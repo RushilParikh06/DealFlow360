@@ -15,7 +15,7 @@
     "db:studio": "prisma studio",
     "generate": "prisma generate",
     "typecheck": "pnpm -r typecheck",
-    "test": "pnpm --filter @dealflow/api test",
+    "test": "pnpm --filter @dealflow/contracts build && pnpm --filter @dealflow/api test",
     "lint": "pnpm -r lint"
   },
   "devDependencies": {

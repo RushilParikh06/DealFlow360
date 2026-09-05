@@ -13,23 +13,10 @@
  * is the number in the test" is a strong thing to be able to say to a judge.
  */
 
-import { scryptSync, randomBytes } from 'node:crypto';
 import type { PrismaClient } from '@prisma/client';
+import { hashPassword } from '../../apps/api/src/modules/sales/auth/password';
 
-/**
- * B1 OWNS PASSWORD HASHING. This is a dependency-free stand-in so the seed runs
- * before B1's auth module exists. The stored format is self-describing
- * (`scrypt$salt$hash`) so the moment B1 switches to bcrypt/argon the mismatch is
- * obvious rather than mysterious.
- *
- * B1: replace this function with your hash call and re-run `pnpm db:seed`.
- */
 const SEED_PASSWORD = process.env.SEED_PASSWORD ?? 'dealflow123';
-
-function placeholderHash(password: string): string {
-  const salt = randomBytes(8).toString('hex');
-  return `scrypt$${salt}$${scryptSync(password, salt, 32).toString('hex')}`;
-}
 
 // ---------------------------------------------------------------------------
 // B1's half
@@ -143,7 +130,7 @@ export async function seedBase(prisma: PrismaClient): Promise<BaseSeedResult> {
   for (const u of USERS) {
     const row = await prisma.user.upsert({
       where: { email: u.email },
-      create: { email: u.email, name: u.name, role: u.role, passwordHash: placeholderHash(SEED_PASSWORD) },
+      create: { email: u.email, name: u.name, role: u.role, passwordHash: hashPassword(SEED_PASSWORD) },
       update: { name: u.name, role: u.role },
     });
     userIdByEmail.set(u.email, row.id);
@@ -204,7 +191,7 @@ export async function seedBase(prisma: PrismaClient): Promise<BaseSeedResult> {
       `${PRODUCTS.length} products, ${WAREHOUSES.length} warehouses, ${INVENTORY.length} inventory rows, ` +
       `${RELATIONSHIPS.length} relationships`,
   );
-  console.log(`  every seeded user's password is "${SEED_PASSWORD}" (placeholder hash, B1 to replace)`);
+  console.log(`  every seeded user's password is "${SEED_PASSWORD}"`);
 
   return { tierIdByCode, categoryIdByCode, userIdByEmail, productIdBySku, warehouseIdByCode };
 }

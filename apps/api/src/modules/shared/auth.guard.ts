@@ -1,19 +1,19 @@
 // GROUP OWNED - and TEMPORARY in its dev half.
 //
-// B1 owns auth. Until B1's JwtAuthGuard exists, AUTH_MODE=dev lets B2 exercise
-// the approval chain by sending two headers:
+// AUTH_MODE=dev still lets anyone exercise a role-guarded endpoint by sending
+// two headers, useful for exploring the API without a login round trip:
 //
 //   x-dev-user-id: usr_manager
 //   x-dev-role: SALES_MANAGER
 //
-// That is the whole trick that keeps B2 off the critical path for three hours.
-// When B1 lands the real guard, flip AUTH_MODE=jwt in .env and delete the dev
-// branch below. Nothing else changes, because every handler reads @CurrentUser.
+// AUTH_MODE=jwt is the real path: B1's guard below verifies the bearer token
+// signed by apps/api/src/modules/sales/services/auth.service.ts.
 
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ErrorCode, UserRole } from '@dealflow/contracts';
 import { AppError } from './app-error';
 import type { AuthUser } from './current-user';
+import { verifyJwt } from '../sales/auth/jwt';
 
 const VALID_ROLES = new Set<string>(Object.values(UserRole));
 
@@ -47,10 +47,17 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    // AUTH_MODE=jwt - B1 replaces this branch with the real verification.
-    throw new AppError(
-      ErrorCode.UNAUTHENTICATED,
-      'AUTH_MODE=jwt but B1 JwtAuthGuard is not wired yet.',
-    );
+    const auth = req.headers['authorization'];
+    if (!auth?.startsWith('Bearer ')) {
+      throw new AppError(ErrorCode.UNAUTHENTICATED, 'Missing bearer token.');
+    }
+
+    const payload = verifyJwt(auth.slice('Bearer '.length), process.env.JWT_SECRET ?? 'dev-only-change-me');
+    if (!VALID_ROLES.has(payload.role)) {
+      throw new AppError(ErrorCode.UNAUTHENTICATED, `Unknown role "${payload.role}".`);
+    }
+
+    req.user = { id: payload.sub, role: payload.role as UserRole, customerId: payload.customerId };
+    return true;
   }
 }

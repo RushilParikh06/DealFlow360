@@ -4,12 +4,13 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from './modules/shared/prisma.module';
 import { IntelligenceModule } from './modules/intelligence/intelligence.module';
+import { SalesModule } from './modules/sales/sales.module';
 
 @Module({
   imports: [
     PrismaModule,
     IntelligenceModule,
-    // SalesModule,      <- B1
+    SalesModule,
     // OperationsModule, <- B3
     // BillingModule,    <- B3
   ],

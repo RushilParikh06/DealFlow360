@@ -1,4 +1,4 @@
-import { AppError, type Money } from '../types.ts';
+import { AppError, type Money } from '../types';
 
 export interface PriceList {
   id: string;
