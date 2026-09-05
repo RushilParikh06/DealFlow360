@@ -493,27 +493,28 @@ Google Stitch may be used to establish layouts and a shared visual language. Sti
 
 ## Local development
 
-Once the repository is scaffolded, the expected setup is:
+The repository now contains an npm workspace with a Next.js web app in `apps/web` and a NestJS API in `apps/api`. The existing HTML screens are loaded into the Next.js App Router so the current UI remains available while individual screens are migrated to native React components.
 
-1. Install Node.js and `pnpm`.
-2. Copy `.env.example` to a local environment file and enter the required values.
-3. Start PostgreSQL and Redis using Docker Compose.
+The expected setup is:
+
+1. Install Node.js and npm.
+2. Copy `.env.example` to `.env` and enter the required values.
+3. Start PostgreSQL using Docker Compose when database features are needed.
 4. Install workspace dependencies.
-5. Apply Prisma migrations.
-6. Seed the database so the entire demo flow works without manual setup.
-7. Start the NestJS API and Next.js web application.
+5. Generate the Prisma client and apply migrations.
+6. Start the NestJS API and Next.js web application.
 
 Typical commands may look like:
 
 ```bash
-pnpm install
+npm install
 docker compose up -d
-pnpm prisma migrate dev
-pnpm prisma db seed
-pnpm dev
+npm run prisma:generate
+npm run prisma:migrate
+npm run dev
 ```
 
-Confirm the exact script names in the root `package.json` before running them.
+The web application runs at `http://localhost:3000`, and the API health check runs at `http://localhost:4000/health`.
 
 ## Team workflow
 

@@ -4,4 +4,8 @@ packages:
 onlyBuiltDependencies:
   - sharp
 allowBuilds:
+  '@prisma/client': false
+  '@prisma/engines': false
+  esbuild: false
+  prisma: false
   sharp: set this to true or false

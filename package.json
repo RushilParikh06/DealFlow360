@@ -1,12 +1,31 @@
 {
   "name": "dealflow360",
+  "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@11.19.0",
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "pnpm --filter @dealflow360/web dev",
-    "build": "pnpm --filter @dealflow360/web build",
-    "typecheck": "pnpm --filter @dealflow360/web typecheck",
-    "lint": "pnpm --filter @dealflow360/web lint",
-    "test": "node tests/smoke.mjs"
+    "dev": "concurrently \"npm run dev:web\" \"npm run dev:api\"",
+    "dev:web": "npm --workspace @dealflow360/web run dev",
+    "dev:api": "npm --workspace @dealflow360/api run dev",
+    "build": "npm --workspace @dealflow360/web run build",
+    "typecheck": "npm run typecheck:web && npm run typecheck:api",
+    "typecheck:web": "npm --workspace @dealflow360/web run typecheck",
+    "typecheck:api": "npm --workspace @dealflow360/api run typecheck",
+    "lint": "npm --workspace @dealflow360/web run lint",
+    "test": "npm run test:smoke",
+    "test:smoke": "node tests/smoke.mjs",
+    "test:e2e": "playwright test",
+    "test:unit": "jest",
+    "prisma:generate": "npm --workspace @dealflow360/api run prisma:generate",
+    "prisma:migrate": "npm --workspace @dealflow360/api run prisma:migrate"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@types/jest": "^29.5.14",
+    "concurrently": "^9.0.0",
+    "jest": "^29.7.0"
   }
 }

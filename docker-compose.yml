@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dealflow
+      POSTGRES_PASSWORD: dealflow
+      POSTGRES_DB: dealflow360
+    ports:
+      - "5432:5432"
+    volumes:
+      - dealflow360-postgres:/var/lib/postgresql/data
+
+volumes:
+  dealflow360-postgres:
