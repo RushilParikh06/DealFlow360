@@ -6,8 +6,6 @@ const pageDirectory = [path.resolve(process.cwd(), "../../pages"), path.resolve(
 
 if (!pageDirectory) throw new Error("DealFlow360 page sources were not found.");
 
-const bluePages = new Set<PageName>(["dashboard", "login", "quotation-detail", "quotations"]);
-
 export type LegacyPage = {
   bodyClass: string;
   html: string;
@@ -29,25 +27,5 @@ export function loadLegacyPage(page: PageName): LegacyPage {
     .split("-")
     .map((word) => word[0].toUpperCase() + word.slice(1))
     .join(" ");
-  const theme: Record<string, string> = {};
-
-  if (bluePages.has(page)) {
-    Object.assign(theme, {
-      "--df-outline-variant": "195 197 215",
-      "--df-surface-bright": "255 252 245",
-      "--df-surface-container": "237 237 248",
-      "--df-surface-container-high": "231 231 242",
-      "--df-surface-container-highest": "226 225 236",
-    });
-  }
-
-  if (page === "login") theme["--df-surface-container-low"] = "243 243 254";
-  if (page === "quotation-detail") theme["--df-primary-container"] = "36 87 214";
-  if (page === "quotations") {
-    theme["--df-primary"] = "36 87 214";
-    theme["--df-primary-container"] = "36 87 214";
-    theme["--df-gutter"] = "1.5rem";
-  }
-
-  return { bodyClass, html, scripts, theme, title };
+  return { bodyClass, html, scripts, theme: {}, title };
 }
