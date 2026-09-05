@@ -568,3 +568,4 @@ Possible next steps include mid-cycle proration, real gateway settlement, credit
 ## Guiding principle
 
 The most important quality of DealFlow360 is that the whole chain is real and traceable. A plain screen backed by correct rules, permissions, transactions, audit history, and state transitions is more valuable than a polished screen that only imitates the workflow.
+
