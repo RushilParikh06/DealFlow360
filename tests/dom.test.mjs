@@ -62,13 +62,18 @@ assert.equal(cells[0].querySelector("a")?.textContent, "QT-1004", "code keeps it
 assert.equal(cells[0].querySelector("a")?.getAttribute("href"), null, "records must not inherit a sample detail URL");
 
 const iconCell = cells[1];
+// The sample row's warning triangle said something true about the SAMPLE
+// record: that its discount broke a ceiling. Carried onto a row at list price
+// it is simply wrong, and it reads glued to the value ("errorDiscount ₹9.60")
+// because the ligature is text. The written value carries the meaning now.
 assert.equal(
-  iconCell.querySelector(".material-symbols-outlined").textContent,
-  "error",
-  "the icon ligature must survive - overwriting it renders words where the glyph was",
+  iconCell.querySelector(".material-symbols-outlined"),
+  null,
+  "an inherited status glyph must not survive into a different record's cell",
 );
-assert.match(iconCell.textContent, /Discount ₹9\.60/);
+assert.equal(iconCell.textContent.trim(), "Discount ₹9.60");
 assert.doesNotMatch(iconCell.textContent, /\+8pt OVER/, "stale sample text must be gone");
+assert.doesNotMatch(iconCell.textContent, /error/, "the ligature name must not read as a word");
 
 const chipCell = cells[2];
 assert.ok(chipCell.querySelector(".rounded-full"), "the status dot must survive");

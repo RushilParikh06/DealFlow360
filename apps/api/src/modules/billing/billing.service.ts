@@ -35,6 +35,25 @@ export class BillingService {
     private readonly audit: AuditService,
   ) {}
 
+  /**
+   * Billing rows carry an orderId and nothing else - orders are B1-owned, so
+   * there is no Prisma relation to include (plan.md section 10). Every billing
+   * screen still has to name the order and the customer, so resolve them once
+   * per page rather than making the browser fetch an order per row.
+   */
+  private async withOrderContext<T extends { orderId: string }>(items: T[]) {
+    const orders = await this.prisma.order.findMany({
+      where: { id: { in: [...new Set(items.map((item) => item.orderId))] } },
+      select: { id: true, code: true, quotation: { select: { customer: { select: { name: true } } } } },
+    });
+    const byId = new Map(orders.map((order) => [order.id, order]));
+    return items.map((item) => ({
+      ...item,
+      orderCode: byId.get(item.orderId)?.code ?? item.orderId,
+      customerName: byId.get(item.orderId)?.quotation?.customer?.name ?? '—',
+    }));
+  }
+
   // ---------------------------------------------------------------- fulfilment
 
   async listFulfillments(query: { orderId?: string; status?: string; page?: number; pageSize?: number }): Promise<
@@ -49,7 +68,7 @@ export class BillingService {
       this.prisma.fulfillment.findMany({ where, skip, take, orderBy: { updatedAt: 'desc' } }),
       this.prisma.fulfillment.count({ where }),
     ]);
-    return { items, total, page, pageSize };
+    return { items: await this.withOrderContext(items), total, page, pageSize };
   }
 
   /** The only writer of fulfillments.status. */
@@ -88,13 +107,15 @@ export class BillingService {
       this.prisma.invoice.findMany({ where, include: { _count: { select: { lines: true } } }, skip, take, orderBy: { createdAt: 'desc' } }),
       this.prisma.invoice.count({ where }),
     ]);
-    return { items, total, page, pageSize };
+    return { items: await this.withOrderContext(items), total, page, pageSize };
   }
 
   async getInvoice(id: string) {
     const invoice = await this.prisma.invoice.findUnique({ where: { id }, include: { lines: true, payments: true } });
     if (!invoice) throw new AppError(ErrorCode.NOT_FOUND, 'Invoice not found.', { id });
-    return invoice;
+    const [withContext] = await this.withOrderContext([invoice]);
+    const order = await this.prisma.order.findUnique({ where: { id: invoice.orderId }, include: { lines: true } });
+    return { ...withContext, orderLines: order?.lines ?? [] };
   }
 
   /**
@@ -248,7 +269,18 @@ export class BillingService {
       }),
       this.prisma.subscription.count({ where }),
     ]);
-    return { items, total, page, pageSize };
+    return { items: await this.withOrderContext(items), total, page, pageSize };
+  }
+
+  async getSubscription(id: string) {
+    const subscription = await this.prisma.subscription.findUnique({
+      where: { id },
+      include: { schedules: { orderBy: { dueAt: 'asc' } } },
+    });
+    if (!subscription) throw new AppError(ErrorCode.NOT_FOUND, 'Subscription not found.', { id });
+    const [withContext] = await this.withOrderContext([subscription]);
+    const order = await this.prisma.order.findUnique({ where: { id: subscription.orderId }, include: { lines: true } });
+    return { ...withContext, orderLines: order?.lines.filter((line) => line.lineType === 'RECURRING') ?? [] };
   }
 
   /** The only writer of subscriptions.status. */

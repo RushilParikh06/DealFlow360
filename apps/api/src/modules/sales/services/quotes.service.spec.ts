@@ -3,7 +3,8 @@ import { QuotesService } from './quotes.service';
 /** Minimal stand-in for the two prisma calls deleteLine/addLine reach for. */
 function prismaStub(quote: { id: string; status: string; currency: string; lines: { id: string }[] }) {
   return {
-    quotation: { findUnique: jest.fn().mockResolvedValue(quote), update: jest.fn() },
+    // get() resolves an id OR a human code, so it reads through findFirst.
+    quotation: { findFirst: jest.fn().mockResolvedValue(quote), update: jest.fn() },
     quotationLine: { delete: jest.fn(), create: jest.fn(), findMany: jest.fn().mockResolvedValue([]) },
     product: { findUnique: jest.fn().mockResolvedValue(null) },
   };

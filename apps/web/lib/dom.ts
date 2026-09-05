@@ -52,8 +52,57 @@ export function titleCase(value: string): string {
  * cell keeps its chip markup and a code cell keeps its link styling. Cells
  * with a code on top and a subtitle underneath keep the subtitle.
  */
+export function writeText(cell: Element, value: string | string[]): void {
+  writeCell(cell, value);
+}
+
+/**
+ * The nearest element that owns the given words. Detail templates are designed
+ * markup with almost no ids, so the label beside a figure is the only stable
+ * handle on it; `sibling` then steps to the figure itself.
+ */
+export function findByText(root: ParentNode, pattern: RegExp, selector = "*"): HTMLElement | undefined {
+  const matches = [...root.querySelectorAll<HTMLElement>(selector)].filter((element) =>
+    pattern.test(element.textContent?.replace(/\s+/g, " ").trim() ?? ""),
+  );
+  // Innermost wins: an ancestor's text contains its children's.
+  return matches.find((element) => !matches.some((other) => other !== element && element.contains(other)));
+}
+
+/** Replaces the rows of a `data-entry-list` block, cloning its first entry. */
+export function fillList<T>(list: HTMLElement, records: T[], render: (entry: HTMLElement, record: T) => void): void {
+  let template = tableTemplates.get(list) as HTMLElement | undefined;
+  if (!template) {
+    const first = list.firstElementChild as HTMLElement | null;
+    if (!first) return;
+    template = first.cloneNode(true) as HTMLElement;
+    tableTemplates.set(list, template as HTMLTableRowElement);
+  }
+
+  list.dataset.live = "true";
+  if (records.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "p-space-md font-mono-metric-sm text-on-surface-variant uppercase";
+    empty.textContent = "No records";
+    return list.replaceChildren(empty);
+  }
+  list.replaceChildren(
+    ...records.map((record) => {
+      const entry = template.cloneNode(true) as HTMLElement;
+      render(entry, record);
+      return entry;
+    }),
+  );
+}
+
 function writeCell(cell: Element, value: string | string[]): void {
   cell.setAttribute("data-record-value", "true");
+  // The sample row's icons mean something about the sample record - an error
+  // triangle beside a breached discount, a tick beside an approved status. Once
+  // this cell shows a different record they are a lie, and they read as noise
+  // glued to the value ("errorDiscount ₹9.60"). The text we are about to write
+  // carries the meaning, so the inherited glyph goes.
+  for (const icon of cell.querySelectorAll(".material-symbols-outlined")) icon.remove();
   const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
   const nodes: Node[] = [];
   while (walker.nextNode()) {

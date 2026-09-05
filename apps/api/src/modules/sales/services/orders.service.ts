@@ -24,7 +24,7 @@ export class OrdersService {
         // by name, so read it through the quotation rather than making the
         // client fetch /customers per row.
         include: {
-          quotation: { select: { customer: { select: { name: true } } } },
+          quotation: { select: { code: true, customer: { select: { name: true } } } },
           _count: { select: { lines: true } },
         },
         skip: (page - 1) * pageSize,
@@ -37,9 +37,13 @@ export class OrdersService {
     return { items, total, page, pageSize };
   }
 
-  async get(id: string) {
-    const order = await this.prisma.order.findUnique({ where: { id }, include: { lines: true } });
-    if (!order) throw new AppError(ErrorCode.NOT_FOUND, 'Order not found.', { id });
+  /** Either the cuid or the human code, so /fulfillment/ORD-2001/ resolves. */
+  async get(idOrCode: string) {
+    const order = await this.prisma.order.findFirst({
+      where: { OR: [{ id: idOrCode }, { code: idOrCode }] },
+      include: { lines: true, quotation: { select: { code: true, customer: { select: { name: true } } } } },
+    });
+    if (!order) throw new AppError(ErrorCode.NOT_FOUND, 'Order not found.', { id: idOrCode });
     return order;
   }
 }

@@ -170,10 +170,10 @@
             <span class="material-symbols-outlined text-[18px] text-secondary">search</span>
             <input
               class="w-full bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder:text-secondary"
-              placeholder="Search quote ID, customer, rep..." type="text" />
+              placeholder="Search quote ID, customer, rep..." type="text" aria-label="Search quotations" />
           </div>
           <div class="flex flex-wrap items-center gap-space-xs w-full lg:w-auto">
-            <select
+            <select aria-label="Filter by status"
               class="bg-surface-container-lowest border-[1.5px] border-outline rounded-[4px] px-space-xs py-1.5 font-body-sm text-body-sm text-on-surface outline-none cursor-pointer">
               <option>Status: All</option>
               <option>Pending Approval</option>
@@ -182,7 +182,7 @@
               <option>Draft</option>
               <option>Confirmed</option>
             </select>
-            <select
+            <select aria-label="Filter by customer"
               class="bg-surface-container-lowest border-[1.5px] border-outline rounded-[4px] px-space-xs py-1.5 font-body-sm text-body-sm text-on-surface outline-none cursor-pointer">
               <option>Customer: Any</option>
               <option>Acme Corp</option>
@@ -191,7 +191,7 @@
               <option>Zenith Co</option>
               <option>Nexus Logistics</option>
             </select>
-            <select
+            <select aria-label="Filter by sales owner"
               class="bg-surface-container-lowest border-[1.5px] border-outline rounded-[4px] px-space-xs py-1.5 font-body-sm text-body-sm text-on-surface outline-none cursor-pointer">
               <option>Owner: All Reps</option>
               <option>M. Shah</option>
@@ -202,7 +202,7 @@
             </select>
             <button
               class="p-1.5 bg-surface-dim hover:bg-surface border border-outline rounded-[4px] text-secondary hover:text-on-surface shadow-sm"
-              title="Reset Filters">
+              title="Reset Filters" aria-label="Reset filters">
               <span class="material-symbols-outlined text-[18px]">filter_alt_off</span>
             </button>
           </div>
@@ -273,7 +273,7 @@
                   12m ago
                 </td>
                 <td class="py-2.5 px-space-sm text-center">
-                  <button class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
+                  <button aria-label="More actions for this quotation" class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
                     <span class="material-symbols-outlined text-[18px]">more_vert</span>
                   </button>
                 </td>
@@ -313,7 +313,7 @@
                   44m ago
                 </td>
                 <td class="py-2.5 px-space-sm text-center">
-                  <button class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
+                  <button aria-label="More actions for this quotation" class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
                     <span class="material-symbols-outlined text-[18px]">more_vert</span>
                   </button>
                 </td>
@@ -349,7 +349,7 @@
                   3h ago
                 </td>
                 <td class="py-2.5 px-space-sm text-center">
-                  <button class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
+                  <button aria-label="More actions for this quotation" class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
                     <span class="material-symbols-outlined text-[18px]">more_vert</span>
                   </button>
                 </td>
@@ -388,7 +388,7 @@
                   2d ago
                 </td>
                 <td class="py-2.5 px-space-sm text-center">
-                  <button class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
+                  <button aria-label="More actions for this quotation" class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
                     <span class="material-symbols-outlined text-[18px]">more_vert</span>
                   </button>
                 </td>
@@ -424,7 +424,7 @@
                   1d ago
                 </td>
                 <td class="py-2.5 px-space-sm text-center">
-                  <button class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
+                  <button aria-label="More actions for this quotation" class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
                     <span class="material-symbols-outlined text-[18px]">more_vert</span>
                   </button>
                 </td>
@@ -460,7 +460,7 @@
                   6h ago
                 </td>
                 <td class="py-2.5 px-space-sm text-center">
-                  <button class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
+                  <button aria-label="More actions for this quotation" class="p-1 hover:bg-surface-dim rounded text-on-surface transition-colors">
                     <span class="material-symbols-outlined text-[18px]">more_vert</span>
                   </button>
                 </td>
@@ -478,7 +478,7 @@
             <div
               class="hidden sm:flex items-center gap-space-xxs text-secondary font-mono-metric-sm text-mono-metric-sm border-l border-outline pl-space-sm">
               <span>Rows per page:</span>
-              <select
+              <select aria-label="Rows per page"
                 class="bg-surface-bright border border-outline rounded-[4px] px-1 py-0.5 text-on-surface font-mono-metric-sm text-mono-metric-sm">
                 <option>10</option>
                 <option>25</option>

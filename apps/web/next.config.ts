@@ -27,7 +27,10 @@ function rootEnv(): Record<string, string> {
 }
 
 const nextConfig: NextConfig = {
-  output: "export",
+  // Not `output: "export"`. A static export can only serve the record ids that
+  // existed at build time, so every quote or invoice created during a demo led
+  // to a 404. The known routes are still prerendered; the rest render on
+  // demand from the same template.
   trailingSlash: true,
   env: rootEnv(),
 };

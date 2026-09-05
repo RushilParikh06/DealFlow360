@@ -290,3 +290,15 @@ textarea {
     scroll-behavior: auto;
   }
 }
+
+/*
+ * Opening a record from a list is the main navigation on a phone, and the link
+ * is a line of text inside a cell - 16px tall, well under a comfortable thumb
+ * target. Pad it vertically without changing the row's own height, so the
+ * table keeps its designed density on desktop.
+ */
+.df-row-link {
+  display: inline-block;
+  padding-block: 0.5rem;
+  margin-block: -0.5rem;
+}

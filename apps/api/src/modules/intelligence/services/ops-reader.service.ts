@@ -48,9 +48,23 @@ export class OpsReaderService {
       merged.set(line.productId, (merged.get(line.productId) ?? 0) + line.qty);
     }
 
+    // Only physical goods are allocated. Training days and annual
+    // subscriptions have no depot to ship from, so demanding stock for them
+    // put every service line on the backorder list and made an order that is
+    // perfectly shippable read as short. A product is stock-tracked exactly
+    // when inventory carries a row for it, which is also what loadStock reads.
+    const stocked = await this.prisma.inventory.findMany({
+      where: { productId: { in: [...merged.keys()] } },
+      select: { productId: true },
+      distinct: ['productId'],
+    });
+    const stockedIds = new Set(stocked.map((row) => row.productId));
+
     return {
       currency: order.currency,
-      demand: [...merged.entries()].map(([productId, qty]) => ({ productId, qty })),
+      demand: [...merged.entries()]
+        .filter(([productId]) => stockedIds.has(productId))
+        .map(([productId, qty]) => ({ productId, qty })),
     };
   }
 

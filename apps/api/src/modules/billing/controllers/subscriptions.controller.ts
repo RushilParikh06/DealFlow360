@@ -19,6 +19,12 @@ export class SubscriptionsController {
     return this.billing.listSubscriptions(query);
   }
 
+  @Get(':id')
+  @Roles('SALES_REP', 'SALES_MANAGER', 'FINANCE', 'ADMIN')
+  detail(@Param('id') id: string) {
+    return this.billing.getSubscription(id);
+  }
+
   @Patch(':id')
   @Roles('SALES_MANAGER', 'FINANCE', 'ADMIN')
   transition(@Param('id') id: string, @Body() dto: TransitionSubscriptionDto, @CurrentUser() actor: AuthUser) {

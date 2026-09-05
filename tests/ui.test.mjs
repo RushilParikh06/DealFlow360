@@ -55,9 +55,15 @@ globalThis.document = approvalDom.window.document;
 const requests = [];
 const api = { get: async path => {
   requests.push(path);
-  return { total:18, page:Number(new URL(path,'http://localhost').searchParams.get('page') || 1), pageSize:6, items: Array.from({length:6}, (_,i) => ({ id:String(i),quotationCode:`Q-${i}`,customerName:'Customer',riskLevel:'LOW',riskScore:2,currentStep:'FINANCE',createdAt:new Date().toISOString() })) };
+  return { total:18, page:Number(new URL(path,'http://localhost').searchParams.get('page') || 1), pageSize:6, items: Array.from({length:6}, (_,i) => ({ id:String(i),quotationCode:`Q-${i}`,customerName:'Customer',riskLevel:'LOW',riskScore:2,currentStep:'FINANCE',total:{amountMinor:123400,currency:'INR'},createdAt:new Date().toISOString() })) };
 } };
-const { goLive } = load('live', { './dom': table, './api': { api, isSignedIn:()=>true } });
+const routes = { recordIdFromPath: () => undefined };
+const { goLive } = load('live', {
+  './dom': table,
+  './routes': routes,
+  // mountSession runs on every non-login page; signed out is the quiet path.
+  './api': { api, isSignedIn: () => true, auth: { me: async () => null }, clearTokens() {}, saveTokens() {} },
+});
 goLive(document.body, 'approvals');
 await new Promise(resolve => setTimeout(resolve, 0));
 const rows = document.querySelectorAll('tbody tr');
@@ -65,6 +71,7 @@ assert.equal(rows.length,6);
 assert.match(rows[0].children[1].textContent,/Q-0/);
 assert.match(rows[0].children[2].textContent,/Customer/);
 assert.match(rows[0].children[3].textContent,/LOW/);
+assert.match(rows[0].children[4].textContent,/₹1,234.00/, 'the value column shows the request total');
 assert.match(rows[0].children[5].textContent,/Finance/);
 const cleanupSelection = wireAccessibility(document.body);
 const selectAll = document.querySelector('thead input[type="checkbox"]');

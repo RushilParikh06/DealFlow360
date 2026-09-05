@@ -16,7 +16,12 @@ const order = {
 /** $transaction hands the callback a client; here it is the same stub. */
 function prismaStub(overrides: Record<string, unknown> = {}) {
   const stub: Record<string, unknown> = {
-    order: { findUnique: jest.fn().mockResolvedValue(order) },
+    // getInvoice resolves the order's code and customer for the billing screens,
+    // so the stub has to answer the context lookup as well as the order read.
+    order: {
+      findUnique: jest.fn().mockResolvedValue(order),
+      findMany: jest.fn().mockResolvedValue([{ id: 'ord_1', code: 'ORD-2001', quotation: { customer: { name: 'Meridian Logistics' } } }]),
+    },
     fulfillment: { findFirst: jest.fn().mockResolvedValue({ status: 'SHIPPED' }) },
     invoice: {
       findFirst: jest.fn().mockResolvedValue(null),
@@ -72,6 +77,22 @@ describe('BillingService.invoiceOrder', () => {
 
     await expect(service.invoiceOrder('ord_1', actor)).resolves.toMatchObject({ id: 'inv_existing' });
     expect((prisma.invoice as { create: jest.Mock }).create).not.toHaveBeenCalled();
+  });
+
+  it('names the order and customer, which invoices only store as an id', async () => {
+    const prisma = prismaStub({
+      invoice: {
+        findFirst: jest.fn().mockResolvedValue({ id: 'inv_1', orderId: 'ord_1' }),
+        findUnique: jest.fn().mockResolvedValue({ id: 'inv_1', orderId: 'ord_1', lines: [], payments: [] }),
+        create: jest.fn(),
+      },
+    });
+    const service = new BillingService(prisma as never, auditStub() as never);
+
+    await expect(service.invoiceOrder('ord_1', actor)).resolves.toMatchObject({
+      orderCode: 'ORD-2001',
+      customerName: 'Meridian Logistics',
+    });
   });
 });
 

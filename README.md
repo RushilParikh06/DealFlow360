@@ -481,17 +481,28 @@ pnpm install
 docker compose up -d          # PostgreSQL + Redis
 pnpm generate                 # Prisma client
 pnpm db:migrate               # apply migrations
-pnpm db:seed                  # demo catalog, policies and quotes
+pnpm db:seed                  # catalog, policies, quotes, orders and billing
 pnpm dev                      # API on :3001, web on :3000
+pnpm db:demo                  # with the API up: evaluate quotes, sweep deal health
 ```
+
+`db:seed` writes rows; `db:demo` drives the running API. Risk scoring, approval
+routing and the deal-health sweep are engine behaviour, so the seed asks the API
+to produce them rather than keeping a second copy of the rules that would drift.
+Run `db:seed` then `db:demo` any time you want the demo back at a known state.
+
+Sign in with any seeded account - `manager@dealflow.test`, `rep@dealflow.test`,
+`ops@dealflow.test`, `finance@dealflow.test` or `admin@dealflow.test` - password
+`dealflow123` for all of them. What you can act on depends on the role: only a
+manager, finance or admin sees the approval queue.
 
 The web app runs at `http://localhost:3000` and the API under
 `http://localhost:3001/api/v1`. Point the browser at a different API with
 `NEXT_PUBLIC_API_URL`.
 
-Run the checks with `pnpm test` (contracts build, 114 API unit tests, and a smoke
-check that every endpoint the frontend calls is actually served by a controller)
-and `pnpm typecheck`.
+Run the checks with `pnpm test` (contracts build, 122 API unit tests, a smoke
+check that every endpoint the frontend calls is actually served by a controller,
+and DOM/accessibility regressions over all 15 screens) and `pnpm typecheck`.
 
 ### How the frontend reaches the backend
 

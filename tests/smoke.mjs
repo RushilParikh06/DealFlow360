@@ -49,16 +49,34 @@ for (const module of readdirSync(controllersDir)) {
   }
   for (const file of files) {
     const source = readFileSync(new URL(`${module}/controllers/${file}`, controllersDir), "utf8");
-    const prefix = source.match(/@Controller\('([^']*)'\)|@Controller\(\)/);
-    const base = prefix?.[1] ?? "";
-    for (const [, path] of source.matchAll(/@(?:Get|Post|Patch|Delete)\('?([^')]*)'?\)/g)) {
-      routes.add(`/${[base, path].filter(Boolean).join("/")}`);
+    // A file may declare more than one @Controller (invoices.controller.ts also
+    // hangs POST /orders/:id/invoices off the orders prefix), so read each
+    // controller with the routes that follow it rather than only the first.
+    const blocks = source.split(/(?=@Controller\()/).slice(1);
+    for (const block of blocks) {
+      const base = block.match(/@Controller\('([^']*)'\)/)?.[1] ?? "";
+      for (const [, path] of block.matchAll(/@(?:Get|Post|Patch|Delete)\('?([^')]*)'?\)/g)) {
+        routes.add(shape(`/${[base, path].filter(Boolean).join("/")}`));
+      }
     }
   }
 }
 
-// Every literal path lib/live.ts fetches, minus its query string.
-const called = [...live.matchAll(/api\.(?:get|post|patch|del)<.*?>\(["`](\/[^"`?]*)/g)].map((m) => m[1]);
+/**
+ * Route shape, with every id-ish segment collapsed to ":id". The client builds
+ * its paths with template literals (`/quotes/${quote.id}/submit`) and the
+ * controllers declare them with params (@Post(':id/submit')), so the two only
+ * line up once both sides are reduced to the same shape.
+ */
+function shape(path) {
+  return path
+    .replace(/\$\{[^}]*\}/g, ":id")
+    .replace(/:[A-Za-z][A-Za-z0-9]*/g, ":id")
+    .replace(/\/+$/, "");
+}
+
+// Every path lib/live.ts fetches, minus its query string.
+const called = [...live.matchAll(/api\.(?:get|post|patch|del)(?:<.*?>)?\(\s*[`"](\/[^`"?]*)/g)].map((m) => shape(m[1]));
 assert.ok(called.length > 0, "lib/live.ts calls no endpoints - the wiring is gone");
 
 for (const path of called) {

@@ -166,6 +166,31 @@ const QUOTES: SeedQuote[] = [
     why: 'source of the order used for the multi-warehouse split demo',
     lines: [{ sku: 'HW-SRV-R220', qty: 24, discountBps: 1200 }],
   },
+  {
+    // THE BILLING QUOTE. Mixes ONE_TIME and RECURRING lines, which is what makes
+    // it worth having: invoicing this order has to split it in two - hardware and
+    // services onto an invoice, the two annual subscriptions onto a subscription
+    // with its own billing schedule. A one-shape order never exercises that.
+    code: 'QT-1008',
+    customer: 'Kalyani Textiles',
+    tier: 'SILVER',
+    ownerEmail: 'rep2@dealflow.test',
+    status: 'CONFIRMED',
+    lastActivityDaysAgo: 5,
+    why: 'source of the order that exercises the invoice / subscription split',
+    lines: [
+      { sku: 'HW-SW-24P', qty: 4, discountBps: 600 },
+      { sku: 'SVC-TRAIN-1D', qty: 2, discountBps: 500 },
+      { sku: 'SUB-SUPP-Y', qty: 3, discountBps: 400 },
+      { sku: 'SUB-MON-Y', qty: 3, discountBps: 400 },
+    ],
+  },
+];
+
+/** Quotes that already have an order behind them, and the order's code. */
+const ORDERS: { quoteCode: string; orderCode: string; why: string }[] = [
+  { quoteCode: 'QT-1007', orderCode: 'ORD-2001', why: '24 x RackServer R220 -> expect a 22 + 2 split across Main and East' },
+  { quoteCode: 'QT-1008', orderCode: 'ORD-2002', why: 'hardware + services + 2 subscriptions -> invoice and subscription' },
 ];
 
 function computeLine(listPriceMinor: number, unitCostMinor: number, l: SeedLine) {
@@ -188,6 +213,30 @@ export async function seedDemo(prisma: PrismaClient, base: BaseSeedResult): Prom
       ? await prisma.customer.update({ where: { id: existing.id }, data: { tierId, email: c.email } })
       : await prisma.customer.create({ data: { name: c.name, tierId, email: c.email } });
     customerIdByName.set(c.name, row.id);
+  }
+
+  // Rewriting a quote's status invalidates everything B2 derived from it. An
+  // approval chain left behind from the previous run makes the quote look
+  // already-routed, so re-evaluating skips the transition and the quote sits in
+  // SUBMITTED with a PENDING chain in front of it - a state approving cannot
+  // move out of. Clear the derived rows first; `pnpm db:demo` rebuilds them
+  // through the engine.
+  await prisma.approvalAction.deleteMany({});
+  await prisma.approvalStep.deleteMany({});
+  await prisma.approvalRequest.deleteMany({});
+  await prisma.riskEvaluation.deleteMany({});
+  await prisma.dealHealthEvent.deleteMany({});
+
+  // Quotes raised while driving the demo are not part of the script, so a reset
+  // clears them. Anything an order was cut from stays: deleting it would strand
+  // the order, and every such quote is in the list below anyway.
+  const ordered = await prisma.order.findMany({ select: { quotationId: true } });
+  const keep = { code: { notIn: QUOTES.map((q) => q.code) }, id: { notIn: ordered.map((o) => o.quotationId) } };
+  const strays = await prisma.quotation.findMany({ where: keep, select: { id: true, code: true } });
+  if (strays.length > 0) {
+    await prisma.quotationLine.deleteMany({ where: { quotationId: { in: strays.map((q) => q.id) } } });
+    await prisma.quotation.deleteMany({ where: { id: { in: strays.map((q) => q.id) } } });
+    console.log(`  cleared ${strays.length} quote(s) raised outside the script: ${strays.map((q) => q.code).join(', ')}`);
   }
 
   const now = Date.now();
@@ -250,12 +299,14 @@ export async function seedDemo(prisma: PrismaClient, base: BaseSeedResult): Prom
     console.log(`  ${q.code}  net ${netMinor}  margin ${marginBps}bps  ${q.status.padEnd(11)} ${q.why}`);
   }
 
-  // ---- the order for the allocation demo -----------------------------------
-  const sourceQuote = await prisma.quotation.findUnique({
-    where: { code: 'QT-1007' },
-    include: { lines: true },
-  });
-  if (sourceQuote) {
+  // ---- the orders behind the fulfilment and billing demos -------------------
+  for (const o of ORDERS) {
+    const sourceQuote = await prisma.quotation.findUnique({
+      where: { code: o.quoteCode },
+      include: { lines: true },
+    });
+    if (!sourceQuote) continue;
+
     const orderHeader = {
       quotationId: sourceQuote.id,
       customerId: sourceQuote.customerId,
@@ -264,8 +315,8 @@ export async function seedDemo(prisma: PrismaClient, base: BaseSeedResult): Prom
       totalMinor: sourceQuote.totalMinor,
     };
     const order = await prisma.order.upsert({
-      where: { code: 'ORD-2001' },
-      create: { code: 'ORD-2001', ...orderHeader },
+      where: { code: o.orderCode },
+      create: { code: o.orderCode, ...orderHeader },
       update: orderHeader,
     });
 
@@ -286,6 +337,6 @@ export async function seedDemo(prisma: PrismaClient, base: BaseSeedResult): Prom
 
     // start clean so the split demo is repeatable
     await prisma.inventoryReservation.deleteMany({ where: { orderId: order.id } });
-    console.log('  ORD-2001  24 x RackServer R220 -> expect a 22 + 2 split across Main and East');
+    console.log(`  ${o.orderCode}  ${o.why}`);
   }
 }

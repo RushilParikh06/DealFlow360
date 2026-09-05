@@ -66,12 +66,18 @@ export class QuotesService {
     };
   }
 
-  async get(id: string) {
-    const quote = await this.prisma.quotation.findUnique({
-      where: { id },
+  /**
+   * Accepts either the cuid or the human code. Quote URLs read
+   * /quotations/QT-1001/, which is what people type, paste into chat and read
+   * off a screen share - resolving both here keeps that from needing a
+   * separate lookup round trip on every detail page.
+   */
+  async get(idOrCode: string) {
+    const quote = await this.prisma.quotation.findFirst({
+      where: { OR: [{ id: idOrCode }, { code: idOrCode }] },
       include: { lines: true, customer: { include: { tier: true } } },
     });
-    if (!quote) throw new AppError(ErrorCode.NOT_FOUND, 'Quotation not found.', { id });
+    if (!quote) throw new AppError(ErrorCode.NOT_FOUND, 'Quotation not found.', { id: idOrCode });
     return quote;
   }
 
@@ -231,6 +237,12 @@ export class QuotesService {
         },
         include: { lines: true },
       });
+
+      // Every order needs a fulfillment from the moment it exists. Nothing else
+      // creates one, and B3 refuses to invoice an order that has not reached
+      // SHIPPED - so without this row the order/ship/invoice/pay chain was
+      // unreachable and both billing screens stayed permanently empty.
+      await tx.fulfillment.create({ data: { orderId: order.id, status: 'ORDER_CONFIRMED' } });
 
       return order;
     });
