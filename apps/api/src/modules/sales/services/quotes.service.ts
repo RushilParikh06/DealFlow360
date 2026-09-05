@@ -48,7 +48,22 @@ export class QuotesService {
       this.prisma.quotation.count({ where }),
     ]);
 
-    return { items, total, page, pageSize };
+    // ownerUserId is a plain id, not a Prisma relation (users is B1-owned but
+    // the column predates the relation), so every list view was rendering a raw
+    // cuid in its "Sales Owner" column. One extra query for the page beats a
+    // schema change, and beats the client fetching a user per row.
+    const owners = await this.prisma.user.findMany({
+      where: { id: { in: [...new Set(items.map((q) => q.ownerUserId))] } },
+      select: { id: true, name: true },
+    });
+    const nameById = new Map(owners.map((u) => [u.id, u.name]));
+
+    return {
+      items: items.map((q) => ({ ...q, ownerName: nameById.get(q.ownerUserId) ?? q.ownerUserId })),
+      total,
+      page,
+      pageSize,
+    };
   }
 
   async get(id: string) {

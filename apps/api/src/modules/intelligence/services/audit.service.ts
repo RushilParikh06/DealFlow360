@@ -12,7 +12,7 @@ import type { AuditEntry, UserRole } from '@dealflow/contracts';
 import { PrismaService } from '../../shared/prisma.service';
 
 export interface AuditInput {
-  entityType: 'QUOTATION' | 'APPROVAL_REQUEST' | 'APPROVAL_STEP' | 'RISK_EVALUATION' | 'DISCOUNT_POLICY' | 'INVENTORY_RESERVATION' | 'DEAL_HEALTH_EVENT';
+  entityType: 'QUOTATION' | 'APPROVAL_REQUEST' | 'APPROVAL_STEP' | 'RISK_EVALUATION' | 'DISCOUNT_POLICY' | 'INVENTORY_RESERVATION' | 'DEAL_HEALTH_EVENT' | 'FULFILLMENT' | 'INVOICE' | 'SUBSCRIPTION';
   entityId: string;
   action: string;
   actorUserId?: string | null;

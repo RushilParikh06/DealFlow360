@@ -5,6 +5,7 @@ import { goLive } from "@/lib/live";
 import type { PageName } from "@/lib/routes";
 
 const routes = {
+  login: "/login/",
   dashboard: "/dashboard/",
   quotations: "/quotations/",
   approvals: "/approvals/",
@@ -70,6 +71,13 @@ function wireNavigation(root: HTMLElement, page: PageName) {
   root.querySelector(":scope > header")?.append(mobileNav);
 }
 
+function wireBrandLogo(root: HTMLElement) {
+  root.querySelectorAll<HTMLImageElement>('img[alt*="DealFlow360"]').forEach((image) => {
+    image.src = "/assets/logo.svg";
+    image.alt = "DealFlow360 logo";
+  });
+}
+
 function wirePageRoutes(root: HTMLElement, page: PageName) {
   const rules: [RegExp, RegExp, keyof typeof routes][] = [
     [/dashboard/, /New Quotation/, "quote"],
@@ -105,7 +113,6 @@ function wirePageRoutes(root: HTMLElement, page: PageName) {
   });
 }
 
-
 function wirePortal(root: HTMLElement, page: PageName) {
   if (page !== "customer-quotation") return;
   root.querySelectorAll<HTMLElement>(":scope > main header a, :scope > main header button").forEach((element) => {
@@ -131,10 +138,13 @@ export function PageClient({ bodyClass, html, page, scripts, theme }: Props) {
     root.dataset.wired = "true";
 
     scripts.forEach((script) => window.eval(script));
+    wireBrandLogo(root);
     wireNavigation(root, page);
     wirePageRoutes(root, page);
     wirePortal(root, page);
     document.dispatchEvent(new Event("DOMContentLoaded"));
+    // Real sign-in, real session chip, real records. Must run last: it reads
+    // the DOM the eval'd page scripts just finished building.
     goLive(root, page);
   }, [page, scripts]);
 

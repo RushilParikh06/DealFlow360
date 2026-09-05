@@ -1,32 +1,24 @@
-// Local to B3 until packages/contracts exists (group-owned, per plan.md section 3).
-// Move this file there verbatim once F/B1/B2 scaffold the workspace - do not
-// duplicate the definition in billing/, import it from here instead.
+// B3 shared helpers. This file used to carry its own Money/AppError because
+// packages/contracts did not exist yet; it does now, so these are re-exports and
+// there is exactly one of each in the process.
+//
+// That matters beyond tidiness: AllExceptionsFilter matches on
+// `instanceof AppError`. A second class with the same shape is not the same
+// class, so every B3 error would have left as a 500 instead of its own code.
 
-export interface Money {
-  amountMinor: number;
-  currency: string; // ISO 4217, e.g. "INR"
-}
+export { applyBps, type Money } from '@dealflow/contracts';
+export { AppError } from '../shared/app-error';
 
-/** Round-half-up integer bps math. Money is never a float (plan.md #5.1). */
-export function applyBps(amountMinor: number, bps: number): number {
-  return Math.round((amountMinor * bps) / 10000);
-}
+import type { Money } from '@dealflow/contracts';
+import { ErrorCode } from '@dealflow/contracts';
+import { AppError } from '../shared/app-error';
 
 export function addMoney(a: Money, b: Money): Money {
   if (a.currency !== b.currency) {
-    throw new AppError('VALIDATION_FAILED', `currency mismatch: ${a.currency} vs ${b.currency}`);
+    throw new AppError(ErrorCode.VALIDATION_FAILED, `currency mismatch: ${a.currency} vs ${b.currency}`, {
+      left: a.currency,
+      right: b.currency,
+    });
   }
   return { amountMinor: a.amountMinor + b.amountMinor, currency: a.currency };
-}
-
-/** One error shape for the whole B3 surface, matching plan.md section 8's envelope. */
-export class AppError extends Error {
-  code: string;
-  details?: unknown;
-
-  constructor(code: string, message: string, details?: unknown) {
-    super(message);
-    this.code = code;
-    this.details = details;
-  }
 }
