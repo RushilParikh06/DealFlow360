@@ -19,8 +19,7 @@ body > header nav a[aria-current="page"] {
   border: 2px solid #1d2430 !important;
   background: #2457d6 !important;
   color: #fff !important;
-  box-shadow: 3px 3px 0 #1d2430 !important;
-  transform: translate(-1px, -1px);
+  box-shadow: 1px 1px 0 #1d2430 !important;
 }
 
 .portal-page body > header.fixed {
