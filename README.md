@@ -509,6 +509,24 @@ pnpm db:seed                  # demo catalog, policies and quotes
 pnpm dev                      # API on :3001, web on :3000
 ```
 
+Already running PostgreSQL 16 and Redis locally? Skip Docker and create the role
+the connection string expects instead:
+
+```bash
+psql -d postgres -c "CREATE ROLE dealflow LOGIN PASSWORD 'dealflow' CREATEDB;"
+psql -d postgres -c "CREATE DATABASE dealflow OWNER dealflow;"
+```
+
+Sign in with any seeded account - `rep@`, `manager@`, `finance@` or
+`admin@dealflow.test` - password `dealflow123`. After seeding, run
+`POST /quotes/:id/evaluate` on the SUBMITTED quotes and
+`POST /deal-health/refresh` to fill the approvals and deal-health screens; until
+then those two are legitimately empty.
+
+`AUTH_MODE` must be `jwt` for the frontend to work. In `dev` mode the guard
+ignores bearer tokens and wants `x-dev-user-id` headers, so login succeeds and
+then every page request comes back 401.
+
 The web app runs at `http://localhost:3000` and the API under
 `http://localhost:3001/api/v1`. Point the browser at a different API with
 `NEXT_PUBLIC_API_URL`.
