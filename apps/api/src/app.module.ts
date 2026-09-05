@@ -5,14 +5,16 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from './modules/shared/prisma.module';
 import { IntelligenceModule } from './modules/intelligence/intelligence.module';
 import { SalesModule } from './modules/sales/sales.module';
+import { OperationsModule } from './modules/operations/operations.module';
+import { BillingModule } from './modules/billing/billing.module';
 
 @Module({
   imports: [
     PrismaModule,
     IntelligenceModule,
     SalesModule,
-    // OperationsModule, <- B3
-    // BillingModule,    <- B3
+    OperationsModule,
+    BillingModule,
   ],
 })
 export class AppModule {}

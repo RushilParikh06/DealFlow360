@@ -45,6 +45,38 @@ type Order = {
   _count?: { lines: number };
 };
 
+type InventoryRow = {
+  id: string;
+  sku: string;
+  productName: string;
+  warehouseCode: string;
+  warehouseName: string;
+  onHand: number;
+  reserved: number;
+  available: number;
+};
+
+type Invoice = {
+  id: string;
+  orderId: string;
+  status: string;
+  totalMinor: number;
+  paidMinor: number;
+  currency: string;
+  createdAt: string;
+  _count?: { lines: number };
+};
+
+type Subscription = {
+  id: string;
+  orderId: string;
+  status: string;
+  amountMinor: number;
+  currency: string;
+  cadenceMonths: number;
+  schedules?: { dueAt: string }[];
+};
+
 type DealHealth = {
   id: string;
   quotationCode: string;
@@ -55,12 +87,16 @@ type DealHealth = {
   detectedAt: string;
 };
 
-/**
- * Pages wired to a real endpoint. Invoices and the inventory half of
- * fulfillment stay on sample rows because B3's billing and inventory services
- * have no controller yet - the engines exist, nothing routes to them.
- */
-const LIVE_PAGES: PageName[] = ["login", "quotations", "approvals", "fulfillment", "deal-health"];
+/** Pages wired to a real endpoint. */
+const LIVE_PAGES: PageName[] = [
+  "login",
+  "quotations",
+  "approvals",
+  "fulfillment",
+  "deal-health",
+  "invoices",
+  "subscriptions",
+];
 
 const tbodies = (root: HTMLElement): HTMLElement[] => [...root.querySelectorAll<HTMLElement>("tbody")];
 
@@ -96,17 +132,74 @@ async function bindApprovals(root: HTMLElement): Promise<void> {
   }));
 }
 
-/** Only the second table (orders) is live; the first is the inventory grid. */
+/** Two tables: the warehouse stock grid, then the orders awaiting dispatch. */
 async function bindFulfillment(root: HTMLElement): Promise<void> {
-  const tbody = tbodies(root)[1];
+  const [stock, orders] = tbodies(root);
+
+  if (stock) {
+    const inventory = await api.get<Paginated<InventoryRow>>("/inventory?pageSize=50");
+    fillTable(
+      stock,
+      inventory.items,
+      (row) => ({
+        0: [row.productName, `SKU: ${row.sku}`],
+        1: row.warehouseName,
+        2: String(row.onHand),
+        3: String(row.reserved),
+        4: String(row.available),
+        // [5] is the reorder point, which no table stores yet - the sample
+        // value stays rather than being invented here.
+        6: row.available > 0 ? "IN STOCK" : "OUT OF STOCK",
+      }),
+      // The page's own filter script reads these attributes off the row.
+      (element, row) => {
+        element.dataset.depot = row.warehouseName;
+        element.dataset.sku = row.sku;
+      },
+    );
+  }
+
+  if (orders) {
+    const page = await api.get<Paginated<Order>>("/orders?pageSize=25");
+    fillTable(orders, page.items, (order) => ({
+      0: order.code,
+      1: order.quotation?.customer?.name ?? "—",
+      2: [`${order._count?.lines ?? 0} lines`, money(order.totalMinor, order.currency)],
+      6: titleCase(order.status),
+    }));
+  }
+}
+
+async function bindInvoices(root: HTMLElement): Promise<void> {
+  const [tbody] = tbodies(root);
   if (!tbody) return;
 
-  const page = await api.get<Paginated<Order>>("/orders?pageSize=25");
-  fillTable(tbody, page.items, (order) => ({
-    0: order.code,
-    1: order.quotation?.customer?.name ?? "—",
-    2: `${order._count?.lines ?? 0} lines · ${money(order.totalMinor, order.currency)}`,
-    6: titleCase(order.status),
+  const page = await api.get<Paginated<Invoice>>("/invoices?pageSize=25");
+  fillTable(tbody, page.items, (invoice) => ({
+    1: invoice.id,
+    3: invoice.orderId,
+    4: `${invoice._count?.lines ?? 0} one-time lines`,
+    5: [
+      money(invoice.totalMinor, invoice.currency),
+      `Paid ${money(invoice.paidMinor, invoice.currency)}`,
+    ],
+    6: titleCase(invoice.status),
+    7: shortDate(invoice.createdAt),
+  }));
+}
+
+async function bindSubscriptions(root: HTMLElement): Promise<void> {
+  const [tbody] = tbodies(root);
+  if (!tbody) return;
+
+  const page = await api.get<Paginated<Subscription>>("/subscriptions?pageSize=25");
+  fillTable(tbody, page.items, (subscription) => ({
+    1: subscription.id,
+    3: subscription.orderId,
+    4: subscription.cadenceMonths === 1 ? "Monthly" : `Every ${subscription.cadenceMonths} months`,
+    5: shortDate(subscription.schedules?.[0]?.dueAt),
+    6: money(subscription.amountMinor, subscription.currency),
+    7: titleCase(subscription.status),
   }));
 }
 
@@ -186,6 +279,8 @@ const BINDERS: Partial<Record<PageName, (root: HTMLElement) => void | Promise<vo
   approvals: bindApprovals,
   fulfillment: bindFulfillment,
   "deal-health": bindDealHealth,
+  invoices: bindInvoices,
+  subscriptions: bindSubscriptions,
 };
 
 export function goLive(root: HTMLElement, page: PageName): void {

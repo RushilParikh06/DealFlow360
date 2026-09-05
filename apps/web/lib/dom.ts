@@ -39,16 +39,25 @@ export function titleCase(value: string): string {
 }
 
 /**
- * Writes into the innermost element that already carries text, so a status
- * cell keeps its chip markup and a code cell keeps its link styling. Cells
- * with a code on top and a subtitle underneath keep the subtitle.
+ * Writes into the innermost elements that already carry text, so a status cell
+ * keeps its chip markup and a code cell keeps its link styling.
+ *
+ * Many cells stack two lines - a code above a subtitle, a customer above a
+ * tier. Pass an array to fill them in order; pass a string to fill only the
+ * first and leave the rest of the design alone.
  */
-function writeCell(cell: Element, value: string): void {
-  const leaf = [...cell.querySelectorAll("*")].find(
+function writeCell(cell: Element, value: string | string[]): void {
+  const leaves = [...cell.querySelectorAll("*")].filter(
     (node) => node.textContent?.trim() && ![...node.children].some((child) => child.textContent?.trim()),
   );
-  if (leaf) leaf.textContent = value;
-  else cell.textContent = value;
+  if (leaves.length === 0) {
+    cell.textContent = Array.isArray(value) ? value.join(" ") : value;
+    return;
+  }
+  const values = Array.isArray(value) ? value : [value];
+  values.forEach((text, index) => {
+    if (leaves[index]) leaves[index].textContent = text;
+  });
 }
 
 /**
@@ -61,7 +70,7 @@ function writeCell(cell: Element, value: string): void {
 export function fillTable<T>(
   tbody: HTMLElement,
   records: T[],
-  cells: (record: T) => Record<number, string | undefined>,
+  cells: (record: T) => Record<number, string | string[] | undefined>,
   onRow?: (row: HTMLElement, record: T) => void,
 ): void {
   const template = tbody.querySelector("tr");

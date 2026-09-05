@@ -513,7 +513,7 @@ The web app runs at `http://localhost:3000` and the API under
 `http://localhost:3001/api/v1`. Point the browser at a different API with
 `NEXT_PUBLIC_API_URL`.
 
-Run the checks with `pnpm test` (contracts build, 114 API unit tests, and a smoke
+Run the checks with `pnpm test` (contracts build, 121 API unit tests, and a smoke
 check that every endpoint the frontend calls is actually served by a controller)
 and `pnpm typecheck`.
 
@@ -525,10 +525,14 @@ token once on a 401. `apps/web/lib/live.ts` binds each page to the endpoints tha
 exist, filling the designed tables in place rather than re-authoring them.
 
 Pages bound to live data: **login** (`/auth/login`, `/auth/signup`), **quotations**
-(`/quotes`), **approvals** (`/approvals`), **fulfillment** orders table (`/orders`),
-and **deal health** (`/deal-health`). Invoices, subscriptions and the inventory grid
-keep their sample rows because B3's billing and inventory engines have no controller
-yet. Set `NEXT_PUBLIC_USE_MOCKS=1` to pin every page to its sample rows.
+(`/quotes`), **approvals** (`/approvals`), **fulfillment** — both the stock grid
+(`/inventory`) and the orders table (`/orders`) — **deal health** (`/deal-health`),
+**invoices** (`/invoices`) and **subscriptions** (`/subscriptions`). Set
+`NEXT_PUBLIC_USE_MOCKS=1` to pin every page to its sample rows.
+
+The remaining detail screens (quotation detail, approval detail, warehouse
+allocation, invoice detail, subscription billing, reports and the customer portal)
+still render their designed sample content.
 
 A page whose call fails keeps its sample rows and shows a banner, so a stopped API
 never produces a blank screen.
