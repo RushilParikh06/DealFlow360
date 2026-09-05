@@ -136,6 +136,20 @@ export async function seedBase(prisma: PrismaClient): Promise<BaseSeedResult> {
     userIdByEmail.set(u.email, row.id);
   }
 
+  // Accounts created through the sign-up form pile up across demos. A reset
+  // clears them, except any that already own a quotation - deleting one of
+  // those would orphan the quote.
+  const owners = await prisma.quotation.findMany({ select: { ownerUserId: true }, distinct: ['ownerUserId'] });
+  const strays = await prisma.user.findMany({
+    where: { email: { notIn: USERS.map((u) => u.email) }, id: { notIn: owners.map((o) => o.ownerUserId) } },
+    select: { id: true, email: true },
+  });
+  if (strays.length > 0) {
+    await prisma.refreshToken.deleteMany({ where: { userId: { in: strays.map((u) => u.id) } } });
+    await prisma.user.deleteMany({ where: { id: { in: strays.map((u) => u.id) } } });
+    console.log(`  cleared ${strays.length} sign-up account(s): ${strays.map((u) => u.email).join(', ')}`);
+  }
+
   const productIdBySku = new Map<string, string>();
   for (const p of PRODUCTS) {
     const categoryId = categoryIdByCode.get(p.category);

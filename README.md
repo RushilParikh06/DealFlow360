@@ -476,20 +476,40 @@ browser, so the current UI stays available while individual screens are migrated
 native React components.
 
 ```bash
-cp .env.example .env
 pnpm install
+pnpm go
+```
+
+`pnpm go` is the whole thing. It checks `.env` (creating it from `.env.example`
+if missing), finds the port PostgreSQL is actually listening on and corrects
+`DATABASE_URL` when the two disagree, generates the Prisma client, applies
+migrations, seeds only if the database is empty, starts both servers, waits for
+them, then evaluates the open quotes and sweeps deal health. It prints what it
+did and the accounts to sign in with; Ctrl+C stops both servers.
+
+It refuses to start a second copy over a running one, and when something is
+genuinely missing it names the command that fixes it instead of failing deep
+inside Prisma.
+
+The individual steps are still there:
+
+```bash
+cp .env.example .env
 docker compose up -d          # PostgreSQL + Redis
 pnpm generate                 # Prisma client
 pnpm db:migrate               # apply migrations
 pnpm db:seed                  # catalog, policies, quotes, orders and billing
 pnpm dev                      # API on :3001, web on :3000
 pnpm db:demo                  # with the API up: evaluate quotes, sweep deal health
+pnpm db:reset                 # db:seed + db:demo, back to a known state
 ```
 
 `db:seed` writes rows; `db:demo` drives the running API. Risk scoring, approval
 routing and the deal-health sweep are engine behaviour, so the seed asks the API
 to produce them rather than keeping a second copy of the rules that would drift.
-Run `db:seed` then `db:demo` any time you want the demo back at a known state.
+`pnpm db:reset` runs both, any time you want the demo back to a known state. It
+also clears what a demo adds along the way - quotes raised on stage, accounts
+created through the sign-up form - while keeping anything an order was cut from.
 
 Sign in with any seeded account - `manager@dealflow.test`, `rep@dealflow.test`,
 `ops@dealflow.test`, `finance@dealflow.test` or `admin@dealflow.test` - password

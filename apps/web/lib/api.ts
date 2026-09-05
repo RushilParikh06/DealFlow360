@@ -84,9 +84,15 @@ async function send<T>(path: string, init: RequestInit, token: string | null): P
       },
     });
   } catch {
-    // fetch only rejects when the request never reached the server. "Failed to
-    // fetch" is useless to whoever is looking at the screen; name the address.
-    throw new ApiError(0, "API_UNREACHABLE", "Unable to connect. Please try again in a moment.");
+    // fetch only rejects when the request never reached the server, so this is
+    // always "the API is not there", never a rejected request. Name the address
+    // and the fix: the alternative is a sign-in button that appears to do
+    // nothing while the API sits dead in another terminal.
+    throw new ApiError(
+      0,
+      "API_UNREACHABLE",
+      `Cannot reach the API at ${BASE}. Start it with "pnpm go" and try again.`,
+    );
   }
   return unwrap<T>(response);
 }
