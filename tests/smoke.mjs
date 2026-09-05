@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
 
@@ -26,8 +26,17 @@ for (const page of pages) assert.match(routeSource, new RegExp(`"${page}"`));
 // at build time would notice B1/B2 renaming a route. This check does.
 
 const live = read("../apps/web/lib/live.ts");
+const api = read("../apps/web/lib/api.ts");
 assert.match(read("../apps/web/components/page-client.tsx"), /goLive\(root, page\)/,
   "the page shell must hand every page to lib/live.ts");
+assert.match(live, /clearDemoData\(root\)/, "pages must clear structural placeholder records");
+assert.match(read("../apps/web/app/globals.css"), /tbody:not\(\[data-live\]\)/,
+  "structural table rows must stay hidden before hydration");
+assert.doesNotMatch(`${api}\n${live}\n${read("../.env.example")}`, /USE_MOCKS/);
+for (const fixture of ["intelligence.ts", "intelligence-fixtures.json"]) {
+  assert.equal(existsSync(new URL(`../apps/web/src/mocks/${fixture}`, import.meta.url)), false,
+    `unused frontend fixture ${fixture} should not return`);
+}
 
 const controllersDir = new URL("../apps/api/src/modules/", import.meta.url);
 const routes = new Set();
@@ -59,7 +68,7 @@ for (const path of called) {
 // The auth calls live in lib/api.ts, not lib/live.ts.
 for (const path of ["/auth/login", "/auth/signup", "/auth/refresh"]) {
   assert.ok(routes.has(path), `lib/api.ts depends on ${path}`);
-  assert.match(read("../apps/web/lib/api.ts"), new RegExp(`"${path}"`));
+  assert.match(api, new RegExp(`"${path}"`));
 }
 
 console.log(

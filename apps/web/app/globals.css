@@ -68,6 +68,12 @@ body {
   min-height: 100vh;
 }
 
+/* Static HTML rows are layout templates; records appear only after hydration. */
+[data-page-root] tbody:not([data-live]) > tr,
+[data-entry-list]:not([data-live]) > * {
+  display: none;
+}
+
 [data-page-root]:not([data-page="login"]):not([data-page="customer-quotation"]) {
   display: flex;
   flex-direction: column;

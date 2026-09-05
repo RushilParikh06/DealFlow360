@@ -1,9 +1,18 @@
 // F owned. Fills the designed HTML with real rows instead of rebuilding it.
-//
-// The pages ship as finished markup with hand-written sample rows. Rather than
-// re-authoring every table in React, we keep the first sample row as the
-// template, clone it per record and rewrite the text inside each cell. The
-// design (chips, borders, mono columns) survives untouched.
+
+const tableTemplates = new WeakMap<HTMLElement, HTMLTableRowElement>();
+
+function templateFor(tbody: HTMLElement): HTMLTableRowElement | undefined {
+  let template = tableTemplates.get(tbody);
+  if (!template) {
+    const first = tbody.querySelector<HTMLTableRowElement>("tr");
+    if (first) {
+      template = first.cloneNode(true) as HTMLTableRowElement;
+      tableTemplates.set(tbody, template);
+    }
+  }
+  return template;
+}
 
 /** Minor units -> "₹12,400". Money never becomes a float on the way through. */
 export function money(amountMinor: number, currency = "INR"): string {
@@ -52,11 +61,10 @@ function writeCell(cell: Element, value: string): void {
 }
 
 /**
- * Replaces a tbody's sample rows with one row per record.
+ * Replaces a tbody's hidden structural row with one row per record.
  *
  * `cells` maps a column index to the text for that column. Columns left out of
- * the map keep whatever the template row had, which is how action buttons and
- * decorative columns survive.
+ * the map are cleared unless they contain an action control.
  */
 export function fillTable<T>(
   tbody: HTMLElement,
@@ -64,22 +72,23 @@ export function fillTable<T>(
   cells: (record: T) => Record<number, string | undefined>,
   onRow?: (row: HTMLElement, record: T) => void,
 ): void {
-  const template = tbody.querySelector("tr");
+  const template = templateFor(tbody);
   if (!template) return;
 
+  tbody.dataset.live = "true";
+
   if (records.length === 0) {
-    const columns = template.querySelectorAll("td").length || 1;
-    tbody.innerHTML = `<tr><td colspan="${columns}" class="py-space-lg px-space-md text-center font-mono-metric-sm text-on-surface-variant uppercase">No records</td></tr>`;
-    return;
+    return showTableState(tbody);
   }
 
   const rows = records.map((record) => {
     const row = template.cloneNode(true) as HTMLElement;
     const tds = row.querySelectorAll("td");
     const values = cells(record);
-    for (const [index, value] of Object.entries(values)) {
-      const cell = tds[Number(index)];
-      if (cell && value !== undefined) writeCell(cell, value);
+    for (const [index, cell] of [...tds].entries()) {
+      const value = values[index];
+      if (value !== undefined) writeCell(cell, value);
+      else if (!cell.querySelector("button, a[href]")) cell.textContent = "—";
     }
     onRow?.(row, record);
     return row;
@@ -88,9 +97,32 @@ export function fillTable<T>(
   tbody.replaceChildren(...rows);
 }
 
+function showTableState(tbody: HTMLElement, message = "No records"): void {
+  const columns = templateFor(tbody)?.querySelectorAll("td").length || 1;
+  const row = document.createElement("tr");
+  const cell = document.createElement("td");
+  cell.colSpan = columns;
+  cell.className = "py-space-lg px-space-md text-center font-mono-metric-sm text-on-surface-variant uppercase";
+  cell.textContent = message;
+  row.append(cell);
+  tbody.dataset.live = "true";
+  tbody.replaceChildren(row);
+}
+
+/** Removes designed placeholder records before authentication or API calls. */
+export function clearDemoData(root: HTMLElement): void {
+  for (const tbody of root.querySelectorAll<HTMLElement>("tbody")) showTableState(tbody);
+  for (const list of root.querySelectorAll<HTMLElement>("[data-entry-list]")) {
+    const empty = document.createElement("div");
+    empty.className = "p-space-md text-center font-mono-metric-sm text-on-surface-variant uppercase";
+    empty.textContent = "No records";
+    list.dataset.live = "true";
+    list.replaceChildren(empty);
+  }
+}
+
 /**
- * Pages are static exports, so a failed call must not leave a half-built
- * screen: the designed sample rows stay and a banner says the data is stale.
+ * Pages are static exports, so API failures are shown without fabricating data.
  */
 export function showBanner(root: HTMLElement, message: string, tone: "error" | "info" = "error"): void {
   const banner = document.createElement("div");

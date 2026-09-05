@@ -1,12 +1,7 @@
 // F owned. Binds each designed page to the endpoints that actually exist.
-//
-// Pages the API cannot serve yet keep their sample rows on purpose - see
-// LIVE_PAGES below. Everything here runs in the browser after the static
-// export has already painted, so a slow or down API costs a banner, not a
-// blank screen.
 
-import { api, auth, isSignedIn, saveTokens, USE_MOCKS, type Paginated } from "./api";
-import { fillTable, money, relative, shortDate, showBanner, titleCase } from "./dom";
+import { api, auth, isSignedIn, saveTokens, type Paginated } from "./api";
+import { clearDemoData, fillTable, money, relative, shortDate, showBanner, titleCase } from "./dom";
 import type { PageName } from "./routes";
 
 type Quotation = {
@@ -54,13 +49,6 @@ type DealHealth = {
   message: string;
   detectedAt: string;
 };
-
-/**
- * Pages wired to a real endpoint. Invoices and the inventory half of
- * fulfillment stay on sample rows because B3's billing and inventory services
- * have no controller yet - the engines exist, nothing routes to them.
- */
-const LIVE_PAGES: PageName[] = ["login", "quotations", "approvals", "fulfillment", "deal-health"];
 
 const tbodies = (root: HTMLElement): HTMLElement[] => [...root.querySelectorAll<HTMLElement>("tbody")];
 
@@ -142,9 +130,6 @@ function bindLogin(root: HTMLElement): void {
   form.removeAttribute("onsubmit");
   form.onsubmit = null;
 
-  // The sample password is a row of bullet characters, not a credential.
-  if (/^[•\s]*$/.test(password.value)) password.value = "";
-
   let mode: "signin" | "signup" = "signin";
   root.querySelector("#tab-signin")?.addEventListener("click", () => (mode = "signin"));
   root.querySelector("#tab-signup")?.addEventListener("click", () => (mode = "signup"));
@@ -189,18 +174,16 @@ const BINDERS: Partial<Record<PageName, (root: HTMLElement) => void | Promise<vo
 };
 
 export function goLive(root: HTMLElement, page: PageName): void {
-  if (USE_MOCKS || !LIVE_PAGES.includes(page)) return;
+  clearDemoData(root);
 
   const bind = BINDERS[page];
   if (!bind) return;
 
-  // Every live page but login needs a token; without one the sample rows are
-  // still the most useful thing to show.
   if (page !== "login" && !isSignedIn()) {
-    return showBanner(root, "Sample data — sign in to load live records.", "info");
+    return showBanner(root, "Sign in to load live records.", "info");
   }
 
   void Promise.resolve(bind(root)).catch((error: Error) =>
-    showBanner(root, `Sample data — API unavailable (${error.message})`),
+    showBanner(root, `API unavailable (${error.message})`),
   );
 }

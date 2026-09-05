@@ -7,9 +7,6 @@
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001/api/v1";
 
-/** "1" pins every page to its designed mock rows and makes no network calls. */
-export const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === "1";
-
 const ACCESS_KEY = "df360.accessToken";
 const REFRESH_KEY = "df360.refreshToken";
 
@@ -112,8 +109,6 @@ async function refreshAccess(): Promise<string> {
 }
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
-  if (USE_MOCKS) throw new ApiError(0, "MOCKS_ENABLED", "NEXT_PUBLIC_USE_MOCKS is on.");
-
   try {
     return await send<T>(path, init, readToken(ACCESS_KEY));
   } catch (error) {

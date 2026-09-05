@@ -19,7 +19,7 @@ The goal is not simply to display attractive screens. The complete workflow must
 - [Pages and navigation](#pages-and-navigation)
 - [Customer portal](#customer-portal)
 - [API contract](#api-contract)
-- [Mock-first frontend development](#mock-first-frontend-development)
+- [Frontend API integration](#frontend-api-integration)
 - [Local development](#local-development)
 - [Team workflow](#team-workflow)
 - [Definition of done](#definition-of-done)
@@ -105,10 +105,8 @@ flowchart TB
         Internal[Internal operations UI]
         Portal[Restricted customer portal]
         Client[Shared API client]
-        Mocks[Development fixtures]
         Internal --> Client
         Portal --> Client
-        Mocks -. mock flag .-> Client
     end
 
     Client -->|REST /api/v1| Guards[JWT authentication and role guards]
@@ -452,33 +450,11 @@ Failure:
 
 API areas are divided into sales core, intelligence, operations/billing, and the customer portal. Renaming an error or changing a published response shape requires agreement from all owners.
 
-## Mock-first frontend development
+## Frontend API integration
 
-The frontend consumes three backend domains, so it is built against contract-shaped fixtures before every live endpoint exists.
-
-Fixtures live in:
-
-```text
-apps/web/src/mocks/
-```
-
-The API client uses one flag:
-
-```ts
-const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === "true";
-```
-
-```mermaid
-flowchart LR
-    Screen[Page or component] --> Client[Shared API client]
-    Flag{NEXT_PUBLIC_USE_MOCKS}
-    Flag -- true --> Fixture[Contract-shaped fixture]
-    Flag -- false --> Endpoint[Live REST endpoint]
-    Fixture --> Client
-    Endpoint --> Client
-```
-
-Switching to live data should mean removing one API-client branch, not rewriting a component. If a screen cannot be demonstrated with fixtures, the contract probably needs more information.
+All browser requests go through `apps/web/lib/api.ts`, configured by
+`NEXT_PUBLIC_API_URL`. Pages render empty states until authenticated backend data
+arrives; API failures are shown in-page and never fall back to fabricated records.
 
 ## UI design principles
 
@@ -526,12 +502,8 @@ exist, filling the designed tables in place rather than re-authoring them.
 
 Pages bound to live data: **login** (`/auth/login`, `/auth/signup`), **quotations**
 (`/quotes`), **approvals** (`/approvals`), **fulfillment** orders table (`/orders`),
-and **deal health** (`/deal-health`). Invoices, subscriptions and the inventory grid
-keep their sample rows because B3's billing and inventory engines have no controller
-yet. Set `NEXT_PUBLIC_USE_MOCKS=1` to pin every page to its sample rows.
-
-A page whose call fails keeps its sample rows and shows a banner, so a stopped API
-never produces a blank screen.
+and **deal health** (`/deal-health`). Other screens stay in a clean empty state until
+their endpoint paths and response shapes are added to `apps/web/lib/live.ts`.
 
 ## Team workflow
 
