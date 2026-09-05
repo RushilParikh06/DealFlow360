@@ -9,6 +9,8 @@ model Fulfillment {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("fulfillments")
 }
 
 model Subscription {
@@ -23,6 +25,8 @@ model Subscription {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("subscriptions")
 }
 
 model BillingSchedule {
@@ -36,6 +40,8 @@ model BillingSchedule {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("billing_schedules")
 }
 
 model Invoice {
@@ -51,6 +57,8 @@ model Invoice {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("invoices")
 }
 
 model InvoiceLine {
@@ -63,6 +71,8 @@ model InvoiceLine {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("invoice_lines")
 }
 
 /// Simulated, not settled through a real gateway (README limitations).
@@ -76,6 +86,8 @@ model Payment {
   reference   String
 
   createdAt DateTime @default(now())
+
+  @@map("payments")
 }
 
 /// quotationId points at B1's quotations table.
@@ -88,6 +100,8 @@ model Negotiation {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("negotiations")
 }
 
 model NegotiationMessage {
@@ -100,4 +114,6 @@ model NegotiationMessage {
   requestedDeliveryDate DateTime?
 
   createdAt DateTime @default(now())
+
+  @@map("negotiation_messages")
 }
