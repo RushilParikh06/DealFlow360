@@ -41,6 +41,16 @@ export class AuthService {
   }
 
   /** Internal signup only - SALES_REP by default. Customer accounts are provisioned separately. */
+  /** Identity behind a valid access token, for the session indicator. */
+  async me(userId: string): Promise<{ id: string; email: string; name: string; role: string }> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, name: true, role: true },
+    });
+    if (!user) throw new AppError(ErrorCode.NOT_FOUND, 'User not found.', { userId });
+    return user;
+  }
+
   async signup(email: string, name: string, password: string): Promise<TokenPair> {
     const existing = await this.prisma.user.findUnique({ where: { email } });
     if (existing) {

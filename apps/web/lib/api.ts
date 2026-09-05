@@ -75,16 +75,22 @@ async function unwrap<T>(response: Response): Promise<T> {
 }
 
 async function send<T>(path: string, init: RequestInit, token: string | null): Promise<T> {
-  return unwrap<T>(
-    await fetch(`${BASE}${path}`, {
+  let response: Response;
+  try {
+    response = await fetch(`${BASE}${path}`, {
       ...init,
       headers: {
         "content-type": "application/json",
         ...(token ? { authorization: `Bearer ${token}` } : {}),
         ...init.headers,
       },
-    }),
-  );
+    });
+  } catch {
+    // fetch only rejects when the request never reached the server. "Failed to
+    // fetch" is useless to whoever is looking at the screen; name the address.
+    throw new ApiError(0, "API_UNREACHABLE", `Cannot reach the API at ${BASE}. Is it running?`);
+  }
+  return unwrap<T>(response);
 }
 
 /**
@@ -131,8 +137,19 @@ export const api = {
   del: <T>(path: string) => request<T>(path, { method: "DELETE" }),
 };
 
+export type Session = { id: string; email: string; name: string; role: string };
+
 /** Auth is the one pair of calls that must not carry (or refresh) a token. */
 export const auth = {
+  /** null when signed out or the stored token is no longer good. */
+  me: async (): Promise<Session | null> => {
+    if (!isSignedIn()) return null;
+    try {
+      return await request<Session>("/auth/me");
+    } catch {
+      return null;
+    }
+  },
   login: (email: string, password: string) =>
     send<TokenPair>("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }, null),
   signup: (email: string, name: string, password: string) =>

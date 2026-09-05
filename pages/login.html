@@ -177,7 +177,7 @@
                 <div class="relative flex items-center">
                   <input
                     class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-mono-metric text-mono-metric text-on-surface focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3] pr-10"
-                    id="work-email" required="" type="email" value="alex.vance@acme-enterprise.com" />
+                    id="work-email" required="" type="email" autocomplete="username" placeholder="you@dealflow.test" value="manager@dealflow.test" />
                   <span class="material-symbols-outlined absolute right-2.5 text-emerald-700 text-[18px]">
                     verified
                   </span>
@@ -193,13 +193,18 @@
                 <div class="relative flex items-center">
                   <input
                     class="w-full bg-surface-container-lowest border border-outline rounded-none px-space-sm py-2 font-mono-metric text-mono-metric text-on-surface focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_#003fb3] pr-10"
-                    id="password-input" required="" type="password" value="••••••••••••••••" />
+                    id="password-input" required="" type="password" autocomplete="current-password" placeholder="Enter your password" />
                   <button aria-label="Toggle password visibility"
                     class="absolute right-2.5 text-on-surface-variant hover:text-on-surface focus:outline-none"
                     onclick="togglePasswordVisibility()" type="button">
                     <span class="material-symbols-outlined text-[18px]" id="eye-icon">visibility</span>
                   </button>
                 </div>
+              </div>
+              <!-- Seeded Demo Accounts -->
+              <div class="border border-outline bg-surface-container-low px-space-sm py-space-xs flex flex-col gap-0.5">
+                <span class="font-mono-metric-sm text-mono-metric-sm uppercase tracking-wider text-on-surface-variant">Seeded accounts &bull; password <span class="text-on-surface font-bold">dealflow123</span></span>
+                <span class="font-mono-metric-sm text-mono-metric-sm text-on-surface">rep@ &bull; manager@ &bull; finance@ &bull; admin@dealflow.test</span>
               </div>
               <!-- Remember Me Checkbox -->
               <div class="flex items-center justify-between pt-space-xxs">

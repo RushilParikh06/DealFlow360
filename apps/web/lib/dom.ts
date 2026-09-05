@@ -5,12 +5,16 @@
 // template, clone it per record and rewrite the text inside each cell. The
 // design (chips, borders, mono columns) survives untouched.
 
-/** Minor units -> "₹12,400". Money never becomes a float on the way through. */
+/**
+ * Minor units -> "₹12,400.00". Both decimals always: a money column where one
+ * row reads ₹230.4 and the next ₹230.40 is a bug report waiting to happen, and
+ * the amounts stop aligning under tabular-nums.
+ */
 export function money(amountMinor: number, currency = "INR"): string {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amountMinor / 100);
 }
@@ -39,24 +43,44 @@ export function titleCase(value: string): string {
 }
 
 /**
- * Writes into the innermost elements that already carry text, so a status cell
- * keeps its chip markup and a code cell keeps its link styling.
+ * The words inside a cell, in document order, ignoring decoration.
+ *
+ * Two kinds of node must never be treated as content. A Material Symbols span
+ * holds a ligature name ("error", "check_circle") that the font renders as a
+ * glyph - write a value into it and you get literal garbled words where the
+ * icon was. And an empty span is usually a status dot or a rule, carrying its
+ * meaning entirely in its classes.
+ */
+function contentNodes(cell: Element): Text[] {
+  const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+  const nodes: Text[] = [];
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const text = node as Text;
+    if (!text.data.trim()) continue;
+    if (text.parentElement?.classList.contains("material-symbols-outlined")) continue;
+    nodes.push(text);
+  }
+  return nodes;
+}
+
+/**
+ * Rewrites the words in a cell while leaving every element untouched, so a chip
+ * keeps its status dot, a code keeps its link styling and an icon stays an icon.
  *
  * Many cells stack two lines - a code above a subtitle, a customer above a
  * tier. Pass an array to fill them in order; pass a string to fill only the
  * first and leave the rest of the design alone.
  */
 function writeCell(cell: Element, value: string | string[]): void {
-  const leaves = [...cell.querySelectorAll("*")].filter(
-    (node) => node.textContent?.trim() && ![...node.children].some((child) => child.textContent?.trim()),
-  );
-  if (leaves.length === 0) {
-    cell.textContent = Array.isArray(value) ? value.join(" ") : value;
+  const values = Array.isArray(value) ? value : [value];
+  const nodes = contentNodes(cell);
+
+  if (nodes.length === 0) {
+    cell.textContent = values.join(" ");
     return;
   }
-  const values = Array.isArray(value) ? value : [value];
   values.forEach((text, index) => {
-    if (leaves[index]) leaves[index].textContent = text;
+    if (nodes[index]) nodes[index].data = text;
   });
 }
 

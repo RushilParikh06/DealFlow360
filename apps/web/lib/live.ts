@@ -5,7 +5,7 @@
 // export has already painted, so a slow or down API costs a banner, not a
 // blank screen.
 
-import { api, auth, isSignedIn, saveTokens, USE_MOCKS, type Paginated } from "./api";
+import { api, auth, clearTokens, isSignedIn, saveTokens, USE_MOCKS, type Paginated } from "./api";
 import { fillTable, money, relative, shortDate, showBanner, titleCase } from "./dom";
 import type { PageName } from "./routes";
 
@@ -17,6 +17,7 @@ type Quotation = {
   discountMinor: number;
   totalMinor: number;
   ownerUserId: string;
+  ownerName: string;
   validUntil: string | null;
   lastActivityAt: string;
   customer: { name: string; tier: { code: string } | null } | null;
@@ -108,7 +109,7 @@ async function bindQuotations(root: HTMLElement): Promise<void> {
   fillTable(tbody, page.items, (quote) => ({
     0: quote.code,
     1: quote.customer?.name ?? "—",
-    2: quote.ownerUserId,
+    2: quote.ownerName,
     3: money(quote.totalMinor, quote.currency),
     4: quote.discountMinor > 0 ? `Discount ${money(quote.discountMinor, quote.currency)}` : "At list price",
     5: titleCase(quote.status),
@@ -217,6 +218,67 @@ async function bindDealHealth(root: HTMLElement): Promise<void> {
   }));
 }
 
+
+/**
+ * Every internal page has a profile avatar in its header and nothing else about
+ * the session: signed in and signed out looked identical, which is why a
+ * successful login read as "nothing happened". This puts the account and a way
+ * out next to that avatar, on every page.
+ */
+async function mountSession(root: HTMLElement): Promise<void> {
+  const avatar = root.querySelector("img[alt='Profile']");
+  const anchor = avatar?.parentElement;
+  if (!anchor || anchor.querySelector("[data-df-session]")) return;
+
+  const box = document.createElement("div");
+  box.dataset.dfSession = "true";
+  // shrink-0 + nowrap: these headers are packed flex rows with no slack, and a
+  // wrapping control pushes itself off the right edge of the page.
+  box.className = "flex items-center gap-space-xxs pl-space-xxs shrink-0 whitespace-nowrap";
+  anchor.appendChild(box);
+
+  const who = await auth.me();
+
+  if (!who) {
+    const link = document.createElement("a");
+    link.href = "/login/";
+    link.className =
+      "font-mono-metric-sm text-mono-metric-sm uppercase tracking-wider px-2 py-1 border border-outline bg-primary text-on-primary";
+    link.textContent = "Sign in";
+    box.appendChild(link);
+    return;
+  }
+
+  // The name only appears where the header has room for it; the icon button and
+  // its tooltip carry the same information everywhere else.
+  const name = document.createElement("div");
+  name.className = "hidden 2xl:flex flex-col leading-tight max-w-[140px] overflow-hidden";
+  const person = document.createElement("span");
+  person.className = "font-label-sm text-label-sm font-semibold text-on-surface truncate";
+  person.textContent = who.name; // from the database - never innerHTML
+  const role = document.createElement("span");
+  role.className = "font-mono-metric-sm text-mono-metric-sm text-on-surface-variant uppercase truncate";
+  role.textContent = who.role.replace(/_/g, " ");
+  name.append(person, role);
+
+  const out = document.createElement("button");
+  out.type = "button";
+  out.title = `Signed in as ${who.name} (${who.role.replace(/_/g, " ")}) - sign out`;
+  out.setAttribute("aria-label", out.title);
+  out.className =
+    "shrink-0 p-1.5 border-[1.5px] border-outline bg-surface hover:bg-surface-dim text-on-surface transition-colors";
+  out.innerHTML = '<span class="material-symbols-outlined text-[18px]">logout</span>';
+  out.addEventListener("click", () => {
+    clearTokens();
+    window.location.assign("/login/");
+  });
+
+  // The decorative avatar now stands for a real account.
+  if (avatar) (avatar as HTMLImageElement).title = out.title;
+
+  box.append(name, out);
+}
+
 /**
  * Replaces the page's own `simulateAuth()` with a real token exchange. The
  * designed markup already carries the tab state and the role cards; we read
@@ -238,6 +300,19 @@ function bindLogin(root: HTMLElement): void {
   // The sample password is a row of bullet characters, not a credential.
   if (/^[•\s]*$/.test(password.value)) password.value = "";
 
+  const label = submit.querySelector("span");
+  const say = (text: string) => {
+    if (label) label.textContent = text;
+  };
+
+  // Landing here with a valid session is otherwise a dead end - the form gives
+  // no hint that signing in already happened.
+  if (isSignedIn()) {
+    void auth.me().then((who) => {
+      if (who) say(`ALREADY SIGNED IN AS ${who.name.toUpperCase()} — CONTINUE`);
+    });
+  }
+
   let mode: "signin" | "signup" = "signin";
   root.querySelector("#tab-signin")?.addEventListener("click", () => (mode = "signin"));
   root.querySelector("#tab-signup")?.addEventListener("click", () => (mode = "signup"));
@@ -245,11 +320,6 @@ function bindLogin(root: HTMLElement): void {
   let portal = false;
   root.querySelector("#role-internal")?.addEventListener("click", () => (portal = false));
   root.querySelector("#role-customer")?.addEventListener("click", () => (portal = true));
-
-  const label = submit.querySelector("span");
-  const say = (text: string) => {
-    if (label) label.textContent = text;
-  };
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -268,7 +338,16 @@ function bindLogin(root: HTMLElement): void {
       window.location.assign(portal ? "/portal/quotations/Q-1042/" : "/dashboard/");
     } catch (error) {
       submit.disabled = false;
-      say((error as Error).message.toUpperCase().slice(0, 48));
+      // The button is the only place this screen can speak, so keep it short
+      // enough to read at a glance and specific enough to act on.
+      const code = (error as { code?: string }).code;
+      say(
+        code === "API_UNREACHABLE"
+          ? "API NOT RUNNING — START IT ON :3001"
+          : code === "UNAUTHENTICATED"
+            ? "INVALID EMAIL OR PASSWORD"
+            : (error as Error).message.toUpperCase().slice(0, 44),
+      );
     }
   });
 }
@@ -284,7 +363,12 @@ const BINDERS: Partial<Record<PageName, (root: HTMLElement) => void | Promise<vo
 };
 
 export function goLive(root: HTMLElement, page: PageName): void {
-  if (USE_MOCKS || !LIVE_PAGES.includes(page)) return;
+  if (USE_MOCKS) return;
+
+  // Runs everywhere: an unbound page still has to say who is signed in.
+  if (page !== "login") void mountSession(root).catch(() => {});
+
+  if (!LIVE_PAGES.includes(page)) return;
 
   const bind = BINDERS[page];
   if (!bind) return;
