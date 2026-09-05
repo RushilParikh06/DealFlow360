@@ -83,18 +83,43 @@ export class QuotesService {
     }
   }
 
+  /**
+   * Price, cost, description and lineType come off the product, never off the
+   * request body (invariant 2). costMinor is stored as a UNIT cost because
+   * that is what B2's quote-reader.service.ts multiplies by qty.
+   */
   async addLine(quotationId: string, dto: AddQuotationLineDto) {
     const quote = await this.get(quotationId);
     this.assertEditable(quote.status);
 
+    const product = await this.prisma.product.findUnique({ where: { id: dto.productId } });
+    if (!product) throw new AppError(ErrorCode.NOT_FOUND, 'Product not found.', { productId: dto.productId });
+    if (product.currency !== quote.currency) {
+      throw new AppError(ErrorCode.VALIDATION_FAILED, 'Product is priced in another currency.', {
+        productCurrency: product.currency,
+        quoteCurrency: quote.currency,
+      });
+    }
+
+    const discountBps = dto.discountBps ?? 0;
     const { lineTotalMinor } = computeLineTotals({
-      unitPriceMinor: dto.unitPriceMinor,
+      unitPriceMinor: product.listPriceMinor,
       qty: dto.qty,
-      discountBps: dto.discountBps ?? 0,
+      discountBps,
     });
 
     const line = await this.prisma.quotationLine.create({
-      data: { ...dto, quotationId, lineTotalMinor },
+      data: {
+        quotationId,
+        productId: product.id,
+        description: product.name,
+        qty: dto.qty,
+        unitPriceMinor: product.listPriceMinor,
+        discountBps,
+        lineTotalMinor,
+        costMinor: product.unitCostMinor,
+        lineType: product.lineType,
+      },
     });
     await this.recomputeTotals(quotationId);
     return line;
@@ -125,6 +150,14 @@ export class QuotesService {
   async deleteLine(quotationId: string, lineId: string): Promise<void> {
     const quote = await this.get(quotationId);
     this.assertEditable(quote.status);
+
+    // The line must belong to THIS quote. Without the check, deleting
+    // /quotes/A/lines/<a line of quote B> removes B's line and then recomputes
+    // A's totals, leaving B silently priced as if the line were still there.
+    if (!quote.lines.some((l) => l.id === lineId)) {
+      throw new AppError(ErrorCode.NOT_FOUND, 'Quotation line not found.', { quotationId, lineId });
+    }
+
     await this.prisma.quotationLine.delete({ where: { id: lineId } });
     await this.recomputeTotals(quotationId);
   }

@@ -3,13 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { ErrorCode, type Paginated } from '@dealflow/contracts';
 import { AppError } from '../../shared/app-error';
 import { PrismaService } from '../../shared/prisma.service';
-import type { ListQuotesQueryDto } from '../dto/quote.dto';
+import type { ListOrdersQueryDto } from '../dto/quote.dto';
 
 @Injectable()
 export class OrdersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list(query: Pick<ListQuotesQueryDto, 'customerId' | 'page' | 'pageSize'> & { status?: string }): Promise<Paginated<unknown>> {
+  async list(query: ListOrdersQueryDto): Promise<Paginated<unknown>> {
     const page = query.page ?? 1;
     const pageSize = query.pageSize ?? 20;
     const where = {

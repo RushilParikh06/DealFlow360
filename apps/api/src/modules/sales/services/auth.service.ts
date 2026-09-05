@@ -25,8 +25,9 @@ export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
   private async issueTokens(user: { id: string; role: string; customerId: string | null }): Promise<TokenPair> {
-    const accessToken = signJwt({ sub: user.id, role: user.role, customerId: user.customerId }, secret(), ACCESS_TTL);
-    const refreshToken = signJwt({ sub: user.id, role: user.role, customerId: user.customerId }, secret(), REFRESH_TTL);
+    const claims = { sub: user.id, role: user.role, customerId: user.customerId };
+    const accessToken = signJwt({ ...claims, typ: 'access' }, secret(), ACCESS_TTL);
+    const refreshToken = signJwt({ ...claims, typ: 'refresh' }, secret(), REFRESH_TTL);
 
     await this.prisma.refreshToken.create({
       data: {
@@ -61,6 +62,9 @@ export class AuthService {
 
   async refresh(refreshToken: string): Promise<TokenPair> {
     const payload = verifyJwt(refreshToken, secret());
+    if (payload.typ !== 'refresh') {
+      throw new AppError(ErrorCode.UNAUTHENTICATED, 'Not a refresh token.');
+    }
 
     const stored = await this.prisma.refreshToken.findUnique({ where: { tokenHash: hashToken(refreshToken) } });
     if (!stored || stored.revokedAt || stored.expiresAt < new Date()) {

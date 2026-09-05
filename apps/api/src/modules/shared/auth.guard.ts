@@ -53,6 +53,11 @@ export class AuthGuard implements CanActivate {
     }
 
     const payload = verifyJwt(auth.slice('Bearer '.length), process.env.JWT_SECRET ?? 'dev-only-change-me');
+    // A refresh token is long-lived and revocable through refresh_tokens; the
+    // guard never consults that table, so it must not accept one as a bearer.
+    if (payload.typ !== 'access') {
+      throw new AppError(ErrorCode.UNAUTHENTICATED, 'A refresh token cannot be used as a bearer token.');
+    }
     if (!VALID_ROLES.has(payload.role)) {
       throw new AppError(ErrorCode.UNAUTHENTICATED, `Unknown role "${payload.role}".`);
     }

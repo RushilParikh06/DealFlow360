@@ -9,6 +9,10 @@ export interface JwtPayload {
   sub: string; // user id
   role: string;
   customerId: string | null;
+  /** Access and refresh tokens are NOT interchangeable - the guard accepts
+   *  'access' only, so a leaked refresh token cannot be used as a bearer
+   *  credential and stays revocable through the refresh_tokens table. */
+  typ: 'access' | 'refresh';
   exp: number; // unix seconds
 }
 

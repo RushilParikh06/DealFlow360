@@ -2,6 +2,7 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../shared/auth.guard';
 import { Roles, RolesGuard } from '../../shared/roles.guard';
+import { ListOrdersQueryDto } from '../dto/quote.dto';
 import { OrdersService } from '../services/orders.service';
 
 @Controller('orders')
@@ -11,7 +12,7 @@ export class OrdersController {
   constructor(private readonly orders: OrdersService) {}
 
   @Get()
-  list(@Query() query: { status?: string; customerId?: string; page?: number; pageSize?: number }) {
+  list(@Query() query: ListOrdersQueryDto) {
     return this.orders.list(query);
   }
 
