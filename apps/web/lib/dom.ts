@@ -76,6 +76,10 @@ export function fillTable<T>(
   const template = tbody.querySelector("tr");
   if (!template) return;
 
+  // globals.css hides every sample row past the third to keep a demo screen
+  // readable. Real results must not be capped at three, so mark the table live.
+  tbody.dataset.dfLive = "true";
+
   if (records.length === 0) {
     const columns = template.querySelectorAll("td").length || 1;
     tbody.innerHTML = `<tr><td colspan="${columns}" class="py-space-lg px-space-md text-center font-mono-metric-sm text-on-surface-variant uppercase">No records</td></tr>`;

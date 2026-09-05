@@ -126,6 +126,14 @@ body {
   background: rgb(var(--df-surface-container-lowest));
 }
 
+/* Trims the hand-written sample rows to three so a demo screen stays readable.
+   Tables filled from the API opt out via data-df-live (lib/dom.ts) - capping
+   real data at three rows would quietly hide most of a result set. */
+[data-page-root] tbody:not([data-df-live]) > tr:nth-child(n + 4),
+[data-entry-list]:not([data-df-live]) > :nth-child(n + 4) {
+  display: none;
+}
+
 [data-page-root] > main > :first-child {
   margin-top: 0 !important;
 }
