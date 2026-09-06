@@ -72,12 +72,17 @@ export class QuotesService {
    * off a screen share - resolving both here keeps that from needing a
    * separate lookup round trip on every detail page.
    */
-  async get(idOrCode: string) {
+  async get(idOrCode: string, actor?: AuthUser) {
     const quote = await this.prisma.quotation.findFirst({
       where: { OR: [{ id: idOrCode }, { code: idOrCode }] },
       include: { lines: true, customer: { include: { tier: true } } },
     });
     if (!quote) throw new AppError(ErrorCode.NOT_FOUND, 'Quotation not found.', { id: idOrCode });
+    // A customer may read only their own quote. Internal roles (actor undefined
+    // on internal call paths, or a non-customer role) see any quote.
+    if (actor?.role === 'CUSTOMER' && quote.customerId !== actor.customerId) {
+      throw new AppError(ErrorCode.FORBIDDEN, 'This quotation belongs to another customer.', { id: idOrCode });
+    }
     return quote;
   }
 

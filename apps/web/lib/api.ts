@@ -139,7 +139,10 @@ export const api = {
   del: <T>(path: string) => request<T>(path, { method: "DELETE" }),
 };
 
-export type Session = { id: string; email: string; name: string; role: string };
+// customerId is null for every internal role and set for a CUSTOMER session.
+// The web app routes and guards on it (portal vs internal workspace) without
+// decoding the JWT.
+export type Session = { id: string; email: string; name: string; role: string; customerId: string | null };
 
 /** Auth is the one pair of calls that must not carry (or refresh) a token. */
 export const auth = {

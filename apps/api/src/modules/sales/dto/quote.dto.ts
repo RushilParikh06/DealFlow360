@@ -99,3 +99,20 @@ export class UpdateQuotationLineDto {
   @MinLength(1)
   description?: string;
 }
+
+/**
+ * A note posted onto a quotation's negotiation thread. Customers use it to ask
+ * the deal desk for a concession; internal roles use it to reply. The optional
+ * requestedDiscountBps records "I'd sign at 12%" as structured data, not just prose.
+ */
+export class AddNoteDto {
+  @IsString()
+  @MinLength(1)
+  body!: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(10000)
+  requestedDiscountBps?: number;
+}

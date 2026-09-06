@@ -41,11 +41,13 @@ export class AuthService {
   }
 
   /** Internal signup only - SALES_REP by default. Customer accounts are provisioned separately. */
-  /** Identity behind a valid access token, for the session indicator. */
-  async me(userId: string): Promise<{ id: string; email: string; name: string; role: string }> {
+  /** Identity behind a valid access token, for the session indicator. `customerId`
+   *  lets the web app tell a customer session from an internal one without
+   *  decoding the JWT - it is null for every internal role. */
+  async me(userId: string): Promise<{ id: string; email: string; name: string; role: string; customerId: string | null }> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, email: true, name: true, role: true },
+      select: { id: true, email: true, name: true, role: true, customerId: true },
     });
     if (!user) throw new AppError(ErrorCode.NOT_FOUND, 'User not found.', { userId });
     return user;

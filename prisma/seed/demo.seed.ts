@@ -13,8 +13,10 @@
 
 import type { PrismaClient, QuotationStatus } from '@prisma/client';
 import type { BaseSeedResult } from './base.seed';
+import { hashPassword } from '../../apps/api/src/modules/sales/auth/password';
 
 const BPS_SCALE = 10_000;
+const SEED_PASSWORD = process.env.SEED_PASSWORD ?? 'dealflow123';
 
 /** Same half-up rule as packages/contracts/src/money.ts. Kept local so the seed
  *  has no import from apps/api and can run before the api compiles. */
@@ -213,6 +215,22 @@ export async function seedDemo(prisma: PrismaClient, base: BaseSeedResult): Prom
       ? await prisma.customer.update({ where: { id: existing.id }, data: { tierId, email: c.email } })
       : await prisma.customer.create({ data: { name: c.name, tierId, email: c.email } });
     customerIdByName.set(c.name, row.id);
+  }
+
+  // The real customer login. Meridian owns QT-1001/1002/1007, so this account
+  // lands on a portal that already has content. role CUSTOMER + a bound
+  // customerId is what the API scopes every /quotes read to; without the
+  // customerId the portal would be empty and the ownership checks would reject
+  // every quote. Password matches every seeded account ("dealflow123").
+  const meridianId = customerIdByName.get('Meridian Logistics');
+  if (meridianId) {
+    const email = 'buyer@meridian.test';
+    await prisma.user.upsert({
+      where: { email },
+      create: { email, name: 'Meridian Buyer', role: 'CUSTOMER', customerId: meridianId, passwordHash: hashPassword(SEED_PASSWORD) },
+      update: { name: 'Meridian Buyer', role: 'CUSTOMER', customerId: meridianId },
+    });
+    console.log(`  customer login: ${email} (Meridian Logistics) / ${SEED_PASSWORD}`);
   }
 
   // Rewriting a quote's status invalidates everything B2 derived from it. An

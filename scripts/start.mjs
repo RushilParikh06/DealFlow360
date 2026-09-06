@@ -33,17 +33,29 @@ const die = (message, hint) => {
   process.exit(1);
 };
 
+// On Windows `npx`/`pnpm`/`psql` are .cmd shims: bare spawn cannot find them
+// (ENOENT) and modern Node refuses to launch .cmd without a shell. Route
+// through cmd.exe there. Our args carry no shell metacharacters, so this is safe.
+const isWindows = process.platform === 'win32';
+
 const run = (command, args, options = {}) =>
   new Promise((done, fail) => {
-    const child = spawn(command, args, { cwd: ROOT, stdio: options.quiet ? 'pipe' : 'inherit', ...options });
+    const child = spawn(command, args, { cwd: ROOT, shell: isWindows, stdio: options.quiet ? 'pipe' : 'inherit', ...options });
     let output = '';
     child.stdout?.on('data', (chunk) => (output += chunk));
     child.stderr?.on('data', (chunk) => (output += chunk));
     child.on('close', (code) => (code === 0 ? done(output) : fail(new Error(output || `${command} exited ${code}`))));
   });
 
-/** pnpm is not installed globally on every machine here. */
-const pnpm = (...args) => run('npx', ['--yes', 'pnpm@9.12.0', ...args]);
+/** pnpm is not installed globally on every machine here. A trailing options
+ *  object (e.g. { quiet: true }) is separated from the pnpm arguments so it
+ *  reaches spawn instead of being stringified onto the command line as
+ *  "[object Object]". */
+const pnpm = (...args) => {
+  const last = args[args.length - 1];
+  const options = last && typeof last === 'object' && !Array.isArray(last) ? args.pop() : {};
+  return run('npx', ['--yes', 'pnpm@9.12.0', ...args], options);
+};
 const pnpmQuiet = (...args) => pnpm(...args, { quiet: true });
 
 function portOpen(port, host = '127.0.0.1') {
@@ -121,11 +133,37 @@ const psqlUrl = process.env.DATABASE_URL.split('?')[0];
 // ------------------------------------------------------------- 2. the schema
 
 step('2/5  schema');
+// prisma generate writes the query-engine DLL to a .tmp file and renames it
+// into place. On Windows that rename fails with EPERM when OneDrive is syncing
+// the folder or a leftover node process still holds the old DLL open - a
+// transient lock, not a broken schema. Retry a few times before giving up.
+async function generate(attempts = 3) {
+  for (let attempt = 1; ; attempt += 1) {
+    try {
+      await pnpmQuiet('generate');
+      return;
+    } catch (error) {
+      if (attempt >= attempts || !/EPERM|EBUSY|operation not permitted/i.test(String(error.message))) throw error;
+      say(`prisma generate hit a file lock (attempt ${attempt}/${attempts}) - retrying in 2s`);
+      await new Promise((done) => setTimeout(done, 2000));
+    }
+  }
+}
 try {
-  await pnpmQuiet('generate');
+  await generate();
   say('prisma client generated');
 } catch (error) {
-  die('prisma generate failed.', String(error.message).split('\n').slice(0, 6).join('\n    '));
+  const message = String(error.message);
+  if (/EPERM|EBUSY|operation not permitted/i.test(message)) {
+    die(
+      'prisma generate could not replace the query-engine DLL (Windows file lock).',
+      'Something is holding the old engine open. Try, in order:\n' +
+        '    1. Stop any running dev server (close other `pnpm go` / `pnpm dev` terminals).\n' +
+        '    2. Pause OneDrive sync, or move the project outside the OneDrive folder.\n' +
+        '    3. Run this again.',
+    );
+  }
+  die('prisma generate failed.', message.split('\n').slice(0, 6).join('\n    '));
 }
 
 try {
@@ -264,7 +302,7 @@ async function freeStalePort(port, label) {
 if (!already.api) await freeStalePort(3001, 'API');
 if (!already.web) await freeStalePort(3000, 'web app');
 
-const dev = spawn('npx', ['--yes', 'pnpm@9.12.0', 'dev'], { cwd: ROOT, stdio: 'inherit' });
+const dev = spawn('npx', ['--yes', 'pnpm@9.12.0', 'dev'], { cwd: ROOT, shell: isWindows, stdio: 'inherit' });
 const stop = () => {
   dev.kill('SIGINT');
   process.exit(0);
