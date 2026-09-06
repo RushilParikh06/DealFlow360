@@ -177,17 +177,53 @@ try {
 // ------------------------------------------------------------- 4. the servers
 
 step('4/5  servers');
-// Starting a second copy is worse than refusing: the newcomer loses the port
-// race, exits, and the terminal fills with an error about the thing that is
-// actually working fine.
-for (const [port, name] of [[3001, 'API'], [3000, 'web app']]) {
-  if (await portOpen(port)) {
-    die(
-      `Port ${port} is already in use, so the ${name} is probably already running.`,
-      `Open ${WEB}/login/ , or stop the old one first:\n` +
-        '    pkill -f "next dev"; pkill -f "nest start"',
-    );
+
+const answering = async (url) => {
+  try {
+    // Any HTTP answer means something is serving. The API replies 401 to an
+    // anonymous request, which is a healthy API, not a failure. A plain fetch
+    // has no timeout of its own - something that accepts the TCP connection
+    // but never writes a response (a stray non-HTTP process squatting on the
+    // port) hangs this forever instead of failing fast.
+    return (await fetch(url, { signal: AbortSignal.timeout(2000) })).status > 0;
+  } catch {
+    return false;
   }
+};
+
+// Running this twice should not be an error. If DealFlow360 is already up,
+// say where it is and stop - starting a second copy would only lose the port
+// race and print a stack trace about the instance that is working fine.
+const already = { api: await answering(`${API}/quotes`), web: await answering(`${WEB}/login/`) };
+if (already.api && already.web) {
+  say('already running - nothing to start');
+  console.log(`\n  DealFlow360 is up at ${WEB}/login/  (API on ${API})`);
+  console.log('  Stop it with Ctrl+C in the terminal running it, or:');
+  console.log('    pkill -f "next dev"; pkill -f "nest start"\n');
+  process.exit(0);
+}
+
+// A port held by something that is NOT this project is a real problem, and the
+// message has to distinguish the two cases or it sends people to kill the
+// wrong process.
+for (const [port, name, up] of [
+  [3001, 'API', already.api],
+  [3000, 'web app', already.web],
+]) {
+  if (up || !(await portOpen(port))) continue;
+  die(
+    `Port ${port} is in use, but whatever holds it is not the DealFlow360 ${name}.`,
+    'Find it and stop it, then run this again:\n' + `    lsof -nP -iTCP:${port} -sTCP:LISTEN`,
+  );
+}
+// One half up and the other down cannot be repaired from here: `pnpm dev`
+// starts both, and the half that is already listening would kill the new one
+// on its port. Stopping the survivor is the only clean way forward.
+if (already.api || already.web) {
+  die(
+    `The DealFlow360 ${already.api ? 'API' : 'web app'} is running but the other half is not.`,
+    'Stop what is left and run this again:\n    pkill -f "next dev"; pkill -f "nest start"',
+  );
 }
 
 const dev = spawn('npx', ['--yes', 'pnpm@9.12.0', 'dev'], { cwd: ROOT, stdio: 'inherit' });
@@ -199,27 +235,13 @@ process.on('SIGINT', stop);
 process.on('SIGTERM', stop);
 dev.on('close', (code) => process.exit(code ?? 0));
 
-const apiUp = await waitFor('the API on :3001', async () => {
-  try {
-    // 401 is a healthy API saying "not signed in". Any answer means it is up.
-    const response = await fetch(`${API}/quotes`);
-    return response.status > 0;
-  } catch {
-    return false;
-  }
-});
+const apiUp = await waitFor('the API on :3001', () => answering(`${API}/quotes`));
 if (!apiUp) {
   console.error('\n  The API did not come up. Its errors are in the [api] lines above.');
   console.error('  The usual causes are a database it cannot reach and a port 3001 already in use.\n');
 }
 
-const webUp = await waitFor('the web app on :3000', async () => {
-  try {
-    return (await fetch(`${WEB}/login/`)).ok;
-  } catch {
-    return false;
-  }
-});
+const webUp = await waitFor('the web app on :3000', () => answering(`${WEB}/login/`));
 
 // ------------------------------------------------------------- 5. engine state
 
