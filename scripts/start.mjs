@@ -14,7 +14,7 @@
  * did. It never drops data: the seed runs only when the database is empty.
  */
 
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { createConnection } from 'node:net';
 import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -203,28 +203,66 @@ if (already.api && already.web) {
   process.exit(0);
 }
 
-// A port held by something that is NOT this project is a real problem, and the
-// message has to distinguish the two cases or it sends people to kill the
-// wrong process.
-for (const [port, name, up] of [
-  [3001, 'API', already.api],
-  [3000, 'web app', already.web],
-]) {
-  if (up || !(await portOpen(port))) continue;
-  die(
-    `Port ${port} is in use, but whatever holds it is not the DealFlow360 ${name}.`,
-    'Find it and stop it, then run this again:\n' + `    lsof -nP -iTCP:${port} -sTCP:LISTEN`,
-  );
+// Anything still holding 3000/3001 at this point is a leftover: half of a
+// previous `pnpm go` that did not shut down cleanly, or a crashed API that
+// left the OS socket lingering. Telling someone to go find and kill it by hand
+// is exactly the babysitting this command exists to remove - these two ports
+// belong to this project, so free them and move on. The only thing this
+// refuses to touch is a port held by something that is not even Node, since
+// that is clearly not one of ours.
+function pidsOnPort(port) {
+  try {
+    // -sTCP:LISTEN matters: without it lsof also returns processes with an
+    // unrelated, already-CLOSED connection that once touched this port (an
+    // editor's network helper, a browser tab) - none of which are holding the
+    // port open, so killing them would accomplish nothing and risk something.
+    return execFileSync('lsof', ['-ti', `tcp:${port}`, '-sTCP:LISTEN'], { encoding: 'utf8' })
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+  } catch {
+    return []; // lsof exits 1 when nothing matches - not an error here
+  }
 }
-// One half up and the other down cannot be repaired from here: `pnpm dev`
-// starts both, and the half that is already listening would kill the new one
-// on its port. Stopping the survivor is the only clean way forward.
-if (already.api || already.web) {
-  die(
-    `The DealFlow360 ${already.api ? 'API' : 'web app'} is running but the other half is not.`,
-    'Stop what is left and run this again:\n    pkill -f "next dev"; pkill -f "nest start"',
-  );
+
+function commandFor(pid) {
+  try {
+    return execFileSync('ps', ['-p', pid, '-o', 'comm='], { encoding: 'utf8' }).trim();
+  } catch {
+    return '';
+  }
 }
+
+async function freeStalePort(port, label) {
+  const pids = pidsOnPort(port);
+  if (pids.length === 0) return;
+
+  const foreign = pids.filter((pid) => !/node/i.test(commandFor(pid)));
+  if (foreign.length > 0) {
+    die(
+      `Port ${port} is held by a process that is not Node, so it is not a leftover ${label} - stopping rather than killing something unrelated.`,
+      `Find it and stop it yourself:\n    lsof -nP -iTCP:${port} -sTCP:LISTEN`,
+    );
+  }
+
+  say(`clearing a leftover process on port ${port} (a previous run that did not shut down)`);
+  for (const pid of pids) {
+    try {
+      process.kill(Number(pid), 'SIGKILL');
+    } catch {
+      /* already gone */
+    }
+  }
+  for (let attempt = 0; attempt < 20 && (await portOpen(port)); attempt += 1) {
+    await new Promise((done) => setTimeout(done, 200));
+  }
+  if (await portOpen(port)) {
+    die(`Port ${port} would not come free.`, `Stop it yourself:\n    lsof -nP -iTCP:${port} -sTCP:LISTEN`);
+  }
+}
+
+if (!already.api) await freeStalePort(3001, 'API');
+if (!already.web) await freeStalePort(3000, 'web app');
 
 const dev = spawn('npx', ['--yes', 'pnpm@9.12.0', 'dev'], { cwd: ROOT, stdio: 'inherit' });
 const stop = () => {
