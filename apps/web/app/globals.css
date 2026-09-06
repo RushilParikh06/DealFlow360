@@ -69,6 +69,14 @@ html {
   min-height: 100vh;
 }
 
+/* Applied by the approval queue density control. Keep compact mode local to
+   the page root so it does not change the surrounding application shell. */
+[data-page-root].df-compact table td,
+[data-page-root].df-compact table th {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
 [data-page-root]:not([data-page="login"]):not([data-page="customer-quotation"]) {
   display: flex;
   flex-direction: column;
@@ -83,17 +91,17 @@ html {
   box-shadow: none;
 }
 
-[data-page-root]:not([data-page="login"]):not([data-page="customer-quotation"]) > header > div {
+[data-page-root]:not([data-page="login"]):not([data-page="customer-quotation"]) > header > div:first-of-type {
   width: 100%;
   height: 4rem;
   padding-inline: 2rem;
   gap: 1rem;
 }
 
-[data-page-root]:not([data-page="login"]):not([data-page="customer-quotation"]) > main {
+[data-page-root]:not([data-page="login"]):not([data-page="customer-quotation"]) main {
   width: 100%;
   min-height: 100vh;
-  padding-top: 4rem;
+  padding-top: calc(4rem + 2px);
   background: rgb(var(--df-surface));
   flex: 1 1 auto;
 }
@@ -218,7 +226,7 @@ textarea {
 }
 
 @media (max-width: 639px) {
-  [data-page-root]:not([data-page="login"]):not([data-page="customer-quotation"]) > header > div {
+  [data-page-root]:not([data-page="login"]):not([data-page="customer-quotation"]) > header > div:first-of-type {
     padding-inline: 1rem;
   }
 
