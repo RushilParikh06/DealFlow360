@@ -1,75 +1,59 @@
 # DealFlow360
 
-DealFlow360 is a B2B sales-operations platform that carries a deal through one governed workflow: quotation, discount validation, approval, order creation, warehouse allocation, fulfillment, invoicing, subscriptions, payment, and deal-health monitoring.
+**A B2B deal doesn't end when someone clicks "Accept." It just changes shape.**
 
-The goal is not simply to display attractive screens. The complete workflow must run with real, deterministic application logic. The frontend explains the results, while the backend owns every business decision.
+DealFlow360 carries a single deal through every shape it takes — quotation, discount check, approval, order, warehouse split, fulfillment, invoice, subscription, payment, and ongoing health monitoring — as one governed, auditable pipeline. Not fifteen screens that happen to share a login page. One workflow, wearing fifteen faces.
 
-> **Project status:** This README describes the agreed product behavior and target architecture. Keep it aligned with the frozen project plan as implementation progresses.
+> Built for an Odoo hackathon, with a rule we didn't break once things got busy: **the backend owns every decision, the frontend just explains it.** No risk score, approval, allocation, or invoice total is ever computed in the browser.
 
-## Contents
-
-- [Product overview](#product-overview)
-- [Example deal journey](#example-deal-journey)
-- [Architecture](#architecture)
-- [Technology stack](#technology-stack)
-- [Engineering ownership](#engineering-ownership)
-- [Core business rules](#core-business-rules)
-- [Quotation state machine](#quotation-state-machine)
-- [Data model](#data-model)
-- [Pages and navigation](#pages-and-navigation)
-- [Customer portal](#customer-portal)
-- [API contract](#api-contract)
-- [Frontend API integration](#frontend-api-integration)
-- [Local development](#local-development)
-- [Team workflow](#team-workflow)
-- [Definition of done](#definition-of-done)
-- [Limitations and future work](#limitations-and-future-work)
-
-## Product overview
-
-A salesperson creates a quotation and adds products, quantities, and discounts. Each line is checked against the discount ceiling for its product category and the customer's tier. The line results are blended into a risk evaluation that decides which approvals are required.
-
-After confirmation, the quotation becomes an order. The platform recommends a warehouse split, reserves inventory, tracks fulfillment, separates one-time and recurring billing, records payment, and watches the deal for delays or anomalies.
-
-```mermaid
-flowchart LR
-    A[Create quotation] --> B[Add products and discounts]
-    B --> C[Check every line's discount ceiling]
-    C --> D[Calculate blended risk]
-    D --> E{Approval required?}
-    E -- No --> F[Auto-approve]
-    E -- Yes --> G[Manager and/or finance review]
-    G --> H{Approved?}
-    H -- Returned --> A
-    H -- Rejected --> X[Deal stopped]
-    H -- Yes --> I[Confirm quotation]
-    F --> I
-    I --> J[Create order]
-    J --> K[Recommend warehouse split]
-    K --> L[Reserve and fulfill inventory]
-    L --> M[One-time invoice]
-    L --> N[Recurring subscription]
-    M --> O[Record payment]
-    N --> O
-    O --> P[Monitor deal health]
+```
+Quote → Discount check → Risk score → Approval chain → Order
+      → Warehouse split → Fulfillment → Invoice / Subscription
+      → Payment → Deal-health watch
 ```
 
-## Example deal journey
+---
 
-Imagine that Acme Corp requests two laptops, an onsite setup service, and an extended warranty.
+## Table of contents
 
-1. A sales representative creates quotation `Q-1042`.
-2. The laptop discount is 12% against a 15% ceiling, so that line is valid.
-3. The setup-service discount is 18% against a 10% ceiling, so the UI displays `OVER (+8 pt)`.
-4. The backend evaluates all lines and returns a high blended risk score.
-5. The quote goes to the sales manager and then finance.
-6. Every approval, rejection, return, edit, and transition is added to the audit log.
-7. After approval, the quote is confirmed and copied into an order.
-8. The system recommends a stock split between Main Warehouse and East Depot.
-9. Shipped one-time products are invoiced; the care plan becomes a subscription.
-10. Payment is recorded, and Deal Health watches for anomalies or delays.
+- [Why this exists](#why-this-exists)
+- [A deal, start to finish](#a-deal-start-to-finish)
+- [Quickstart](#quickstart)
+- [Demo accounts](#demo-accounts)
+- [Architecture](#architecture)
+- [Tech stack](#tech-stack)
+- [Repository layout](#repository-layout)
+- [The rules that don't bend](#the-rules-that-dont-bend)
+- [Quotation state machine](#quotation-state-machine)
+- [Pages](#pages)
+- [Customer portal](#customer-portal)
+- [API contract](#api-contract)
+- [Testing](#testing)
+- [Team workflow](#team-workflow)
+- [Known limitations](#known-limitations)
 
-The customer can also request different terms through a restricted portal. If a negotiated discount crosses a configured ceiling, the quote automatically re-enters approval.
+---
+
+## Why this exists
+
+Most sales-ops demos fake the hard part. The dashboard looks great, the numbers are hand-picked, and the moment you click something the script didn't anticipate, it falls apart.
+
+DealFlow360's guiding principle is the opposite bet: **a plain screen backed by correct math, real permissions, and a real audit trail beats a beautiful screen that's just acting.** Every discount ceiling, every risk score, every warehouse split, every invoice — computed once, on the server, from data you can inspect.
+
+## A deal, start to finish
+
+Acme Corp wants two laptops, an onsite setup, and an extended warranty.
+
+1. A rep drafts quotation `Q-1042`.
+2. The laptop discount (12%) clears its 15% ceiling. The setup-service discount (18%) blows past its 10% ceiling — the UI flags it `OVER (+8 pt)` using numbers the backend already computed.
+3. The engine blends every line into one risk score. This one comes back high.
+4. The quote routes to the sales manager, then finance. Every step — approve, reject, return, edit — lands in an append-only audit log.
+5. Approved and confirmed, the quotation becomes an order.
+6. The system recommends a warehouse split, reserves stock, and tracks fulfillment.
+7. Shipped hardware gets invoiced. The warranty becomes a subscription. Nothing is billed before it ships.
+8. Payment is recorded. Deal Health keeps watching for stalls and anomalies.
+
+If Acme comes back later through the customer portal asking for different terms, the same engine re-evaluates the deal. Stay inside the ceilings and the quote is still confirmable — cross one, and it quietly re-enters approval instead of silently going through.
 
 ```mermaid
 sequenceDiagram
@@ -78,26 +62,89 @@ sequenceDiagram
     participant Sales as Sales core
     participant Intel as Intelligence engine
     participant Approval as Approval chain
-    participant Ops as Operations and billing
+    participant Ops as Operations & billing
 
     Customer->>Portal: Request a discount or delivery change
     Portal->>Sales: Submit negotiation request
     Sales->>Intel: Re-evaluate quotation
     Intel-->>Sales: Risk, violations, required approvals
-    alt Terms remain within ceilings
-        Sales-->>Portal: Quotation remains confirmable
+    alt Within ceilings
+        Sales-->>Portal: Still confirmable
         Customer->>Portal: Confirm quotation
-        Sales->>Ops: Create order and fulfillment
-    else Terms exceed a ceiling
-        Sales->>Approval: Move to pending manager
+        Sales->>Ops: Create order & fulfillment
+    else Exceeds a ceiling
+        Sales->>Approval: Route to pending manager
         Sales-->>Portal: Show pending review
         Approval-->>Sales: Approve, return, or reject
     end
 ```
 
+## Quickstart
+
+You need Docker (for Postgres + Redis), Node, and `pnpm`.
+
+```bash
+git clone https://github.com/RushilParikh06/DealFlow360.git
+cd DealFlow360
+pnpm install
+pnpm go
+```
+
+`pnpm go` is the whole thing. It will:
+
+1. create `.env` from `.env.example` if you don't have one,
+2. detect whichever port Postgres actually came up on and fix `DATABASE_URL` if it disagrees,
+3. generate the Prisma client and apply migrations,
+4. seed the database — but only if it's empty,
+5. start the API and the web app, wait for both to be ready,
+6. run risk evaluation on the seeded quotes and a deal-health sweep,
+7. print exactly what it did and which accounts you can sign in with.
+
+It won't start a second copy on top of one already running, and if something's genuinely missing (Docker not running, a port already taken by something else), it tells you the command to fix it instead of dying three layers deep inside Prisma.
+
+- Web app: **http://localhost:3000**
+- API: **http://localhost:3001/api/v1**
+
+### Prefer to run it step by step?
+
+```bash
+cp .env.example .env
+docker compose up -d      # Postgres + Redis
+pnpm generate              # Prisma client
+pnpm db:migrate             # apply migrations
+pnpm db:seed                # catalog, policies, quotes, orders, billing
+pnpm dev                    # API on :3001, web on :3000
+pnpm db:demo                 # with the API running: evaluate quotes, sweep deal health
+```
+
+Want to rewind to a known-good demo state at any point?
+
+```bash
+pnpm db:reset   # db:seed + db:demo — resets quotes and demo signups, keeps anything an order was cut from
+```
+
+Pointing the web app at a different API host? Set `NEXT_PUBLIC_API_URL`.
+
+## Demo accounts
+
+Every seeded account shares one password: **`dealflow123`**.
+
+| Account | Role | Lands on |
+|---|---|---|
+| `admin@dealflow.test` | Admin | Internal workspace |
+| `manager@dealflow.test` | Sales Manager | Internal workspace |
+| `rep@dealflow.test` | Sales Rep | Internal workspace |
+| `finance@dealflow.test` | Finance | Internal workspace |
+| `ops@dealflow.test` | Operations | Internal workspace |
+| `buyer@meridian.test` | Customer (Meridian Logistics) | Customer portal |
+
+The role toggle on the login screen is cosmetic — routing is decided by the account's actual role on the server, every time, regardless of which toggle position you leave it on.
+
+Want the guided tour? [`DEMO.md`](./DEMO.md) walks the whole pipeline end to end, from submitting a quote to a customer signing it in the portal.
+
 ## Architecture
 
-DealFlow360 is a modular monolith: one backend application, one database, and clear module boundaries. This avoids the deployment and debugging cost of microservices while preserving strong ownership.
+A modular monolith on purpose: one backend, one database, hard module boundaries enforced by convention instead of network hops. You get the ownership clarity of separate services without paying for separate services to debug.
 
 ```mermaid
 flowchart TB
@@ -109,11 +156,11 @@ flowchart TB
         Portal --> Client
     end
 
-    Client -->|REST /api/v1| Guards[JWT authentication and role guards]
+    Client -->|REST /api/v1| Guards[JWT auth & role guards]
 
     subgraph API[NestJS modular monolith]
         Guards --> B1[Sales core]
-        Guards --> B2[Intelligence and governance]
+        Guards --> B2[Intelligence & governance]
         Guards --> B3[Commercial operations]
         Guards --> Billing[Billing]
         Shared[Shared guards, filters, Prisma service]
@@ -127,125 +174,59 @@ flowchart TB
     B2 --> DB
     B3 --> DB
     Billing --> DB
-    B2 --> Queue[(Redis and BullMQ)]
+    B2 --> Queue[(Redis + BullMQ)]
     Billing --> Queue
 ```
 
-## Technology stack
+## Tech stack
 
-| Area | Technology |
+| Layer | Choice |
 |---|---|
 | Frontend | Next.js, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query |
 | Backend | NestJS, TypeScript, REST |
-| Validation | Zod and `class-validator` |
-| Database | PostgreSQL with Prisma multi-file schemas |
-| Background work | Redis and BullMQ |
-| Authentication | JWT access tokens, refresh tokens, role guards |
+| Validation | Zod + `class-validator` |
+| Database | PostgreSQL, Prisma (multi-file schema) |
+| Background work | Redis + BullMQ |
+| Auth | JWT access + refresh tokens, role guards |
 | Testing | Jest, Supertest, Playwright |
-| Local infrastructure | Docker Compose |
+| Local infra | Docker Compose |
 
-The project intentionally uses one ORM, one frontend query approach, one UI kit, and one backend deployment. A new runtime dependency requires agreement from all owners.
+One ORM, one query layer, one UI kit, one deployable backend — on purpose. Adding a new runtime dependency is a conversation, not a `pnpm add`.
 
-## Repository structure
+## Repository layout
 
-```text
+```
 apps/
   api/
     src/modules/
-      sales/             # B1
-      intelligence/      # B2
-      operations/        # B3
-      billing/           # B3
-      shared/            # Group-owned infrastructure
-  web/                   # F
+      sales/          # quotations, orders, the state machine
+      intelligence/   # discount rules, risk, approvals, audit, deal health
+      operations/      # catalog, inventory, fulfillment
+      billing/          # invoices, subscriptions, payments
+      shared/            # cross-cutting infrastructure
+  web/                     # all fifteen screens, internal + portal shells
 packages/
-  contracts/             # Shared DTOs, enums and error codes
+  contracts/                # shared DTOs, enums, error codes
 prisma/
-  schema/                # One schema file per domain
-  seed/
-    index.ts
-    base.seed.ts
-    catalog.seed.ts
-    policy.seed.ts
-    demo.seed.ts
+  schema/                    # one schema file per domain
+  seed/                        # base data, catalog, policies, demo quotes/orders
 docker-compose.yml
-plan.md
-explain.md
+DEMO.md
 ```
 
-## Engineering ownership
+## The rules that don't bend
 
-| Owner | Responsibility | Owned paths |
-|---|---|---|
-| **F — Frontend** | Fifteen screens, internal shell, portal shell, API client | `apps/web/**` |
-| **B1 — Sales core** | Authentication, customers, quotations, lines, totals, orders, state machine | Sales module and `sales.prisma` |
-| **B2 — Intelligence** | Discount rules, risk, approvals, audit, upsells, allocation choice, deal health | Intelligence module and `intelligence.prisma` |
-| **B3 — Operations** | Catalog, pricing, tax, inventory, warehouses, fulfillment, subscriptions, invoices, payments, negotiations | Operations and billing modules and schemas |
+These aren't style preferences — breaking one is a bug even if a test slips past it.
 
-An owner does not edit another owner's paths. Cross-team changes are requested from the relevant owner.
-
-Database ownership follows the same rule:
-
-- **B1:** users, roles, customers, tiers, quotations, quotation lines, orders, order lines.
-- **B2:** policies, risk evaluations, approvals, approval actions, audit logs, inventory reservations, deal-health events.
-- **B3:** catalog, products, variants, prices, tax, warehouses, inventory, movements, fulfillments, subscriptions, invoices, payments, negotiations.
-
-## Core business rules
-
-These are invariants. Breaking one is a defect even if a test happens to pass.
-
-### Money and percentages
-
-Money is an integer number of minor units plus a three-character currency code. Floating-point money is never used.
-
-```json
-{
-  "amountMinor": 125000,
-  "currency": "INR"
-}
-```
-
-Percentages use basis points, so 18% is stored as `1800`.
-
-### Business decisions belong to the backend
-
-The browser may format data, sort rows, and validate input shape. It must not decide approval requirements, risk, warehouse allocation, tax, totals, or billing eligibility. Those answers arrive from backend response fields.
-
-### Discounts are evaluated per line
-
-Each quotation line is checked against the ceiling for its category and customer tier. The results are then blended across the quotation. A valid hardware discount cannot hide an excessive services discount.
-
-```mermaid
-flowchart LR
-    Tier[Customer tier] --> Policy[Find discount policy]
-    Category[Line category] --> Policy
-    Entered[Entered line discount] --> Compare[Compare with ceiling]
-    Policy --> Compare
-    Compare --> Result[Allowed, actual and excess basis points]
-    Result --> Blend[Blended quotation risk]
-    Margin[Quotation margin] --> Blend
-    Blend --> Route[Required approval route]
-```
-
-### One entity, one owner
-
-Each entity has one owning module and one Prisma model. Cross-domain modules store foreign IDs rather than duplicating a model.
-
-### One writer for quotation status
-
-Only `quote-state.service.ts` changes `quotations.status`. Unsupported transitions return `QUOTE_INVALID_STATE`.
-
-### Transactional audit trail
-
-Every state transition, approval action, discount override, and negotiation response writes an append-only audit row in the same transaction as the change.
-
-### Server-enforced portal security
-
-A customer-role user can access only that customer's records. Every portal handler obtains `customerId` from the authenticated token and filters on the server. Hiding data in the UI is not a security boundary.
-
-### Data-driven thresholds
-
-Discount and approval thresholds live in `discount_policies`. Values that decide outcomes are never hard-coded in application logic.
+- **Money is an integer, always.** `{ "amountMinor": 125000, "currency": "INR" }`. No floats, ever.
+- **Percentages live in basis points.** 18% is stored as `1800`.
+- **The backend decides; the browser explains.** Sorting, formatting, and input shape are the UI's job. Risk, approval requirements, allocation, tax, and totals are not.
+- **Discounts are checked line by line, then blended.** A clean hardware discount can't hide an excessive services discount riding along in the same quote.
+- **One entity, one owner, one Prisma model.** Cross-domain references store foreign IDs, never a duplicated copy of someone else's model.
+- **One writer for quotation status.** Only `quote-state.service.ts` changes `quotations.status`. Every other path gets `QUOTE_INVALID_STATE`.
+- **Every state change writes its own audit row, in the same transaction.** Approvals, rejections, overrides, negotiation replies — all of it.
+- **The portal is scoped on the server, not hidden in the UI.** A customer token can only ever touch its own customer's records — that's enforced where a client can't route around it.
+- **Thresholds live in data, not code.** Discount ceilings and approval rules come from `discount_policies`, never a hardcoded `if`.
 
 ## Quotation state machine
 
@@ -265,7 +246,7 @@ stateDiagram-v2
     AUTO_APPROVED --> CONFIRMED: Confirm
     APPROVED --> CONFIRMED: Confirm
     CONFIRMED --> FULFILLING: Start fulfillment
-    FULFILLING --> COMPLETED: Delivery and billing complete
+    FULFILLING --> COMPLETED: Delivery & billing complete
     CONFIRMED --> NEGOTIATING: Customer requests new terms
     NEGOTIATING --> CONFIRMED: Terms remain within ceilings
     NEGOTIATING --> PENDING_MANAGER: Terms exceed a ceiling
@@ -273,151 +254,54 @@ stateDiagram-v2
     COMPLETED --> [*]
 ```
 
-Related lifecycles:
+Related lifecycles, if you're tracing a bug: inventory moves `AVAILABLE → RESERVED → ALLOCATED → SHIPPED` (or `RELEASED` on cancel); fulfillment moves `ORDER_CONFIRMED → INVENTORY_RESERVED → PICKING → PACKED → SHIPPED → DELIVERED` (or `BACKORDERED`); invoices move `DRAFT → ISSUED → PARTIALLY_PAID → PAID` (or `VOID`/`OVERDUE`); subscriptions are `ACTIVE`, `PAUSED`, or `CANCELLED`. Stock is never silently decremented — there's always a reservation or movement record explaining why a number changed.
 
-- **Inventory:** `AVAILABLE → RESERVED → ALLOCATED → SHIPPED`; cancellation uses `RELEASED`.
-- **Fulfillment:** `ORDER_CONFIRMED → INVENTORY_RESERVED → PICKING → PACKED → SHIPPED → DELIVERED`, with `BACKORDERED` when stock cannot cover demand.
-- **Invoice:** `DRAFT → ISSUED → PARTIALLY_PAID → PAID`, plus `VOID` and `OVERDUE`.
-- **Subscription:** `ACTIVE`, `PAUSED`, or `CANCELLED`.
+## Pages
 
-Stock is not silently decremented. Reservations and inventory movements explain what happened.
+| # | Page | Route | What it's for |
+|---|---|---|---|
+| 1 | Login / signup | `/login`, `/signup` | Authenticate staff and customers |
+| 2 | Dashboard | `/dashboard` | Approvals, open quotes, risk, recent activity |
+| 3 | Quotations | `/quotations` | Search and filter every quote |
+| 4 | Quotation builder | `/quotations/[id]` | Edit lines, see live discount status, submit |
+| 5 | Approvals | `/approvals` | The approval work queue |
+| 6 | Approval detail | `/approvals/[id]` | Violations, risk, decisions, audit history |
+| 7 | Fulfillment | `/fulfillment` | Inventory and orders awaiting shipment |
+| 8 | Warehouse split | `/fulfillment/[orderId]` | Accept or override the suggested allocation |
+| 9 | Subscriptions | `/subscriptions` | Recurring plans |
+| 10 | Billing detail | `/subscriptions/[id]` | Charges and subscription controls |
+| 11 | Customer portal | `/portal/quotations/[token]` | A customer's own review-and-sign flow |
+| 12 | Invoices | `/invoices` | One-time and recurring invoices |
+| 13 | Invoice detail | `/invoices/[id]` | Reconcile shipment, lines, and payment |
+| 14 | Deal Health | `/deal-health` | Stalled deals, discount anomalies, delivery risk |
+| 15 | Admin / Reports | `/admin/reports` | Trends, bottlenecks, governance ceilings |
 
-## Data model
-
-```mermaid
-erDiagram
-    CUSTOMER_TIER ||--o{ CUSTOMER : classifies
-    CUSTOMER ||--o{ QUOTATION : requests
-    USER ||--o{ QUOTATION : owns
-    QUOTATION ||--|{ QUOTATION_LINE : contains
-    PRODUCT ||--o{ QUOTATION_LINE : selected_as
-    CATEGORY ||--o{ PRODUCT : groups
-    PRICE_LIST ||--o{ PRICE_LIST_ITEM : contains
-    PRODUCT ||--o{ PRICE_LIST_ITEM : priced_by
-    QUOTATION ||--o{ RISK_EVALUATION : evaluated_by
-    QUOTATION ||--o| APPROVAL_REQUEST : may_require
-    APPROVAL_REQUEST ||--|{ APPROVAL_STEP : contains
-    APPROVAL_STEP ||--o{ APPROVAL_ACTION : records
-    QUOTATION ||--o| ORDER : confirms_as
-    ORDER ||--|{ ORDER_LINE : snapshots
-    ORDER ||--o{ FULFILLMENT : fulfilled_by
-    WAREHOUSE ||--o{ INVENTORY : stores
-    PRODUCT ||--o{ INVENTORY : stocked_as
-    FULFILLMENT ||--o{ INVENTORY_RESERVATION : reserves
-    ORDER ||--o{ INVOICE : billed_by
-    INVOICE ||--|{ INVOICE_LINE : contains
-    INVOICE ||--o{ PAYMENT : receives
-    ORDER ||--o{ SUBSCRIPTION : creates
-    SUBSCRIPTION ||--o{ BILLING_SCHEDULE : schedules
-    QUOTATION ||--o{ NEGOTIATION : has
-    NEGOTIATION ||--o{ NEGOTIATION_MESSAGE : contains
-    QUOTATION ||--o{ DEAL_HEALTH_EVENT : monitored_by
-    QUOTATION ||--o{ AUDIT_LOG : audited_by
-```
-
-Important details:
-
-- IDs are `cuid()` strings.
-- Every table has `createdAt` and `updatedAt`.
-- Risk evaluations are append-only so negotiation history remains visible.
-- Inventory stores `onHand` and `reserved`; `available` is derived.
-- Order lines copy quotation-line values at confirmation because the quote may change later.
-
-## Pages and navigation
-
-The internal navigation is:
-
-`Dashboard · Quotations · Approvals · Fulfillment · Subscriptions · Invoices · Deal Health · Reports`
-
-List pages show all records of an entity. Clicking a row opens that record's detail page.
-
-```mermaid
-flowchart TD
-    Login[Login and signup] --> Dashboard[Sales dashboard]
-    Dashboard --> Quotes[Quotations list]
-    Quotes --> QuoteDetail[Quotation builder]
-    QuoteDetail --> Approvals[Approvals list]
-    Approvals --> ApprovalDetail[Approval detail]
-    ApprovalDetail --> Fulfillment[Fulfillment and stock]
-    Fulfillment --> Split[Warehouse split detail]
-    Split --> Invoices[Invoices list]
-    Invoices --> InvoiceDetail[Invoice detail and payment]
-    Dashboard --> Subscriptions[Subscriptions list]
-    Subscriptions --> Billing[Billing detail]
-    Dashboard --> Health[Deal health]
-    Dashboard --> Reports[Admin and reporting]
-    CustomerPortal[Customer negotiation portal] -. restricted flow .-> QuoteDetail
-```
-
-| # | Page | Route | Purpose |
-|---:|---|---|---|
-| 1 | Login and signup | `/login`, `/signup` | Authenticate internal users and customers |
-| 2 | Sales dashboard | `/dashboard` | Show approvals, open quotes, risk, and recent activity |
-| 3 | Quotations list | `/quotations` | Search and filter all quotations |
-| 4 | Quotation builder | `/quotations/[id]` | Edit lines, display returned discount status, review upsells, submit |
-| 5 | Approvals list | `/approvals` | Review the approval work queue |
-| 6 | Approval detail | `/approvals/[id]` | Explain violations, risk, decisions, and audit history |
-| 7 | Fulfillment and stock | `/fulfillment` | View inventory and orders awaiting fulfillment |
-| 8 | Warehouse split detail | `/fulfillment/[orderId]` | Accept or override the suggested allocation |
-| 9 | Subscriptions list | `/subscriptions` | View recurring plans |
-| 10 | Billing detail | `/subscriptions/[id]` | Review recurring charges and subscription controls |
-| 11 | Customer portal | `/portal/quotations/[token]` | Let a customer review, negotiate, and confirm safely |
-| 12 | Invoices list | `/invoices` | Search one-time and recurring invoices |
-| 13 | Invoice detail and payment | `/invoices/[id]` | Reconcile delivery, invoice lines, and payments |
-| 14 | Deal health | `/deal-health` | Show stalled deals, discount anomalies, and delivery risk |
-| 15 | Admin and reporting | `/admin/reports` | Show trends, bottlenecks, and platform usage |
-
-Important UI behavior:
-
-- Screen 4 displays `OVER` while a discount is being entered, using backend evaluation data.
-- Screen 6 explains the exact lines that crossed their ceilings and the number of points over.
-- Screen 8 shows warehouse allocations, shipping count, cost, and backorders.
-- Screen 11 uses a separate portal shell and navigation.
-- Screen 13 keeps partial billing reconciled with partial shipment. Nothing is invoiced before it ships.
-- Every page includes loading, empty, and error states.
-
-The product-flow design also includes catalog, variants, price lists, tax, subscription cadence, and tier/category discount ceilings. To keep the agreed route count stable, this begins as an Admin/Reports configuration subview rather than a sixteenth top-level module.
+Every one of them has a real loading state, a real empty state, and a real error state — none of them fabricate data when the API has nothing to say.
 
 ## Customer portal
 
-The portal is a separate product surface, not the internal application with hidden menu items. Its navigation is limited to:
+The portal isn't the internal app with some menu items hidden — it's a separate surface with its own shell and exactly three destinations: **My Quotation**, **Messages**, **Profile**. It never receives internal risk scores, approval notes, cost, margin, or another customer's anything.
 
-- **My Quotation**
-- **Messages**
-- **Profile**
-
-Portal responses never include internal risk scores, risk levels, approval notes, cost, margin, or another customer's data.
-
-A confirmation returns either:
+Confirming a quote from the portal returns one of two shapes:
 
 ```json
 { "outcome": "CONFIRMED", "orderId": "order_123" }
 ```
-
-or:
-
 ```json
 { "outcome": "APPROVAL_REQUIRED", "status": "PENDING_MANAGER" }
 ```
 
-For the second result, the customer sees a simple pending-review message, not internal reasoning.
+In the second case, the buyer sees a plain "under review" message — the internal reasoning behind it stays internal.
 
 ## API contract
 
-The REST base path is `/api/v1`. Everything except login, signup, and token refresh requires a bearer JWT.
-
-Success:
+Base path: `/api/v1`. Every endpoint except login, signup, and refresh requires a bearer JWT.
 
 ```json
-{
-  "success": true,
-  "data": {}
-}
+{ "success": true, "data": { } }
 ```
 
-Lists place records in `data.items` and also return `total`, `page`, and `pageSize`.
-
-Failure:
+Lists return `data.items` plus `total`, `page`, and `pageSize`. Failures look like this:
 
 ```json
 {
@@ -425,168 +309,52 @@ Failure:
   "error": {
     "code": "DISCOUNT_LIMIT_EXCEEDED",
     "message": "Discount exceeds the configured category limit.",
-    "details": {
-      "quoteLineId": "line_2",
-      "allowedBps": 1000,
-      "actualBps": 1800
-    }
+    "details": { "quoteLineId": "line_2", "allowedBps": 1000, "actualBps": 1800 }
   }
 }
 ```
 
 | Code | HTTP | Meaning |
-|---|---:|---|
+|---|---|---|
 | `VALIDATION_FAILED` | 400 | Input failed validation |
-| `UNAUTHENTICATED` | 401 | Authentication is missing or invalid |
-| `FORBIDDEN` | 403 | The user lacks permission |
-| `PORTAL_SCOPE_VIOLATION` | 403 | A portal user requested another customer's data |
-| `NOT_FOUND` | 404 | The record does not exist |
-| `QUOTE_INVALID_STATE` | 409 | The quotation transition is not allowed |
-| `DISCOUNT_LIMIT_EXCEEDED` | 409 | A discount crossed a ceiling |
-| `APPROVAL_STEP_NOT_YOURS` | 409 | The user cannot act on this approval step |
-| `INSUFFICIENT_STOCK` | 409 | Inventory cannot cover the request |
-| `INVOICE_BEFORE_SHIPMENT` | 409 | Billing was attempted before shipment |
-| `SUBSCRIPTION_INVALID_STATE` | 409 | The subscription transition is invalid |
+| `UNAUTHENTICATED` | 401 | Missing or invalid auth |
+| `FORBIDDEN` | 403 | Insufficient permission |
+| `PORTAL_SCOPE_VIOLATION` | 403 | Customer requested another customer's data |
+| `NOT_FOUND` | 404 | Record doesn't exist |
+| `QUOTE_INVALID_STATE` | 409 | Transition not allowed from current state |
+| `DISCOUNT_LIMIT_EXCEEDED` | 409 | A line crossed its ceiling |
+| `APPROVAL_STEP_NOT_YOURS` | 409 | This approval step isn't yours to act on |
+| `INSUFFICIENT_STOCK` | 409 | Inventory can't cover the request |
+| `INVOICE_BEFORE_SHIPMENT` | 409 | Billing attempted before shipment |
+| `SUBSCRIPTION_INVALID_STATE` | 409 | Invalid subscription transition |
 
-API areas are divided into sales core, intelligence, operations/billing, and the customer portal. Renaming an error or changing a published response shape requires agreement from all owners.
-
-## Frontend API integration
-
-All browser requests go through `apps/web/lib/api.ts`, configured by
-`NEXT_PUBLIC_API_URL`. Pages render empty states until authenticated backend data
-arrives; API failures are shown in-page and never fall back to fabricated records.
-
-## UI design principles
-
-- Build reusable tables, filters, forms, badges, timelines, dialogs, and summary panels.
-- Keep the visual hierarchy clear, restrained, and suitable for daily B2B work.
-- Use neutral surfaces, readable typography, thin borders, and semantic status colors.
-- Avoid decorative gradients, glass effects, oversized headings, excessive floating cards, and generic AI-dashboard decoration.
-- Keep the internal application and customer portal visibly separate.
-- Make text, forms, tables, and components editable rather than embedding them in images.
-
-Google Stitch may be used to establish layouts and a shared visual language. Stitch MCP is useful after initial designs exist because a coding agent can then read the screens and design system. It is a design-to-code aid, not part of the DealFlow360 runtime.
-
-## Local development
-
-The repository is a pnpm workspace: a Next.js web app in `apps/web`, a NestJS API
-in `apps/api`, and shared types in `packages/contracts`. The designed HTML screens
-in `pages/` are loaded into the Next.js App Router and bound to the API in the
-browser, so the current UI stays available while individual screens are migrated to
-native React components.
+## Testing
 
 ```bash
-pnpm install
-pnpm go
+pnpm test        # contracts build, API unit tests, an endpoint-coverage smoke check, DOM/a11y checks across all 15 screens
+pnpm typecheck
+pnpm lint
 ```
 
-`pnpm go` is the whole thing. It checks `.env` (creating it from `.env.example`
-if missing), finds the port PostgreSQL is actually listening on and corrects
-`DATABASE_URL` when the two disagree, generates the Prisma client, applies
-migrations, seeds only if the database is empty, starts both servers, waits for
-them, then evaluates the open quotes and sweeps deal health. It prints what it
-did and the accounts to sign in with; Ctrl+C stops both servers.
-
-It refuses to start a second copy over a running one, and when something is
-genuinely missing it names the command that fixes it instead of failing deep
-inside Prisma.
-
-The individual steps are still there:
-
-```bash
-cp .env.example .env
-docker compose up -d          # PostgreSQL + Redis
-pnpm generate                 # Prisma client
-pnpm db:migrate               # apply migrations
-pnpm db:seed                  # catalog, policies, quotes, orders and billing
-pnpm dev                      # API on :3001, web on :3000
-pnpm db:demo                  # with the API up: evaluate quotes, sweep deal health
-pnpm db:reset                 # db:seed + db:demo, back to a known state
-```
-
-`db:seed` writes rows; `db:demo` drives the running API. Risk scoring, approval
-routing and the deal-health sweep are engine behaviour, so the seed asks the API
-to produce them rather than keeping a second copy of the rules that would drift.
-`pnpm db:reset` runs both, any time you want the demo back to a known state. It
-also clears what a demo adds along the way - quotes raised on stage, accounts
-created through the sign-up form - while keeping anything an order was cut from.
-
-Sign in with any seeded account - `manager@dealflow.test`, `rep@dealflow.test`,
-`ops@dealflow.test`, `finance@dealflow.test` or `admin@dealflow.test` - password
-`dealflow123` for all of them. What you can act on depends on the role: only a
-manager, finance or admin sees the approval queue.
-
-The web app runs at `http://localhost:3000` and the API under
-`http://localhost:3001/api/v1`. Point the browser at a different API with
-`NEXT_PUBLIC_API_URL`.
-
-Run the checks with `pnpm test` (contracts build, 122 API unit tests, a smoke
-check that every endpoint the frontend calls is actually served by a controller,
-and DOM/accessibility regressions over all 15 screens) and `pnpm typecheck`.
-
-### How the frontend reaches the backend
-
-`apps/web/lib/api.ts` is the only place the browser talks to the API. It unwraps
-the `{ success, data }` envelope, attaches the bearer token, and spends the refresh
-token once on a 401. `apps/web/lib/live.ts` binds each page to the endpoints that
-exist, filling the designed tables in place rather than re-authoring them.
-
-Pages bound to live data: **login** (`/auth/login`, `/auth/signup`), **quotations**
-(`/quotes`), **approvals** (`/approvals`), **fulfillment** orders table (`/orders`),
-and **deal health** (`/deal-health`). Other screens stay in a clean empty state until
-their endpoint paths and response shapes are added to `apps/web/lib/live.ts`.
+A feature isn't done until: its migration is written and applied, DTOs validate input, server-side authorization is checked, the endpoint matches the shared contract, the frontend has loading/empty/error states, calculations have unit tests, seed data demonstrates it without manual DB surgery, `typecheck`/`lint`/`test` all pass, and the browser console is clean.
 
 ## Team workflow
 
-Branches use an owner prefix:
+Branch names carry an owner prefix: `main`, `f/<feature>`, `b1/<feature>`, `b2/<feature>`, `b3/<feature>`.
 
-```text
-main
-f/<feature>
-b1/<feature>
-b2/<feature>
-b3/<feature>
-```
+A few rules that keep four people from colliding: `main` must always start and seed cleanly; rebase before opening and again before merging a PR; stay inside your own owned paths; never edit or delete an applied migration, only add new ones, named `<owner>_<what>`; announce before generating a migration if someone else might be doing the same; integrate at planned checkpoints instead of nursing a long-lived branch. Any change to a shared enum, published response shape, HTTP status, runtime dependency, or the auth/portal boundary needs sign-off from every owner, not just the one touching the code.
 
-Integration rules:
+## Known limitations
 
-1. `main` must always start and seed successfully.
-2. Rebase on `main` before opening a pull request and again before merging.
-3. Do not edit another owner's paths.
-4. Never edit or delete an applied migration; add a new migration.
-5. Name migrations `<owner>_<what>`, such as `b2_approval_steps`.
-6. Announce before multiple people generate Prisma migrations at the same time.
-7. Integrate at the planned two-hour checkpoints instead of holding long-lived branches.
-8. Do not add assistant co-author or attribution trailers to commits.
+Shipped on purpose, not by accident:
 
-All four owners must agree before changing a shared enum, published response shape, HTTP status, runtime dependency, shared API infrastructure, contracts, Docker configuration, environment template, authentication middleware, or portal access boundary.
+- payments are simulated, not settled through a real gateway;
+- subscriptions bill flat, without mid-cycle proration;
+- upsell ranking is deterministic rules over seeded relationships, not learned;
+- the money model carries a currency code, but full multi-currency pricing isn't implemented yet.
 
-## Definition of done
+If you're picking this up next: mid-cycle proration, real gateway settlement, credit notes, learned upsell ranking, approval delegation and out-of-office routing, full multi-currency price lists, and a dedicated pricing-admin module are the obvious next steps.
 
-A feature is complete only when every relevant item is true:
+---
 
-- its migration is written and applied;
-- DTO and input validation are implemented;
-- server-side authorization is checked;
-- the endpoint matches the shared contract;
-- the frontend has loading, empty, and error states;
-- calculations have unit tests;
-- seed data demonstrates the feature without manual database work;
-- `pnpm typecheck`, `pnpm lint`, and `pnpm test` pass;
-- the browser console is clean.
-
-## Limitations and future work
-
-The first version intentionally keeps some areas simple:
-
-- payments are simulated rather than settled through a real gateway;
-- subscriptions are billed without proration;
-- upsell ranking uses deterministic rules and seeded product relationships;
-- the money model supports currency codes, but full multi-currency pricing is not implemented.
-
-Possible next steps include mid-cycle proration, real gateway settlement, credit notes, learned upsell ranking, approval delegation, out-of-office routing, full multi-currency price lists, and a dedicated product/pricing administration module.
-
-## Guiding principle
-
-The most important quality of DealFlow360 is that the whole chain is real and traceable. A plain screen backed by correct rules, permissions, transactions, audit history, and state transitions is more valuable than a polished screen that only imitates the workflow.
-
+*The point was never the paint job. It's that every number on every screen traces back to a rule you can read, in a database you can query, through a chain you can audit.*
